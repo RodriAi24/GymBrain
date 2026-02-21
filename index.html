@@ -426,7 +426,7 @@ body.light-mode .home-card, body.light-mode .muscle-card, body.light-mode .ex-ca
     <div class="home-hero" style="position:relative">
       <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">☀️</button>
       <div class="logo" style="justify-content:center"><div class="logo-icon">🧠</div><div class="logo-text">GYM<span>BRAIN</span></div></div>
-      <div class="home-tagline">Ejercicios basados en evidencia.<br>Sin humo. Sin paywall.</div>
+      <div class="home-tagline">Entrenamiento basado en evidencia.<br>Sin humo. Sin paywall.</div>
     </div>
     <div class="home-grid">
       <div class="home-card" onclick="goPage('tracker')" style="grid-column:1/-1"><div class="hc-emoji">📝</div><div class="hc-name">Mi Progreso</div><div class="hc-sub" id="homeTrackerSub">Tracker de peso y series</div></div>
@@ -598,8 +598,8 @@ body.light-mode .home-card, body.light-mode .muscle-card, body.light-mode .ex-ca
 
 <!-- NAV -->
 <div class="nav">
-  <button class="nav-tab" id="navTracker" onclick="goPage('tracker')"><span class="ni">📝</span>Progreso</button>
-  <button class="nav-tab-center" id="navHome" onclick="goPage('home')">🏠</button>
+  <button class="nav-tab" id="navHome" onclick="goPage('home')"><span class="ni">🏠</span>Home</button>
+  <button class="nav-tab-center" id="navTracker" onclick="goPage('tracker')">💪</button>
   <button class="nav-tab" id="navMore" onclick="toggleMoreMenu()"><span class="ni">☰</span>Más</button>
 </div>
 
@@ -629,6 +629,8 @@ body.light-mode .home-card, body.light-mode .muscle-card, body.light-mode .ex-ca
     <button class="more-item" onclick="toggleMoreMenu();exportData()"><span>💾</span>Respaldar Datos</button>
     <button class="more-item" onclick="toggleMoreMenu();document.getElementById('importFile').click()"><span>📂</span>Importar Datos</button>
     <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
+    <div style="height:1px;background:var(--border);margin:8px 0"></div>
+    <button class="more-item" style="color:var(--accent)" onclick="toggleMoreMenu();clearAllData()"><span>🗑️</span>Borrar Todos los Datos</button>
   </div>
 </div>
 
@@ -658,6 +660,14 @@ body.light-mode .home-card, body.light-mode .muscle-card, body.light-mode .ex-ca
   
   <div class="toast" id="toast"></div>
   
+  <!-- EXERCISE PICKER -->
+  <div class="more-overlay" id="exPickerOverlay" onclick="closeExPicker()">
+    <div class="more-menu" style="max-height:70vh;overflow-y:auto" onclick="event.stopPropagation()">
+      <div class="more-title" id="exPickerTitle">AGREGAR EJERCICIO</div>
+      <div id="exPickerContent"></div>
+    </div>
+  </div>
+
   <div class="plate-overlay" id="plateModal" onclick="this.classList.remove('show')">
     <div class="plate-card" onclick="event.stopPropagation()">
       <div class="plate-title">DISCOS POR LADO</div>
@@ -1635,6 +1645,20 @@ function importData(e) {
   reader.readAsText(file);
 }
 
+function clearAllData() {
+  if(confirm('⚠️ ¿ESTÁS SEGURO? Esto borrará todo tu historial, PRs y rutinas. Asegurate de haber hecho un "Respaldo de Datos" antes de continuar. Esta acción no se puede deshacer.')) {
+    if(confirm('ÚLTIMO AVISO: ¿Estás 100% seguro de querer reiniciar la aplicación desde cero?')) {
+      const keys = [];
+      for(let i=0; i<localStorage.length; i++) {
+        if(localStorage.key(i).startsWith('gb_')) keys.push(localStorage.key(i));
+      }
+      keys.forEach(k => localStorage.removeItem(k));
+      alert('Tus datos han sido borrados. La app se reiniciará ahora.');
+      location.reload();
+    }
+  }
+}
+
 // ═══ TRACKER ═══
 function getLog(exId){
   try{return JSON.parse(localStorage.getItem('gb_'+exId))||[]}catch(e){return[]}
@@ -1693,7 +1717,7 @@ function renderTrackerDash(){
     const totalSets = Object.values(woSets).reduce((t,sets)=>t+sets.length,0);
     html += `
       <button class="dash-start" style="background:var(--green);color:#000" onclick="goPage('workout')">
-        🔄 CONTINUAR: ${woDay.name.split('—')[0].trim()} (${doneSets}/${totalSets})
+        🔄 CONTINUAR: ${woFree?'Entreno Libre':woDay.name.split('—')[0].trim()} (${doneSets}/${totalSets})
       </button>
       <div style="text-align:center;margin-bottom:14px">
         <button style="background:none;border:none;color:var(--ink4);font-family:'Montserrat',sans-serif;font-size:13px;text-decoration:underline;cursor:pointer" onclick="cancelActiveWo()">Cancelar sesión en curso</button>
@@ -1725,6 +1749,8 @@ function renderTrackerDash(){
         }
       }
     }
+    html+=`<div style="text-align:center;margin:10px 0 4px;font-size:11px;color:var(--ink4)">— o —</div>`;
+    html+=`<button class="dash-start" style="background:var(--surface);color:var(--ink2);box-shadow:none;border:1px solid var(--border);font-size:17px" onclick="startFreeWorkout()">⚡ ENTRENO LIBRE</button>`;
   }
   
   // Recent history
@@ -1763,11 +1789,11 @@ function pickSplit(id){selectedSplit=id;selectedDay=null;localStorage.setItem('g
 function pickDay(i){selectedDay=i;renderTrackerDash()}
 
 // ═══ WORKOUT LOG ═══
-let woSplit=null,woDay=null,woSets={};
+let woSplit=null,woDay=null,woSets={},woFree=false;
 
 function cancelActiveWo(){
   if(confirm('¿Seguro que querés cancelar el entrenamiento en curso? Las series que ya tildaste quedarán guardadas en tu historial, pero se cerrará esta sesión.')) {
-    woSplit=null; woDay=null; woSets={};
+    woSplit=null; woDay=null; woSets={}; woFree=false;
     localStorage.removeItem('gb_active_wo');
     renderTrackerDash();
   }
@@ -1776,7 +1802,7 @@ function cancelActiveWo(){
 function startWorkout(){
   const sp=SPLITS.find(s=>s.id===selectedSplit);
   if(!sp||selectedDay===null)return;
-  woSplit=sp;woDay=sp.days[selectedDay];
+  woSplit=sp;woDay=sp.days[selectedDay];woFree=false;
   woSets={};
   woDay.exercises.forEach(eid=>{
     const ex=EX.find(e=>e.id===eid);
@@ -1792,6 +1818,55 @@ function startWorkout(){
   document.getElementById('workoutTitle').textContent=woDay.name;
   goPage('workout');
 }
+
+function startFreeWorkout(){
+  woSplit=null;
+  woDay={name:'Entreno Libre',exercises:[]};
+  woFree=true;
+  woSets={};
+  document.getElementById('workoutTitle').textContent='ENTRENO LIBRE';
+  goPage('workout');
+}
+
+function openExPicker(){
+  const el=document.getElementById('exPickerContent');
+  document.getElementById('exPickerTitle').textContent='ELEGÍ UN MÚSCULO';
+  el.innerHTML=MUSCLES.map(m=>{
+    const count=EX.filter(e=>e.muscle===m.id).length;
+    return`<button class="more-item" onclick="showPickerExercises('${m.id}')"><span>${m.emoji}</span>${m.name} <span style="color:var(--ink4);font-size:12px;margin-left:auto">${count}</span></button>`;
+  }).join('');
+  document.getElementById('exPickerOverlay').classList.add('show');
+}
+
+function showPickerExercises(muscleId){
+  const m=MUSCLES.find(x=>x.id===muscleId);
+  document.getElementById('exPickerTitle').textContent=m?m.emoji+' '+m.name:'EJERCICIOS';
+  const exs=EX.filter(e=>e.muscle===muscleId).sort((a,b)=>a.name.localeCompare(b.name,'es'));
+  const already=woDay.exercises;
+  document.getElementById('exPickerContent').innerHTML=
+    `<button class="more-item" style="color:var(--ink3)" onclick="openExPicker()"><span>←</span>Volver a músculos</button>`+
+    exs.map(e=>{
+      const added=already.includes(e.id);
+      return`<button class="more-item" style="${added?'opacity:.4':''}" onclick="${added?'':`addFreeExercise('${e.id}')`}"><span style="font-size:14px">${added?'✓':'+'}</span>${e.name}<span style="color:var(--ink4);font-size:11px;margin-left:auto">${e.sets}×${e.reps}</span></button>`;
+    }).join('');
+}
+
+function addFreeExercise(eid){
+  const ex=EX.find(e=>e.id===eid);if(!ex)return;
+  woDay.exercises.push(eid);
+  const numSets=parseInt(ex.sets)||3;
+  const prevLog=getLog(eid);
+  const lastDate=[...new Set(prevLog.map(e=>e.d))].pop();
+  const lastSets=lastDate?prevLog.filter(e=>e.d===lastDate):[];
+  woSets[eid]=Array(numSets).fill(null).map((_,i)=>({w:lastSets[i]?lastSets[i].w:'',r:'',done:false}));
+  saveActiveWo();
+  closeExPicker();
+  renderWorkout();
+  toast(`➕ ${ex.name} agregado`);
+  vib();
+}
+
+function closeExPicker(){document.getElementById('exPickerOverlay').classList.remove('show')}
 
 function renderWorkout(){
   if(!woDay)return;
@@ -1809,13 +1884,31 @@ function renderWorkout(){
   </div>`;
   
   // Exercises
+  if(woFree && woDay.exercises.length===0){
+    html+=`<div style="text-align:center;padding:30px 10px;color:var(--ink3)">
+      <div style="font-size:36px;margin-bottom:10px">🏋️</div>
+      <div style="font-size:14px;line-height:1.6">Agregá ejercicios para arrancar.<br>Tocá el botón de abajo.</div>
+    </div>`;
+  }
   woDay.exercises.forEach((eid,exIdx)=>{
     const ex=EX.find(e=>e.id===eid);
     if(!ex)return;
     const sets=woSets[eid]||[];
-    const allDone=sets.every(s=>s.done);
+    const allDone=sets.length > 0 && sets.every(s=>s.done);
     
-    html+=`<div class="wo-ex" style="${allDone?'border-color:var(--green);opacity:.7':''}">
+    if(allDone) {
+      // Ejercicio Completado -> Mini tarjeta colapsada
+      html+=`<div class="wo-ex" style="border-color:var(--green);background:var(--green-dim);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="toast('Ejercicio completado ✅')">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="color:var(--green);font-size:18px">✅</div>
+          <div style="font-size:14px;font-weight:600;color:var(--ink)">${ex.name}</div>
+        </div>
+        <div style="font-size:11px;color:var(--green);font-weight:600">${sets.length} series</div>
+      </div>`;
+      return; // Salta al siguiente ejercicio sin renderizar los inputs
+    }
+    
+    html+=`<div class="wo-ex">
       <div class="wo-ex-top">
         <div class="wo-ex-num">${exIdx+1}</div>
         <div class="wo-ex-name" onclick="curExercise='${eid}';goPage('detail')">${ex.name}</div>
@@ -1842,6 +1935,11 @@ function renderWorkout(){
     html+=`</div>`;
   });
   
+  // Add exercise button (free workout)
+  if(woFree){
+    html+=`<button class="dash-start" style="background:var(--surface);color:var(--ink2);box-shadow:none;border:1px dashed var(--border);font-size:16px;margin-bottom:10px" onclick="openExPicker()">➕ AGREGAR EJERCICIO</button>`;
+  }
+
   // Notes
   let savedNotes='';
   try{const wo=JSON.parse(localStorage.getItem('gb_wo_'+today));if(wo)savedNotes=wo.notes||''}catch(e){}
@@ -1860,7 +1958,7 @@ function renderWorkout(){
 }
 
 function saveActiveWo(){
-  if(woDay) localStorage.setItem('gb_active_wo', JSON.stringify({woSplit, woDay, woSets, date: getToday()}));
+  if(woDay) localStorage.setItem('gb_active_wo', JSON.stringify({woSplit, woDay, woSets, woFree, date: getToday()}));
 }
 
 function woUpdateSet(eid,si,field,val){
@@ -1868,6 +1966,7 @@ function woUpdateSet(eid,si,field,val){
 }
 
 function woCheckSet(eid,si){
+  const scrollPos = window.scrollY; // Guardamos dónde está mirando el usuario
   if(!woSets[eid]||!woSets[eid][si])return;
   const set=woSets[eid][si];
   if(!set.r){toast('⚠️ Completá al menos las reps');return}
@@ -1899,6 +1998,7 @@ function woCheckSet(eid,si){
   }
   saveActiveWo();
   renderWorkout();
+  window.scrollTo(0, scrollPos); // Le devolvemos la vista exactamente donde estaba
 }
 
 function finishWorkout(){
@@ -2340,6 +2440,7 @@ try {
       woSplit = savedWo.woSplit;
       woDay = savedWo.woDay;
       woSets = savedWo.woSets;
+      woFree = savedWo.woFree || false;
       if(document.getElementById('workoutTitle')) document.getElementById('workoutTitle').textContent = woDay.name;
       setTimeout(() => toast('🔄 Entreno en pausa recuperado'), 1000);
     } else {
