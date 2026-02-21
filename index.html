@@ -447,13 +447,21 @@ body.light-mode .home-card, body.light-mode .muscle-card, body.light-mode .ex-ca
   <!-- ═══ EXERCISES ═══ -->
   <div class="page" id="page-exercises">
     <div class="back-row"><button class="back-btn" onclick="goPage('home')">← Home</button><div class="back-title">EJERCICIOS</div></div>
-    <div class="loc-filter">
+    <div style="padding:0 20px 14px">
+      <div style="position:relative">
+        <input type="text" id="exSearchInput" placeholder="Buscar ejercicio (ej: Curl...)" style="width:100%;padding:12px 36px 12px 36px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--ink);font-family:'Montserrat',sans-serif;font-size:14px;outline:none" oninput="searchEx(this.value)">
+        <span style="position:absolute;left:12px;top:11px;font-size:16px;pointer-events:none">🔍</span>
+        <button id="exSearchClear" style="display:none;position:absolute;right:12px;top:12px;background:var(--ink3);color:var(--bg);border:none;border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:bold;cursor:pointer;align-items:center;justify-content:center" onclick="document.getElementById('exSearchInput').value=''; searchEx('');">✕</button>
+      </div>
+    </div>
+    <div class="loc-filter" id="exFilterBar">
       <button class="loc-chip active" onclick="setLoc('all',this)">Todos</button>
       <button class="loc-chip" onclick="setLoc('gym',this)">🏋️ Gym</button>
       <button class="loc-chip" onclick="setLoc('casa',this)">🏠 Casa</button>
     </div>
-    <div class="stitle">ELEGÍ UN MÚSCULO</div>
+    <div class="stitle" id="exStitle">ELEGÍ UN MÚSCULO</div>
     <div class="muscle-grid" id="muscleGrid"></div>
+    <div class="exlist" id="searchResults" style="display:none;padding:0 20px 20px"></div>
   </div>
 
   <!-- ═══ MUSCLE LIST ═══ -->
@@ -616,17 +624,12 @@ body.light-mode .home-card, body.light-mode .muscle-card, body.light-mode .ex-ca
 
 <!-- MORE MENU -->
 <div class="more-overlay" id="moreOverlay" onclick="toggleMoreMenu()">
-    <div class="more-menu" onclick="event.stopPropagation()">
-        <div class="more-title">MÁS</div>
-        <button class="more-item" onclick="toggleMoreMenu();goPage('onerm')"><span>🧮</span>Calculadora 1RM</button>
-        <button class="more-item" onclick="toggleMoreMenu();goPage('routines')"><span>📋</span>Rutinas y Programas</button>
-    <button class="more-item" onclick="toggleMoreMenu();goPage('timer')"><span>⏱</span>Timer de Descanso</button>
-    <button class="more-item" onclick="toggleMoreMenu();goPage('methods')"><span>⚡</span>Métodos de Intensidad</button>
-    <button class="more-item" onclick="toggleMoreMenu();goPage('learn')"><span>🎓</span>Aprender</button>
-    <button class="more-item" onclick="toggleMoreMenu();goPage('warmup')"><span>🔥</span>Calentamiento</button>
-    <button class="more-item" onclick="toggleMoreMenu();goPage('supplements')"><span>💊</span>Suplementos</button>
-   <button class="more-item" onclick="toggleMoreMenu();goPage('creators')"><span>🎬</span>Creadores</button>
-    <button class="more-item" onclick="toggleMoreMenu();goPage('glossary')"><span>📖</span>Glosario</button>
+  <div class="more-menu" onclick="event.stopPropagation()">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:0 8px 12px;border-bottom:1px solid var(--border);margin-bottom:8px">
+      <div class="more-title" style="border:none;padding:0;margin:0">MÁS OPCIONES</div>
+      <button style="background:var(--surface);border:none;width:30px;height:30px;border-radius:50%;color:var(--ink2);font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="toggleMoreMenu()">✕</button>
+    </div>
+    <button class="more-item" onclick="toggleMoreMenu();goPage('onerm')"><span>🧮</span>Calculadora 1RM</button>
     <div style="height:1px;background:var(--border);margin:8px 0"></div>
     <button class="more-item" onclick="toggleMoreMenu();exportData()"><span>💾</span>Respaldar Datos</button>
     <button class="more-item" onclick="toggleMoreMenu();document.getElementById('importFile').click()"><span>📂</span>Importar Datos</button>
@@ -1357,6 +1360,11 @@ function goPage(p){
   const pe=document.getElementById('page-'+p);if(pe)pe.classList.add('active');
   const navMap={home:'navHome',exercises:'navHome',muscle:'navHome',detail:'navHome',methods:'navMore',routines:'navMore',timer:'navMore',glossary:'navMore',supplements:'navMore',creators:'navMore',warmup:'navMore',learn:'navMore',tracker:'navTracker',workout:'navTracker',stats:'navTracker',exhist:'navTracker',onerm:'navMore'};
   const ne=document.getElementById(navMap[p]);if(ne)ne.classList.add('active');
+  
+  // FIX: Limpiar la barra de búsqueda siempre que cambiás de página
+  const sInput = document.getElementById('exSearchInput');
+  if(sInput && sInput.value) { sInput.value = ''; searchEx(''); }
+  
   if(p==='exercises')renderMuscleGrid();
   if(p==='muscle')renderExList();
   if(p==='detail')renderDetail();
@@ -1795,7 +1803,11 @@ let woSplit=null,woDay=null,woSets={},woFree=false;
 
 function cancelActiveWo(){
   if(confirm('¿Seguro que querés cancelar el entrenamiento en curso? Las series que ya tildaste quedarán guardadas en tu historial, pero se cerrará esta sesión.')) {
-    woSplit=null; woDay=null; woSets={}; woFree=false;
+    // FIX: Asegurarnos de limpiar todo
+    woSplit = null; 
+    woDay = null; 
+    woSets = {};
+    woFree = false;
     localStorage.removeItem('gb_active_wo');
     renderTrackerDash();
   }
@@ -1954,7 +1966,13 @@ function renderWorkout(){
   // Finish button
   const totalSets=Object.values(woSets).reduce((t,sets)=>t+sets.filter(s=>s.done).length,0);
   const totalAll=Object.values(woSets).reduce((t,sets)=>t+sets.length,0);
-  html+=`<button class="wo-finish" onclick="finishWorkout()">✅ TERMINAR (${totalSets}/${totalAll} series)</button>`;
+  const isComplete = totalAll > 0 && totalSets === totalAll;
+  
+  if(isComplete) {
+    html+=`<button class="wo-finish" onclick="finishWorkout()">✅ ENTRENAMIENTO COMPLETADO</button>`;
+  } else {
+    html+=`<button class="wo-finish" style="background:var(--surface);color:var(--ink);border:1px solid var(--border);box-shadow:none" onclick="finishWorkout()">💾 GUARDAR Y SALIR (${totalSets}/${totalAll} series)</button>`;
+  }
   
   document.getElementById('workoutContent').innerHTML=html;
 }
@@ -2004,20 +2022,38 @@ function woCheckSet(eid,si){
 }
 
 function finishWorkout(){
+  const totalSets=Object.values(woSets).reduce((t,sets)=>t+sets.filter(s=>s.done).length,0);
+  const totalAll=Object.values(woSets).reduce((t,sets)=>t+sets.length,0);
+  
+  if (totalAll > 0 && totalSets < totalAll) {
+    if (!confirm('Aún te faltan series por completar. ¿Estás seguro de que querés guardar y cerrar esta sesión? (Tus series tildadas no se perderán)')) {
+      return;
+    }
+  }
+
   const today=getToday();
   const notesEl=document.getElementById('woNotes');
   const notes=notesEl?notesEl.value:'';
   
+  const splitName = woSplit ? woSplit.name : '';
+  const dayName = woDay ? woDay.name : (woFree ? 'Entrenamiento Libre' : '');
+  
   // Save workout metadata
   const woData={
     date:today,
-    split:woSplit?woSplit.name:'',
-    day:woDay?woDay.name:'',
+    split:splitName,
+    day:dayName,
     notes:notes,
     totalSets:Object.values(woSets).reduce((t,sets)=>t+sets.filter(s=>s.done).length,0)
   };
   localStorage.setItem('gb_wo_'+today,JSON.stringify(woData));
   localStorage.removeItem('gb_active_wo');
+  
+  // FIX: Resetear la memoria temporal para cerrar la sesión
+  woSplit = null;
+  woDay = null;
+  woSets = {};
+  woFree = false;
   
  // Stop timer
  if(tmRun) { toggleTm(); }
@@ -2417,6 +2453,60 @@ function calc1RM() {
   document.getElementById('rmGrid').innerHTML = gridHtml;
   document.getElementById('rmRes').style.display = 'block';
   vib();
+}
+
+function searchEx(q) {
+  const term = q.toLowerCase().trim();
+  const grid = document.getElementById('muscleGrid');
+  const res = document.getElementById('searchResults');
+  const title = document.getElementById('exStitle');
+  const filters = document.getElementById('exFilterBar');
+  const clearBtn = document.getElementById('exSearchClear');
+  
+  if(!term) {
+    grid.style.display = 'grid';
+    res.style.display = 'none';
+    filters.style.display = 'flex';
+    title.textContent = 'ELEGÍ UN MÚSCULO';
+    if(clearBtn) clearBtn.style.display = 'none';
+    return;
+  }
+  
+  if(clearBtn) clearBtn.style.display = 'flex';
+  
+  grid.style.display = 'none';
+  filters.style.display = 'none';
+  res.style.display = 'flex';
+  res.style.flexDirection = 'column';
+  res.style.gap = '8px';
+  title.textContent = 'RESULTADOS DE BÚSQUEDA';
+  
+  // Inteligencia: Si coincide exacto con un grupo muscular
+  const exactMuscle = MUSCLES.find(m => m.id === term || m.name.toLowerCase() === term);
+  let matches = [];
+  
+  if (exactMuscle) {
+    matches = EX.filter(e => e.muscle === exactMuscle.id);
+  } else {
+    matches = EX.filter(e => e.name.toLowerCase().includes(term) || e.muscle.toLowerCase().includes(term));
+  }
+  
+  if(!matches.length) {
+    res.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--ink3)">No se encontraron ejercicios con ese nombre.</div>';
+    return;
+  }
+  
+  res.innerHTML = matches.map((e,i) => {
+    const tc=e.type==='compound'?'bt-compound':e.type==='isolation'?'bt-isolation':'bt-bodyweight';
+    const tl=e.type==='compound'?'Compuesto':e.type==='isolation'?'Aislamiento':'Bodyweight';
+    const lc=e.loc==='gym'?'bt-gym':e.loc==='casa'?'bt-casa':'bt-gym';
+    const ll=e.loc==='gym'?'🏋️ Gym':e.loc==='casa'?'🏠 Casa':'🏋️🏠 Ambos';
+    return`<div class="ex-card" style="animation-delay:0s;opacity:1;transform:none" onclick="curExercise='${e.id}';goPage('detail')">
+      <div class="ex-top"><span class="ex-badge ${tc}">${tl}</span><span class="ex-badge ${lc}">${ll}</span></div>
+      <div style="display:flex;align-items:center;gap:8px;margin:6px 0 4px"><span class="ex-name">${e.name}</span><span class="ex-arrow">›</span></div>
+      <div class="ex-muscle-info"><strong>Músculo:</strong> ${e.primary}</div>
+    </div>`;
+  }).join('');
 }
 
 // ═══ PWA INJECTION ═══
