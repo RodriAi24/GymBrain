@@ -2429,7 +2429,7 @@ const manifest = {
 const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/manifest+json'});
 document.head.insertAdjacentHTML('beforeend', `<link rel="manifest" href="${URL.createObjectURL(manifestBlob)}">`);
 
-if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
+if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
 
 // INIT
 // Bootloader: Revisar si hay un entrenamiento activo guardado de HOY
