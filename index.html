@@ -10,7 +10,12 @@
 <meta name="theme-color" content="#0A0A0A" id="themeColorMeta">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{
+    /* HIDE NATIVE NUMBER SPINNERS */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+    input[type=number]{-moz-appearance:textfield}
+    
+    :root{
   --bg:#0A0A0A;--bg2:#111;--card:#161616;--card2:#1C1C1C;--surface:#222;
   --ink:#F2F0ED;--ink2:#BFBBB5;--ink3:#74706A;--ink4:#3E3B37;
   --accent:#FF5E3A;--accent2:#FF8A5C;--accent-dim:rgba(255,94,58,.1);
@@ -400,6 +405,28 @@ body.light-mode .home-card, body.light-mode .muscle-card, body.light-mode .ex-ca
 .gloss-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:8px}
 .gloss-term{font-size:15px;font-weight:600;color:var(--accent);margin-bottom:4px}
 .gloss-def{font-size:13px;color:var(--ink2);line-height:1.6}
+
+/* 1RM & PLATES */
+.onerm-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center}
+.onerm-input-row{display:flex;gap:10px;margin-bottom:15px}
+.onerm-input{flex:1;padding:14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rsm);color:var(--ink);font-family:'Montserrat',sans-serif;font-size:16px;text-align:center;-webkit-appearance:none}
+.onerm-input:focus{outline:none;border-color:var(--accent)}
+.onerm-result{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--accent);margin:10px 0}
+.onerm-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:15px}
+.onerm-cell{background:var(--surface);padding:10px;border-radius:var(--rxs);display:flex;justify-content:space-between;font-size:13px}
+.onerm-cell-pct{font-weight:600;color:var(--ink3)}
+.onerm-cell-val{font-weight:700;color:var(--ink)}
+
+.plate-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:400;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:20px}
+.plate-overlay.show{display:flex}
+.plate-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;width:100%;max-width:320px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.5);animation:pageFade .2s ease}
+.plate-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;margin-bottom:5px;color:var(--ink)}
+.plate-item{border-radius:4px;margin:0 1px;display:inline-flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-weight:700;color:#000;font-size:11px}
+.p-20{height:60px;width:14px;background:var(--accent)}
+.p-10{height:45px;width:12px;background:var(--green)}
+.p-5{height:35px;width:10px;background:var(--blue)}
+.p-2_5{height:25px;width:8px;background:var(--yellow)}
+.p-1_25{height:20px;width:6px;background:var(--ink);color:#fff}
 </style>
 </head>
 <body>
@@ -567,6 +594,25 @@ body.light-mode .home-card, body.light-mode .muscle-card, body.light-mode .ex-ca
     <div style="padding:0 20px 10px"><p style="font-size:13px;color:var(--ink3);line-height:1.6">Todos los términos que vas a encontrar en la app, explicados simple.</p></div>
     <div style="padding:0 20px 20px" id="glossList"></div>
   </div>
+
+  <div class="page" id="page-onerm">
+    <div class="back-row"><button class="back-btn" onclick="goPage('home')">← Home</button><div class="back-title">CALCULADORA 1RM</div></div>
+    <div style="padding:0 20px 20px">
+      <div class="onerm-card">
+        <div style="font-size:13px;color:var(--ink3);margin-bottom:15px">Ingresá tu mejor serie (peso y reps) para estimar tu Repetición Máxima usando la fórmula de Brzycki.</div>
+        <div class="onerm-input-row">
+          <input type="number" id="rmW" class="onerm-input" placeholder="Peso (kg)" inputmode="decimal">
+          <input type="number" id="rmR" class="onerm-input" placeholder="Reps" inputmode="numeric">
+        </div>
+        <button class="dash-start" style="padding:12px;font-size:18px;margin-bottom:0" onclick="calc1RM()">CALCULAR 1RM</button>
+        <div id="rmRes" style="display:none;margin-top:20px;border-top:1px solid var(--border);padding-top:15px">
+          <div style="font-size:12px;color:var(--ink3);font-weight:600">TU 1RM ESTIMADO:</div>
+          <div class="onerm-result" id="rmVal">100 kg</div>
+          <div class="onerm-grid" id="rmGrid"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- NAV -->
@@ -587,9 +633,10 @@ body.light-mode .home-card, body.light-mode .muscle-card, body.light-mode .ex-ca
 
 <!-- MORE MENU -->
 <div class="more-overlay" id="moreOverlay" onclick="toggleMoreMenu()">
-  <div class="more-menu" onclick="event.stopPropagation()">
-    <div class="more-title">MÁS</div>
-    <button class="more-item" onclick="toggleMoreMenu();goPage('routines')"><span>📋</span>Rutinas y Programas</button>
+    <div class="more-menu" onclick="event.stopPropagation()">
+        <div class="more-title">MÁS</div>
+        <button class="more-item" onclick="toggleMoreMenu();goPage('onerm')"><span>🧮</span>Calculadora 1RM</button>
+        <button class="more-item" onclick="toggleMoreMenu();goPage('routines')"><span>📋</span>Rutinas y Programas</button>
     <button class="more-item" onclick="toggleMoreMenu();goPage('timer')"><span>⏱</span>Timer de Descanso</button>
     <button class="more-item" onclick="toggleMoreMenu();goPage('methods')"><span>⚡</span>Métodos de Intensidad</button>
     <button class="more-item" onclick="toggleMoreMenu();goPage('learn')"><span>🎓</span>Aprender</button>
@@ -630,6 +677,20 @@ body.light-mode .home-card, body.light-mode .muscle-card, body.light-mode .ex-ca
   
   <div class="toast" id="toast"></div>
   
+  <div class="plate-overlay" id="plateModal" onclick="this.classList.remove('show')">
+    <div class="plate-card" onclick="event.stopPropagation()">
+      <div class="plate-title">DISCOS POR LADO</div>
+      <div style="font-size:14px;color:var(--ink2);margin-bottom:5px" id="plateTotal">Total: 100 kg</div>
+      <div style="font-size:12px;color:var(--ink3)">Asumiendo barra olímpica de 20 kg</div>
+      <div style="display:flex;justify-content:center;align-items:center;height:80px;margin-top:15px">
+        <div style="width:30px;height:14px;background:#555;border-radius:2px;border-right:3px solid #333"></div>
+        <div id="plateRender" style="display:flex;align-items:center;padding-left:2px"></div>
+      </div>
+      <div id="plateText" style="font-size:16px;font-weight:600;color:var(--ink);margin-top:15px">20 + 10 + 5</div>
+      <button class="tooltip-close" style="margin-top:20px" onclick="document.getElementById('plateModal').classList.remove('show')">Entendido</button>
+    </div>
+  </div>
+
   <script>
 // ═══ GLOSSARY ═══
 const GLOSS={
@@ -1301,7 +1362,7 @@ function goPage(p){
   document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(x=>x.classList.remove('active'));
   const pe=document.getElementById('page-'+p);if(pe)pe.classList.add('active');
-  const navMap={home:'navHome',exercises:'navHome',muscle:'navHome',detail:'navHome',methods:'navMore',routines:'navMore',timer:'navMore',glossary:'navMore',supplements:'navMore',creators:'navMore',warmup:'navMore',learn:'navMore',tracker:'navTracker',workout:'navTracker',stats:'navTracker',exhist:'navTracker'};
+  const navMap={home:'navHome',exercises:'navHome',muscle:'navHome',detail:'navHome',methods:'navMore',routines:'navMore',timer:'navMore',glossary:'navMore',supplements:'navMore',creators:'navMore',warmup:'navMore',learn:'navMore',tracker:'navTracker',workout:'navTracker',stats:'navTracker',exhist:'navTracker',onerm:'navMore'};
   const ne=document.getElementById(navMap[p]);if(ne)ne.classList.add('active');
   if(p==='exercises')renderMuscleGrid();
   if(p==='muscle')renderExList();
@@ -1845,8 +1906,11 @@ function renderWorkout(){
       const lastHint=lastSets[si]?`${lastSets[si].w}×${lastSets[si].r}`:'';
       html+=`<div class="wo-set-row">
         <span class="wo-set-label">S${si+1}</span>
-        <input class="wo-set-input" placeholder="${lastHint||'kg'}" value="${s.w}" type="number" step="0.5" inputmode="decimal" onchange="woUpdateSet('${eid}',${si},'w',this.value)">
-        <input class="wo-set-input" placeholder="reps" value="${s.r}" type="number" inputmode="numeric" onchange="woUpdateSet('${eid}',${si},'r',this.value)">
+        <div style="position:relative;flex:1.2;display:flex">
+          <input class="wo-set-input" id="w_${eid}_${si}" style="width:100%;border-radius:var(--rxs) 0 0 var(--rxs);border-right:none" placeholder="${lastHint||'kg'}" value="${s.w}" type="number" step="0.5" inputmode="decimal" onchange="woUpdateSet('${eid}',${si},'w',this.value)">
+          <button style="background:var(--surface);border:1px solid var(--border);border-left:1px solid rgba(255,255,255,0.05);border-radius:0 var(--rxs) var(--rxs) 0;padding:0 8px;color:var(--ink3);cursor:pointer;transition:all .2s" onclick="showPlateCalc(document.getElementById('w_${eid}_${si}').value)">🏋️</button>
+        </div>
+        <input class="wo-set-input" style="flex:0.8" placeholder="reps" value="${s.r}" type="number" inputmode="numeric" onchange="woUpdateSet('${eid}',${si},'r',this.value)">
         <button class="wo-set-check ${s.done?'done':''}" onclick="woCheckSet('${eid}',${si})">${s.done?'✓':''}</button>
       </div>`;
     });
@@ -2267,6 +2331,48 @@ function checkOnboarding() {
   } else {
     selectedSplit = localStorage.getItem('gb_selected_split') || null;
   }
+}
+
+// ═══ HERRAMIENTAS V8 ═══
+function showPlateCalc(w) {
+  const weight = parseFloat(w);
+  if(!weight || weight <= 20) { toast('⚠️ Ingresá un peso mayor a 20kg (la barra sola)'); return; }
+  let perSide = (weight - 20) / 2;
+  const plates = [20, 10, 5, 2.5, 1.25];
+  const needed = [];
+  for(let p of plates) {
+    while(perSide >= p) { needed.push(p); perSide -= p; }
+  }
+  document.getElementById('plateTotal').textContent = `Total: ${weight} kg`;
+  document.getElementById('plateText').textContent = needed.length ? needed.join(' + ') : 'Solo barra';
+  let html = '';
+  needed.forEach(p => {
+    const cls = p===20?'p-20':p===10?'p-10':p===5?'p-5':p===2.5?'p-2_5':'p-1_25';
+    html += `<div class="plate-item ${cls}"></div>`;
+  });
+  document.getElementById('plateRender').innerHTML = html;
+  document.getElementById('plateModal').classList.add('show');
+  vib();
+}
+
+function calc1RM() {
+  const w = parseFloat(document.getElementById('rmW').value);
+  const r = parseInt(document.getElementById('rmR').value);
+  if(!w || !r || r < 1) { toast('⚠️ Completá peso y reps primero'); return; }
+  let rm = r === 1 ? w : w * (36 / (37 - r)); // Fórmula Brzycki
+  rm = Math.round(rm * 2) / 2; // Redondear a intervalos de 0.5kg
+  document.getElementById('rmVal').textContent = rm + ' kg';
+  
+  const pcts = [95, 90, 85, 80, 75, 70, 65, 60];
+  let gridHtml = '';
+  pcts.forEach(p => {
+    let val = Math.round((rm * (p/100)) * 2) / 2;
+    let reps = p===95?'2':p===90?'3-4':p===85?'5-6':p===80?'7-8':p===75?'9-10':p===70?'11-12':p===65?'13-15':'15+';
+    gridHtml += `<div class="onerm-cell"><span class="onerm-cell-pct">${p}% (${reps}r)</span><span class="onerm-cell-val">${val}kg</span></div>`;
+  });
+  document.getElementById('rmGrid').innerHTML = gridHtml;
+  document.getElementById('rmRes').style.display = 'block';
+  vib();
 }
 
 // ═══ PWA INJECTION ═══
