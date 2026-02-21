@@ -34,14 +34,15 @@ body::before{content:'';position:fixed;inset:0;opacity:.02;background-image:url(
 .app{max-width:500px;margin:0 auto;padding:env(safe-area-inset-top) 0 calc(70px + env(safe-area-inset-bottom)) 0;min-height:100dvh}
 
 /* NAV */
-.nav{position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(10,10,10,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.05);padding:8px 30px calc(8px + env(safe-area-inset-bottom));display:flex;justify-content:space-between;align-items:center;max-width:500px;margin:0 auto}
-body.light-mode .nav{background:rgba(255,255,255,0.85);border-top:1px solid rgba(0,0,0,0.05);}
-.nav-tab{padding:8px;border:none;background:transparent;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;cursor:pointer;color:var(--ink3);display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .3s cubic-bezier(.34,1.56,.64,1);position:relative}
+.nav{position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(10,10,10,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--ink);padding:8px 20px calc(8px + env(safe-area-inset-bottom));display:flex;justify-content:center;gap:65px;align-items:center;max-width:500px;margin:0 auto}
+body.light-mode .nav{background:rgba(255,255,255,0.85);border-top:1px solid var(--ink);}
+.nav-tab{width:80px;padding:8px 0;border:none;background:transparent;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;cursor:pointer;color:var(--ink3);display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .3s cubic-bezier(.34,1.56,.64,1);position:relative}
 .nav-tab .ni{font-size:24px; transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
 .nav-tab.active{color:var(--accent)}
 .nav-tab.active .ni{transform:translateY(-2px) scale(1.1)}
-.nav-tab-center{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:0 8px 20px var(--accent-dim);transform:translateY(-24px);border:none;cursor:pointer;transition:all .3s cubic-bezier(.34,1.56,.64,1);flex-shrink:0}
-.nav-tab-center:active{transform:translateY(-18px) scale(0.94);box-shadow:0 4px 10px var(--accent-dim)}
+.nav-tab-center{position:relative;width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:0 4px 12px var(--accent-dim);transform:translateY(-2px);border:none;cursor:pointer;transition:all .3s cubic-bezier(.34,1.56,.64,1);flex-shrink:0}
+.nav-tab-center::after{content:'';position:absolute;top:-15px;left:-15px;right:-15px;bottom:-15px;border-radius:50%;background:transparent}
+.nav-tab-center:active{transform:translateY(2px) scale(0.94);box-shadow:0 2px 8px var(--accent-dim)}
 
 .theme-toggle{position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.05);color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;transition:all .3s cubic-bezier(.34,1.56,.64,1);z-index:10;box-shadow:0 4px 10px rgba(0,0,0,0.2)}
 body.light-mode .theme-toggle{background:rgba(0,0,0,0.05);border:1px solid rgba(0,0,0,0.05);box-shadow:0 4px 10px rgba(0,0,0,0.05)}
@@ -76,7 +77,7 @@ body.light-mode .home-card, body.light-mode .muscle-card, body.light-mode .ex-ca
 .home-card:nth-child(3)::after{background:var(--green)}.home-card:nth-child(4)::after{background:var(--yellow)}
 .home-card:nth-child(5)::after{background:var(--purple)}.home-card:nth-child(6)::after{background:var(--pink)}
 .home-card:nth-child(7)::after{background:var(--blue)}.home-card:nth-child(8)::after{background:var(--green)}
-.home-card:nth-child(9)::after{background:var(--accent)}
+.home-card:nth-child(9)::after{background:var(--accent)}.home-card:nth-child(10)::after{background:var(--purple)}
 .hc-emoji{font-size:32px;margin-bottom:8px}
 .hc-name{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:.5px;margin-bottom:2px}
 .hc-sub{font-size:11px;color:var(--ink3)}
