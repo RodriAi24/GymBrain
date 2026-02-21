@@ -40,7 +40,7 @@ body::before{content:'';position:fixed;inset:0;opacity:.02;background-image:url(
 
 /* NAV */
 .nav{position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(10,10,10,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--ink);padding:8px 20px calc(8px + env(safe-area-inset-bottom));display:flex;justify-content:center;gap:65px;align-items:center;max-width:500px;margin:0 auto}
-body.light-mode .nav{background:rgba(255,255,255,0.85);border-top:1px solid var(--ink);}
+body.light-mode .nav{background:rgba(255,255,255,0.85);border-top:1px solid var(--border);}
 .nav-tab{width:80px;padding:8px 0;border:none;background:transparent;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;cursor:pointer;color:var(--ink3);display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .3s cubic-bezier(.34,1.56,.64,1);position:relative}
 .nav-tab .ni{font-size:24px; transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
 .nav-tab.active{color:var(--accent)}
@@ -229,26 +229,7 @@ body.light-mode .home-card, body.light-mode .muscle-card, body.light-mode .ex-ca
 .more-item:active{background:var(--surface);border-radius:var(--rxs)}
 .more-item span{font-size:18px;width:28px;text-align:center}
 
-/* TRACKER */
-.tracker-section{margin-top:0}
-.tracker-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.tracker-last{font-size:12px;color:var(--ink3);padding:6px 10px;background:var(--surface);border-radius:var(--rxs);display:inline-flex;align-items:center;gap:4px}
-.tracker-last strong{color:var(--accent)}
-.tracker-row{display:flex;gap:8px;margin-bottom:8px;align-items:center}
-.tracker-input{flex:1;padding:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rxs);color:var(--ink);font-family:'Montserrat',sans-serif;font-size:14px;text-align:center;-webkit-appearance:none}
-.tracker-input:focus{outline:none;border-color:var(--accent)}
-.tracker-input::placeholder{color:var(--ink4)}
-.tracker-add{padding:10px 16px;background:var(--accent);color:#fff;border:none;border-radius:var(--rxs);font-family:'Montserrat',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
-.tracker-add:active{opacity:.8}
-.tracker-log{margin-top:8px}
-.tracker-entry{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surface);border-radius:var(--rxs);margin-bottom:4px;font-size:13px}
-.tracker-entry-set{font-weight:700;color:var(--accent);min-width:20px}
-.tracker-entry-data{flex:1;color:var(--ink2)}
-.tracker-entry-del{background:none;border:none;color:var(--ink4);cursor:pointer;font-size:16px;padding:0 4px}
-.tracker-entry-del:active{color:var(--accent)}
-.tracker-history{margin-top:10px}
-.tracker-hist-date{font-size:11px;color:var(--ink3);margin-bottom:4px;margin-top:8px}
-.tracker-hist-entry{font-size:12px;color:var(--ink2);padding:2px 0}
+
 
 /* PAGE TRANSITIONS */
 .page{animation:pageFade .2s ease}
@@ -1465,10 +1446,6 @@ function renderDetail(){
       <div style="font-size:12px;color:var(--ink3);margin-bottom:8px">Máquina ocupada o no tenés el equipo? Probá estas alternativas:</div>
       <div class="swap-section">${e.swap.split(',').map(sid=>{const se=EX.find(x=>x.id===sid);return se?`<button class="swap-btn" onclick="event.stopPropagation();curExercise='${se.id}';goPage('detail')"><span style="font-size:16px">↔</span><span class="swap-btn-name">${se.name}</span><span class="swap-btn-info">${se.loc==='gym'?'🏋️':'🏠'} ${se.sets}×${se.reps}</span></button>`:''}).join('')}</div>
     </div>`:''}
-    <div class="det-card">
-      <div class="det-label">📝 Tracker — Registrá tu peso</div>
-      ${renderTracker(e.id)}
-    </div>
     `;
 }
 
@@ -1665,62 +1642,6 @@ function getLog(exId){
 function saveLog(exId,log){
   localStorage.setItem('gb_'+exId,JSON.stringify(log));
 }
-function addSet(exId){
-  const wEl=document.getElementById('trk-w-'+exId);
-  const rEl=document.getElementById('trk-r-'+exId);
-  const w=wEl.value===''?0:parseFloat(wEl.value);const r=parseInt(rEl.value);
-  if(!r){toast('⚠️ Completá al menos las reps');return}
-  const log=getLog(exId);
-  const today=getToday();
-  log.push({w,r,d:today,t:Date.now()});
-  saveLog(exId,log);
-  checkForPR(exId,w);
-  wEl.value='';rEl.value='';
-  renderDetail();
-  vib();
-  toast('✅ Serie guardada');
-}
-function delSet(exId,idx){
-  const log=getLog(exId);
-  log.splice(idx,1);
-  saveLog(exId,log);
-  renderDetail();
-}
-function renderTracker(exId){
-  const log=getLog(exId);
-  const today=getToday();
-  const todayLog=log.filter(e=>e.d===today);
-  const prevLog=log.filter(e=>e.d!==today).slice(-10);
-  // Find last session
-  const lastDate=[...new Set(log.filter(e=>e.d!==today).map(e=>e.d))].pop();
-  const lastSets=lastDate?log.filter(e=>e.d===lastDate):[];
-  const lastHtml=lastSets.length?`<div class="tracker-last">Última vez: <strong>${lastSets.map(s=>s.w+'kg×'+s.r).join(' | ')}</strong> (${lastDate})</div>`:'<div class="tracker-last">Sin registros previos</div>';
-  
-  let html=lastHtml;
-  html+=`<div class="tracker-row" style="margin-top:10px">
-    <input class="tracker-input" id="trk-w-${exId}" type="number" placeholder="Peso (kg)" step="0.5" inputmode="decimal">
-    <input class="tracker-input" id="trk-r-${exId}" type="number" placeholder="Reps" inputmode="numeric">
-    <button class="tracker-add" onclick="addSet('${exId}')">+ Serie</button>
-  </div>`;
-  
-  if(todayLog.length){
-    html+=`<div class="tracker-log"><div style="font-size:11px;color:var(--ink3);margin-bottom:6px">HOY</div>`;
-    todayLog.forEach((s,i)=>{
-      const globalIdx=log.indexOf(s);
-      html+=`<div class="tracker-entry"><span class="tracker-entry-set">S${i+1}</span><span class="tracker-entry-data">${s.w}kg × ${s.r} reps</span><button class="tracker-entry-del" onclick="delSet('${exId}',${globalIdx})">✕</button></div>`;
-    });
-    html+=`</div>`;
-  }
-  
-  if(lastSets.length&&lastDate){
-    html+=`<div class="tracker-history"><div style="font-size:11px;color:var(--ink3);margin-top:10px;margin-bottom:4px">SESIÓN ANTERIOR (${lastDate})</div>`;
-    lastSets.forEach((s,i)=>{
-      html+=`<div class="tracker-hist-entry">S${i+1}: ${s.w}kg × ${s.r}</div>`;
-    });
-    html+=`</div>`;
-  }
-  return html;
-}
 
 // ═══ TRACKER DASHBOARD ═══
 let selectedSplit=null,selectedDay=null;
@@ -1861,7 +1782,11 @@ function startWorkout(){
     const ex=EX.find(e=>e.id===eid);
     if(ex){
       const numSets=parseInt(ex.sets)||3;
-      woSets[eid]=Array(numSets).fill(null).map(()=>({w:'',r:'',done:false}));
+      const prevLog=getLog(eid);
+      const lastDate=[...new Set(prevLog.map(e=>e.d))].pop();
+      const lastSets=lastDate?prevLog.filter(e=>e.d===lastDate):[];
+      // Fix UX: Pre-llenamos el peso con lo que levantaste la última vez
+      woSets[eid]=Array(numSets).fill(null).map((_, i)=>({w: lastSets[i] ? lastSets[i].w : '', r:'', done:false}));
     }
   });
   document.getElementById('workoutTitle').textContent=woDay.name;
@@ -1949,20 +1874,28 @@ function woCheckSet(eid,si){
   const weightVal = set.w === '' ? 0 : parseFloat(set.w);
   set.done=!set.done;
   
+  const today=getToday();
+  const log=getLog(eid);
+  
   if(set.done){
-    // Save to tracker log
-    const today=getToday();
-    const log=getLog(eid);
     log.push({w:weightVal,r:parseInt(set.r),d:today,t:Date.now()});
     saveLog(eid,log);
-    checkForPR(eid,parseFloat(set.w));
+    checkForPR(eid,weightVal); // Fix: Usamos weightVal para evitar NaN
     
-   // Auto-start rest timer (Unificado)
-   if(tmRun) { clearInterval(tmInt); tmRun=false; }
-   tmRem=tmSec;
+    if(tmRun) { clearInterval(tmInt); tmRun=false; }
+    tmRem=tmSec;
     toggleTm();
     vib();
     toast('✅ Serie guardada · Timer iniciado');
+  } else {
+    // Fix: Si se destilda, buscamos y borramos la entrada de hoy
+    for(let i=log.length-1; i>=0; i--){
+      if(log[i].d===today && log[i].w===weightVal && log[i].r===parseInt(set.r)){
+        log.splice(i,1); break;
+      }
+    }
+    saveLog(eid,log);
+    vib([50]);
   }
   saveActiveWo();
   renderWorkout();
@@ -2086,11 +2019,20 @@ function renderStats(){
   html+=`<div class="stat-card"><div class="freq-grid">`;
   const dayLabels=['L','M','X','J','V','S','D'];
   dayLabels.forEach(d=>{html+=`<div class="freq-cell-label">${d}</div>`});
-  for(let i=27;i>=0;i--){
-    const d=new Date(Date.now()-i*86400000).toISOString().slice(0,10);
-    const sets=freq[d]||0;
-    const intensity=sets===0?'var(--surface)':sets<5?'rgba(255,94,58,.25)':sets<10?'rgba(255,94,58,.5)':'rgba(255,94,58,.85)';
-    html+=`<div class="freq-cell" style="background:${intensity}" title="${d}: ${sets} series"></div>`;
+  const todayObj = new Date();
+  let todayDay = todayObj.getDay() - 1; if(todayDay < 0) todayDay = 6;
+  const daysToNextSunday = 6 - todayDay;
+  for(let i=27; i>=0; i--){
+    const offset = i - daysToNextSunday;
+    if (offset < 0) {
+      html+=`<div class="freq-cell" style="background:transparent"></div>`;
+    } else {
+      const d=new Date(Date.now()-offset*86400000).toISOString().slice(0,10);
+      const sets=freq[d]||0;
+      const intensity=sets===0?'var(--surface)':sets<5?'rgba(255,94,58,.25)':sets<10?'rgba(255,94,58,.5)':'rgba(255,94,58,.85)';
+      const isToday = offset === 0 ? 'border:1px solid var(--ink4)' : '';
+      html+=`<div class="freq-cell" style="background:${intensity};${isToday}" title="${d}: ${sets} series"></div>`;
+    }
   }
   html+=`</div></div>`;
   
@@ -2258,8 +2200,10 @@ function shootConfetti() {
   for(let i=0; i<40; i++) {
     const conf = document.createElement('div');
     conf.style.position = 'fixed';
-    conf.style.left = 50 + (Math.random() * 40 - 20) + 'vw';
-    conf.style.top = '100vh';
+    let startX = window.innerWidth / 2 + (Math.random() * 60 - 30);
+    let startY = window.innerHeight * 0.5; // Explota desde la mitad de la pantalla
+    conf.style.left = startX + 'px';
+    conf.style.top = startY + 'px';
     conf.style.width = Math.random() * 8 + 4 + 'px';
     conf.style.height = Math.random() * 8 + 4 + 'px';
     conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
@@ -2268,12 +2212,10 @@ function shootConfetti() {
     conf.style.pointerEvents = 'none';
     document.body.appendChild(conf);
     
-    const angle = Math.random() * Math.PI + Math.PI;
-    const velocity = 15 + Math.random() * 15;
-    let vx = Math.cos(angle) * velocity;
-    let vy = Math.sin(angle) * velocity;
-    let x = parseFloat(conf.style.left);
-    let y = window.innerHeight;
+    let vx = (Math.random() - 0.5) * 15;
+    let vy = -(Math.random() * 15 + 10); // Dispara hacia arriba
+    let x = startX;
+    let y = startY;
     
     const anim = setInterval(() => {
       x += vx; y += vy; vy += 0.5; // Gravedad
@@ -2387,13 +2329,7 @@ const manifest = {
 const manifestBlob = new Blob([JSON.stringify(manifest)], {type: 'application/manifest+json'});
 document.head.insertAdjacentHTML('beforeend', `<link rel="manifest" href="${URL.createObjectURL(manifestBlob)}">`);
 
-const swCode = `
-const CACHE_NAME = 'gb-v7';
-self.addEventListener('install', e => e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll([location.href]))));
-self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(res => res || fetch(e.request))));
-`;
-const swBlob = new Blob([swCode], {type: 'application/javascript'});
-if('serviceWorker' in navigator) navigator.serviceWorker.register(URL.createObjectURL(swBlob));
+if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
 
 // INIT
 // Bootloader: Revisar si hay un entrenamiento activo guardado de HOY
