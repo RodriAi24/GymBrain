@@ -1422,6 +1422,13 @@
       text-align: center
     }
 
+    .more-item span img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+
 
 
     /* PAGE TRANSITIONS */
@@ -4793,7 +4800,7 @@
       document.getElementById('exPickerTitle').textContent = 'ELEGÍ UN MÚSCULO';
       el.innerHTML = MUSCLES.map(m => {
         const count = EX.filter(e => e.muscle === m.id).length;
-        return `<button class="more-item" onclick="showPickerExercises('${m.id}')"><span style="width:24px;height:24px;display:flex;align-items:center;justify-content:center">${m.icon}</span>${m.name} <span style="color:var(--ink4);font-size:12px;margin-left:auto">${count}</span></button>`;
+        return `<button class="more-item" onclick="showPickerExercises('${m.id}')"><span style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0">${m.icon}</span>${m.name} <span style="color:var(--ink4);font-size:12px;margin-left:auto">${count}</span></button>`;
       }).join('');
       document.getElementById('exPickerOverlay').classList.add('show');
     }
