@@ -2601,7 +2601,23 @@
   </div>
 
   <div class="app">
-    <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">☀️</button>
+    <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">
+      <div class="theme-icon-container"><svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg><svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5" />
+          <line x1="12" y1="1" x2="12" y2="3" />
+          <line x1="12" y1="21" x2="12" y2="23" />
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+          <line x1="1" y1="12" x2="3" y2="12" />
+          <line x1="21" y1="12" x2="23" y2="12" />
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+        </svg></div>
+    </button>
 
     <div class="page active" id="page-home">
       <div class="home-hero" style="position:relative">
@@ -2736,8 +2752,8 @@
       </div>
       <div class="loc-filter" id="exFilterBar">
         <button class="loc-chip active" onclick="setLoc('all',this)">Todos</button>
-        <button class="loc-chip" onclick="setLoc('gym',this)">🏋️ Gym</button>
-        <button class="loc-chip" onclick="setLoc('casa',this)">🏠 Casa</button>
+        <button class="loc-chip" onclick="setLoc('gym',this)">Gym</button>
+        <button class="loc-chip" onclick="setLoc('casa',this)">Casa</button>
       </div>
       <div class="stitle" id="exStitle">ELEGÍ UN MÚSCULO</div>
       <div class="muscle-grid" id="muscleGrid"></div>
@@ -2751,8 +2767,8 @@
       </div>
       <div class="loc-filter">
         <button class="loc-chip active" id="ml-all" onclick="setLoc('all',this)">Todos</button>
-        <button class="loc-chip" id="ml-gym" onclick="setLoc('gym',this)">🏋️ Gym</button>
-        <button class="loc-chip" id="ml-casa" onclick="setLoc('casa',this)">🏠 Casa</button>
+        <button class="loc-chip" id="ml-gym" onclick="setLoc('gym',this)">Gym</button>
+        <button class="loc-chip" id="ml-casa" onclick="setLoc('casa',this)">Casa</button>
       </div>
       <div class="exlist" id="exList"></div>
     </div>
@@ -3027,7 +3043,6 @@
 
   <div class="more-overlay" id="onboardOverlay">
     <div class="more-menu" style="text-align:center" onclick="event.stopPropagation()">
-      <div style="font-size:40px;margin-bottom:10px">👋</div>
       <div class="more-title" style="border:none;padding-bottom:0">¡BIENVENIDO A GYMBRAIN!</div>
       <div style="font-size:14px;color:var(--ink3);margin-bottom:20px">Para sugerirte tu rutina ideal, contanos:</div>
 
@@ -3076,7 +3091,12 @@
 
   <div class="plate-overlay" id="timerModal" onclick="this.classList.remove('show')">
     <div class="plate-card" onclick="event.stopPropagation()">
-      <div style="font-size:48px;margin-bottom:10px">⏰</div>
+      <div style="display:flex;justify-content:center;margin-bottom:10px;color:var(--accent)"><svg viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          style="width:48px;height:48px">
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="12 6 12 12 16 14" />
+        </svg></div>
       <div class="plate-title">¡TIEMPO!</div>
       <div style="font-size:14px;color:var(--ink2);margin-bottom:20px">El descanso terminó. Preparate para la próxima
         serie.</div>
@@ -4132,7 +4152,7 @@
     // ═══ WARMUP ═══
     const WARMUP = {
       general: {
-        title: '🔥 Calentamiento General (5 min)',
+        title: 'Calentamiento General (5 min)',
         desc: 'Hacé esto SIEMPRE antes de cualquier entrenamiento, sin importar qué músculo vas a trabajar.',
         items: [
           '2-3 min de cardio leve: caminar rápido, bicicleta suave, jumping jacks, saltar la soga. El objetivo es elevar la temperatura corporal y el ritmo cardíaco.',
@@ -4144,7 +4164,7 @@
         ]
       },
       specific: {
-        title: '🎯 Calentamiento Específico',
+        title: 'Calentamiento Específico',
         desc: 'Después del calentamiento general, hacé series progresivas del primer ejercicio del día antes de ir al peso de trabajo.',
         items: [
           'Serie 1: Barra vacía o peso muy liviano × 15 reps (activar el movimiento)',
@@ -4328,7 +4348,7 @@
       const ll = e.loc === 'gym' ? 'Gym' : e.loc === 'casa' ? 'Casa' : 'Ambos';
       const dc = e.diff === 'beginner' ? 'bt-beginner' : e.diff === 'intermediate' ? 'bt-intermediate' : 'bt-advanced';
       const dl = e.diff === 'beginner' ? 'Principiante' : e.diff === 'intermediate' ? 'Intermedio' : 'Avanzado';
-      const equipHtml = e.equip ? `<div style="margin-top:10px"><span class="equip-tag">🔧 ${e.equip}</span></div>` : '';
+      const equipHtml = e.equip ? `<div style="margin-top:10px"><span class="equip-tag">${e.equip}</span></div>` : '';
       document.getElementById('detailContent').innerHTML = `
     <div class="det-card">
       <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
@@ -4344,27 +4364,27 @@
       </div>
     </div>
     <div class="det-card">
-      <div class="det-label">📋 Cómo hacerlo — paso a paso</div>
+      <div class="det-label">Cómo hacerlo — paso a paso</div>
       <ol class="step-list">${e.steps.map(s => `<li><span>${s}</span></li>`).join('')}</ol>
     </div>
     <div class="det-card">
-      <div class="det-label">💡 Tips y errores comunes</div>
+      <div class="det-label">Tips y errores comunes</div>
       <div class="tip-box">${e.tips}</div>
     </div>
     <div class="det-card">
-      <div class="det-label">🔬 ¿Por qué este ejercicio?</div>
+      <div class="det-label">¿Por qué este ejercicio?</div>
       <div class="science-box">${e.science}</div>
     </div>
     ${e.cue ? `<div class="det-card">
-      <div class="det-label">🧠 Cue Mental</div>
+      <div class="det-label">Cue Mental</div>
       <div class="cue-box">${e.cue}</div>
     </div>`: ''}
     ${e.errors && e.errors.length ? `<div class="det-card">
-      <div class="det-label">❌ Errores Comunes</div>
+      <div class="det-label">Errores Comunes</div>
       <div class="error-card">${e.errors.map(er => `<div class="error-item">${er}</div>`).join('')}</div>
     </div>`: ''}
     ${e.swap ? `<div class="det-card">
-      <div class="det-label">🔄 Reemplazo Rápido</div>
+      <div class="det-label">Reemplazo Rápido</div>
       <div style="font-size:12px;color:var(--ink3);margin-bottom:8px">Máquina ocupada o no tenés el equipo? Probá estas alternativas:</div>
       <div class="swap-section">${e.swap.split(',').map(sid => {
         const se = EX.find(x => x.id === sid); return se ? `<button class="swap-btn" onclick="event.stopPropagation();curExercise='${se.id}';goPage('detail')"><span style="font-size:16px">↔</span><span class="swap-btn-name">${se.name}</span><span class="swap-btn-info">${se.loc === 'gym' ? 'Gym' : 'Casa'} ${se.sets}×${se.reps}</span></button>` : ''
@@ -4436,7 +4456,7 @@
         <div class="creator-card">
       <div class="creator-top"><span class="creator-icon">${c.icon}</span><span class="creator-name">${c.name}</span><span class="creator-spec">${c.spec}</span></div>
       <div class="creator-desc">${c.desc}</div>
-      <div class="creator-best">⭐ ${c.best}</div>
+      <div class="creator-best">${c.best}</div>
     </div>
         `).join('');
     }
@@ -4803,7 +4823,7 @@
       const newRoutine = {
         id: 'custom_' + Date.now(),
         name: name,
-        emoji: '⭐',
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>',
         freq: 'Personalizada',
         desc: desc,
         days: [{ name: name, exercises: [...woDay.exercises] }]
@@ -4835,7 +4855,7 @@
       // Exercises
       if (woFree && woDay.exercises.length === 0) {
         html += `<div style="text-align:center;padding:30px 10px;color:var(--ink3)">
-      <div style="font-size:36px;margin-bottom:10px">🏋️</div>
+      <div style="display:flex;justify-content:center;margin-bottom:10px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:36px;height:36px;color:var(--ink3)"><line x1="2" x2="22" y1="12" y2="12"/><rect width="4" height="10" x="4" y="7" rx="1"/><rect width="4" height="10" x="16" y="7" rx="1"/></svg></div>
       <div style="font-size:14px;line-height:1.6">Agregá ejercicios para arrancar.<br>Tocá el botón de abajo.</div>
     </div>`;
       }
@@ -4849,7 +4869,7 @@
           // Ejercicio Completado -> Mini tarjeta colapsada
           html += `<div class="wo-ex" style="border-color:var(--green);background:var(--green-dim);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="toast('Ejercicio completado ✅')">
         <div style="display:flex;align-items:center;gap:10px">
-          <div style="color:var(--green);font-size:18px">✅</div>
+          <div style="color:var(--green);display:flex"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M20 6 9 17l-5-5"/></svg></div>
           <div style="font-size:14px;font-weight:600;color:var(--ink)">${ex.name}</div>
         </div>
         <div style="font-size:11px;color:var(--green);font-weight:600">${sets.length} series</div>
@@ -4896,8 +4916,8 @@
       // Add exercise button (free workout)
       if (woFree) {
         html += `<div style="display:flex;gap:10px;margin-bottom:10px">
-      <button class="dash-start" style="flex:1;background:var(--surface);color:var(--ink2);box-shadow:none;border:1px dashed var(--border);font-size:14px;margin-bottom:0;padding:12px" onclick="openExPicker()">➕ EJERCICIO</button>
-      <button class="dash-start" style="flex:1;background:var(--accent-dim);color:var(--accent);box-shadow:none;border:1px solid var(--accent);font-size:14px;margin-bottom:0;padding:12px" onclick="saveAsCustomRoutine()">💾 GUARDAR RUTINA</button>
+      <button class="dash-start" style="flex:1;background:var(--surface);color:var(--ink2);box-shadow:none;border:1px dashed var(--border);font-size:14px;margin-bottom:0;padding:12px" onclick="openExPicker()">EJERCICIO</button>
+      <button class="dash-start" style="flex:1;background:var(--accent-dim);color:var(--accent);box-shadow:none;border:1px solid var(--accent);font-size:14px;margin-bottom:0;padding:12px" onclick="saveAsCustomRoutine()">GUARDAR RUTINA</button>
     </div>`;
       }
 
@@ -4910,7 +4930,7 @@
       } catch (e) { }
 
       html += `<div class="wo-notes">
-    <div style="font-size:12px;color:var(--ink3);margin-bottom:6px">📝 Notas de hoy</div>
+    <div style="font-size:12px;color:var(--ink3);margin-bottom:6px">Notas de hoy</div>
     <textarea id="woNotes" placeholder="¿Cómo te sentiste? ¿Algo para recordar?" onchange="saveActiveWo()" onkeyup="saveActiveWo()">${savedNotes}</textarea>
   </div>`;
 
@@ -4922,7 +4942,7 @@
       if (isComplete) {
         html += `<button class="wo-finish" onclick="finishWorkout()">✅ ENTRENAMIENTO COMPLETADO</button>`;
       } else {
-        html += `<button class="wo-finish" style="background:var(--surface);color:var(--ink);border:1px solid var(--border);box-shadow:none" onclick="finishWorkout()">💾 GUARDAR Y SALIR (${totalSets}/${totalAll} series)</button>`;
+        html += `<button class="wo-finish" style="background:var(--surface);color:var(--ink);border:1px solid var(--border);box-shadow:none" onclick="finishWorkout()">GUARDAR Y SALIR (${totalSets}/${totalAll} series)</button>`;
       }
 
       document.getElementById('workoutContent').innerHTML = html;
