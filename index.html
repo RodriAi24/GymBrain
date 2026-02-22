@@ -44,14 +44,14 @@ body::before{content:'';position:fixed;inset:0;opacity:.02;background-image:url(
 .nav{position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba(10,10,10,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--ink);padding:8px 20px calc(8px + env(safe-area-inset-bottom));display:flex;justify-content:center;gap:65px;align-items:center;max-width:500px;margin:0 auto}
 body.light-mode .nav{background:rgba(255,255,255,0.85);border-top:1px solid var(--border);}
 .nav-tab{width:80px;padding:8px 0;border:none;background:transparent;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;cursor:pointer;color:var(--ink3);display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .3s cubic-bezier(.34,1.56,.64,1);position:relative}
-.nav-tab .ni{font-size:24px; transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.nav-tab .ni{height:24px; display:flex; align-items:center; justify-content:center; transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
 .nav-tab.active{color:var(--accent)}
 .nav-tab.active .ni{transform:translateY(-2px) scale(1.1)}
 .nav-tab-center{position:relative;width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:0 4px 12px var(--accent-dim);transform:translateY(-2px);border:none;cursor:pointer;transition:all .3s cubic-bezier(.34,1.56,.64,1);flex-shrink:0}
 .nav-tab-center::after{content:'';position:absolute;top:-15px;left:-15px;right:-15px;bottom:-15px;border-radius:50%;background:transparent}
 .nav-tab-center:active{transform:translateY(2px) scale(0.94);box-shadow:0 2px 8px var(--accent-dim)}
 
-.theme-toggle{position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.05);color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;transition:all .3s cubic-bezier(.34,1.56,.64,1);z-index:10;box-shadow:0 4px 10px rgba(0,0,0,0.2)}
+.theme-toggle{position:fixed;top:calc(12px + env(safe-area-inset-top));right:20px;width:40px;height:40px;border-radius:50%;background:var(--surface);border:1px solid var(--border);color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;transition:all .3s var(--ease);z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
 body.light-mode .theme-toggle{background:rgba(0,0,0,0.05);border:1px solid rgba(0,0,0,0.05);box-shadow:0 4px 10px rgba(0,0,0,0.05)}
 .theme-toggle:active{transform:scale(.85) rotate(15deg)}
 
@@ -64,7 +64,7 @@ body.light-mode .theme-toggle{background:rgba(0,0,0,0.05);border:1px solid rgba(
 .page{display:none}.page.active{display:block}
 .stitle{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1.5px;color:var(--ink2);padding:0 20px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
 .stitle::after{content:'';flex:1;height:1px;background:var(--border)}
-.back-row{padding:12px 20px;display:flex;align-items:center;gap:10px}
+.back-row{padding:12px 20px;display:flex;align-items:center;gap:10px;position:sticky;top:0;background:var(--bg);z-index:100}
 .back-btn{padding:8px 14px;border:1px solid var(--border);border-radius:var(--rxs);background:var(--card);color:var(--ink2);font-family:'Montserrat',sans-serif;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px}
 .back-btn:active{background:var(--surface)}
 .back-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;flex:1}
@@ -416,18 +416,18 @@ body.light-mode .home-card, body.light-mode .muscle-card, body.light-mode .ex-ca
   <div class="safe-area-top"></div>
   
   <div class="splash" id="splashScreen">
-    <div class="splash-logo">🧠</div>
+    <img src="./favicon.png" alt="GymBrain" style="width:100px;height:100px;margin-bottom:20px;border-radius:24px;box-shadow:0 12px 32px rgba(255,94,58,0.3)">
     <div class="splash-title">GYM<span>BRAIN</span></div>
     <div class="splash-tagline">Entrenamiento basado en evidencia.<br>Sin humo. Sin paywall.</div>
     <button class="splash-btn" onclick="closeSplash()">ENTRAR</button>
   </div>
   
   <div class="app">
-  <!-- ═══ HOME ═══ -->
-  <div class="page active" id="page-home">
-    <div class="home-hero" style="position:relative">
-      <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">☀️</button>
-      <div class="logo" style="justify-content:center"><div class="logo-icon">🧠</div><div class="logo-text">GYM<span>BRAIN</span></div></div>
+    <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">☀️</button>
+    
+    <div class="page active" id="page-home">
+      <div class="home-hero" style="position:relative">
+        <div class="logo" style="justify-content:center"><div class="logo-text">GYM<span>BRAIN</span></div></div>
       <div class="home-tagline">Entrenamiento basado en evidencia.<br>Sin humo. Sin paywall.</div>
     </div>
     <div class="home-grid">
@@ -608,9 +608,15 @@ body.light-mode .home-card, body.light-mode .muscle-card, body.light-mode .ex-ca
 
 <!-- NAV -->
 <div class="nav">
-  <button class="nav-tab" id="navHome" onclick="goPage('home')"><span class="ni">🏠</span>Home</button>
-  <button class="nav-tab-center" id="navTracker" onclick="goPage('tracker')">💪</button>
-  <button class="nav-tab" id="navMore" onclick="toggleMoreMenu()"><span class="ni">☰</span>Más</button>
+  <button class="nav-tab" id="navHome" onclick="goPage('home')">
+    <span class="ni"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>Home
+  </button>
+  <button class="nav-tab-center" id="navTracker" onclick="goPage('tracker')">
+    <img src="./favicon.png" alt="Entrenar" style="width:34px; height:34px; border-radius:8px; object-fit:contain; filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))">
+  </button>
+  <button class="nav-tab" id="navMore" onclick="toggleMoreMenu()">
+    <span class="ni"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="18" x2="20" y2="18"/></svg></span>Más
+  </button>
 </div>
 
 <!-- GLOSSARY TOOLTIP -->
@@ -673,17 +679,12 @@ body.light-mode .home-card, body.light-mode .muscle-card, body.light-mode .ex-ca
     </div>
   </div>
 
-  <div class="plate-overlay" id="plateModal" onclick="this.classList.remove('show')">
+  <div class="plate-overlay" id="timerModal" onclick="this.classList.remove('show')">
     <div class="plate-card" onclick="event.stopPropagation()">
-      <div class="plate-title">DISCOS POR LADO</div>
-      <div style="font-size:14px;color:var(--ink2);margin-bottom:5px" id="plateTotal">Total: 100 kg</div>
-      <div style="font-size:12px;color:var(--ink3)">Asumiendo barra olímpica de 20 kg</div>
-      <div style="display:flex;justify-content:center;align-items:center;height:80px;margin-top:15px">
-        <div style="width:30px;height:14px;background:#555;border-radius:2px;border-right:3px solid #333"></div>
-        <div id="plateRender" style="display:flex;align-items:center;padding-left:2px"></div>
-      </div>
-      <div id="plateText" style="font-size:16px;font-weight:600;color:var(--ink);margin-top:15px">20 + 10 + 5</div>
-      <button class="tooltip-close" style="margin-top:20px" onclick="document.getElementById('plateModal').classList.remove('show')">Entendido</button>
+      <div style="font-size:48px;margin-bottom:10px">⏰</div>
+      <div class="plate-title">¡TIEMPO!</div>
+      <div style="font-size:14px;color:var(--ink2);margin-bottom:20px">El descanso terminó. Preparate para la próxima serie.</div>
+      <button class="dash-start" style="margin-bottom:0" onclick="document.getElementById('timerModal').classList.remove('show')">VAMOS</button>
     </div>
   </div>
 
@@ -750,7 +751,7 @@ const EX=[
     tips:'Más inclinado = más pecho. Más recto = más tríceps. Si todavía no podés con tu peso, usá una banda elástica en los pies para ayudarte. En casa podés usar dos sillas firmes.',
     science:'La activación del pecho en fondos es comparable al press de banca. Excelente para la parte inferior del pecho.',
     sets:'3',reps:'8-15',rest:'2 min'},
-  {id:'pushup',name:'Flexiones de Brazos',muscle:'pecho',type:'bodyweight',loc:'casa',diff:'beginner',primary:'Pecho (todo)',secondary:'Tríceps, hombro delantero, core',evidence:'high',equip:'Nada',cue:'Imaginá que empujás el piso hacia abajo en vez de subir vos.',swap:'bench,dips',errors:['Dejar caer la cadera (espalda baja se hunde)','No bajar hasta que el pecho toque el piso','Abrir los codos a 90° (lesión de hombro)'],
+  {id:'pushup',name:'Flexiones de Brazos',muscle:'pecho',type:'bodyweight',loc:'both',diff:'beginner',primary:'Pecho (todo)',secondary:'Tríceps, hombro delantero, core',evidence:'high',equip:'Nada',cue:'Imaginá que empujás el piso hacia abajo en vez de subir vos.',swap:'bench,dips',errors:['Dejar caer la cadera (espalda baja se hunde)','No bajar hasta que el pecho toque el piso','Abrir los codos a 90° (lesión de hombro)'],
     steps:['Manos en el piso un poco más anchas que los hombros','Cuerpo recto de cabeza a talones — apretá el abdomen y los glúteos','Bajá el pecho hasta casi tocar el piso, codos a 45° del cuerpo','Empujá hasta arriba extendiendo los brazos'],
     tips:'Las flexiones son un press de banca al revés. Para hacerlas más difíciles: elevá los pies, usá una mochila con peso, o hacé variantes lentas (3 seg bajando). Para hacerlas más fáciles: hacelas en las rodillas o contra una pared.',
     science:'Las flexiones producen activación del pecho similar al bench press cuando se hacen hasta cerca del fallo muscular. Son el ejercicio más accesible y subestimado.',
@@ -905,12 +906,12 @@ const EX=[
     tips:'Con cuerda podés separar las manos abajo para mayor contracción. Con barra podés usar más peso. Alterná entre ambos. No dejes que los codos se adelanten.',
     science:'Excelente para la cabeza lateral del tríceps, la que da la forma externa del brazo. Complemento perfecto de la extensión overhead.',
     sets:'3',reps:'10-15',rest:'60 seg'},
-  {id:'diamond-pushup',name:'Flexiones Diamante',muscle:'triceps',type:'bodyweight',loc:'casa',diff:'intermediate',primary:'Tríceps',secondary:'Pecho, hombro delantero',evidence:'high',equip:'Nada',cue:'Formá un diamante con las manos y bajá el pecho hacia ese diamante.',swap:'pushdown,close-bench',errors:['Abrir los codos hacia afuera','No bajar lo suficiente','Levantar la cadera'],
+  {id:'diamond-pushup',name:'Flexiones Diamante',muscle:'triceps',type:'bodyweight',loc:'both',diff:'intermediate',primary:'Tríceps',secondary:'Pecho, hombro delantero',evidence:'high',equip:'Nada',cue:'Formá un diamante con las manos y bajá el pecho hacia ese diamante.',swap:'pushdown,close-bench',errors:['Abrir los codos hacia afuera','No bajar lo suficiente','Levantar la cadera'],
     steps:['Posición de flexiones pero con las manos juntas formando un diamante (pulgares e índices se tocan)','Cuerpo recto, abdomen apretado','Bajá el pecho hacia las manos, codos van pegados al cuerpo','Empujá hasta arriba extendiendo completamente'],
     tips:'La mejor versión de flexiones para tríceps. Si es muy difícil, hacelo de rodillas. Si es muy fácil, elevá los pies o hacé la fase de bajar en 3-4 segundos.',
     science:'Estudios de EMG muestran que las flexiones diamante activan más el tríceps que cualquier otra variante de flexión, incluso más que algunos ejercicios con peso.',
     sets:'3',reps:'8-20',rest:'60-90 seg'},
-  {id:'band-overhead',name:'Extensión Overhead con Banda',muscle:'triceps',type:'isolation',loc:'casa',diff:'beginner',primary:'Tríceps (cabeza larga)',secondary:'',evidence:'medium',equip:'Banda elástica',cue:'Codos pegados a las orejas, extendé como si quisieras tocar el techo.',swap:'overhead-ext,skullcrusher',errors:['No anclar bien la banda (se suelta)','Mover los codos','Acortar el rango de movimiento'],
+  {id:'band-overhead',name:'Extensión Overhead con Banda',muscle:'triceps',type:'isolation',loc:'both',diff:'beginner',primary:'Tríceps (cabeza larga)',secondary:'',evidence:'medium',equip:'Banda elástica',cue:'Codos pegados a las orejas, extendé como si quisieras tocar el techo.',swap:'overhead-ext,skullcrusher',errors:['No anclar bien la banda (se suelta)','Mover los codos','Acortar el rango de movimiento'],
     steps:['Pisá la banda con un pie, agarrá el otro extremo con ambas manos atrás de la cabeza','Codos apuntan al techo, pegados a las orejas','Extendé los brazos hacia arriba sin mover los codos','Bajá controlado atrás de la cabeza'],
     tips:'Alternativa casera a la polea overhead. La banda da más tensión arriba (donde el tríceps está más contraído). Usá bandas de distinta resistencia para progresar.',
     science:'Replica el patrón del overhead con polea. La posición sobre la cabeza es clave para la cabeza larga del tríceps.',
@@ -982,7 +983,7 @@ const EX=[
     tips:'Cuanto más lejos el pie delantero, más trabaja el glúteo. Cuanto más cerca, más el cuádriceps. Excelente para corregir diferencias entre piernas. En casa: con una silla y mochila.',
     science:'Combina trabajo de glúteo con entrenamiento unilateral que corrige desbalances entre piernas. Bonus: mejora mucho el equilibrio.',
     sets:'3',reps:'8-12 por pierna',rest:'90 seg'},
-  {id:'glute-bridge',name:'Puente de Glúteos',muscle:'gluteos',type:'bodyweight',loc:'casa',diff:'beginner',primary:'Glúteo máximo',secondary:'Isquiotibiales, core',evidence:'high',equip:'Nada',cue:'Empujá las caderas al techo apretando los glúteos como si tu vida dependiera de ello.',swap:'hip-thrust,lunge',errors:['No apretar los glúteos al máximo arriba','Empujar con la espalda baja en vez de los glúteos','Hiperextender'],
+  {id:'glute-bridge',name:'Puente de Glúteos',muscle:'gluteos',type:'bodyweight',loc:'both',diff:'beginner',primary:'Glúteo máximo',secondary:'Isquiotibiales, core',evidence:'high',equip:'Nada',cue:'Empujá las caderas al techo apretando los glúteos como si tu vida dependiera de ello.',swap:'hip-thrust,lunge',errors:['No apretar los glúteos al máximo arriba','Empujar con la espalda baja en vez de los glúteos','Hiperextender'],
     steps:['Acostate boca arriba, rodillas flexionadas, pies en el piso','Brazos a los costados','Empujá las caderas hacia arriba apretando los glúteos fuerte','Arriba: línea recta de rodillas a hombros','Bajá controlado'],
     tips:'La versión en el piso del hip thrust. Perfecta para empezar en casa sin equipamiento. Para hacerla más difícil: hacéla con una pierna, o poné una mochila con peso sobre las caderas.',
     science:'Misma activación del glúteo que el hip thrust pero con menos carga. Ideal para principiantes y para entrenamiento en casa.',
@@ -1010,7 +1011,7 @@ const EX=[
     tips:'Si te balanceás mucho, hacé la versión de rodillas o usá la silla romana (la que tiene apoyabrazos). Para más dificultad: piernas rectas hasta tocar la barra con los pies.',
     science:'Excelente para la parte baja del abdomen. Agregá rotación (rodillas a un lado y al otro) para trabajar oblicuos.',
     sets:'3',reps:'10-15',rest:'60 seg'},
-  {id:'plank',name:'Plancha / Plank',muscle:'core',type:'bodyweight',loc:'casa',diff:'beginner',primary:'Core entero (estabilización)',secondary:'Hombros, glúteos',evidence:'high',equip:'Nada',cue:'Apretá todo: abdomen, glúteos, cuádriceps — como si alguien te fuera a empujar.',swap:'pallof,ab-wheel',errors:['Cadera demasiado alta (pico) o demasiado baja (hamaca)','Aguantar la respiración','Mirar hacia adelante en vez de al piso'],
+  {id:'plank',name:'Plancha / Plank',muscle:'core',type:'bodyweight',loc:'both',diff:'beginner',primary:'Core entero (estabilización)',secondary:'Hombros, glúteos',evidence:'high',equip:'Nada',cue:'Apretá todo: abdomen, glúteos, cuádriceps — como si alguien te fuera a empujar.',swap:'pallof,ab-wheel',errors:['Cadera demasiado alta (pico) o demasiado baja (hamaca)','Aguantar la respiración','Mirar hacia adelante en vez de al piso'],
     steps:['Apoyá los antebrazos y las puntas de los pies en el piso','Cuerpo formando una línea recta de cabeza a talones','Apretá el abdomen, los glúteos, y los cuádriceps','Mantené la posición sin que la cadera suba o baje','Respirá normalmente — no contengas el aire'],
     tips:'Si aguantás más de 60 seg fácil, hacéla más difícil: una pierna levantada, brazos extendidos, o con peso en la espalda. La plancha ya no sirve si no es un desafío.',
     science:'Ejercicio básico de estabilización del core. Para principiantes es perfecto. Para avanzados, los ejercicios dinámicos como la rueda abdominal son superiores.',
@@ -1039,7 +1040,255 @@ const EX=[
     steps:['Agarrá un peso pesado en cada mano','Paráte derecho, hombros atrás, pecho arriba','Caminá con pasos cortos y controlados','Mantené el core apretado','Caminá 30-40 metros o aguantá 30-60 seg'],
     tips:'Trabaja TODO el cuerpo. En casa: bidones de agua de 5 litros. Subí el peso o la distancia para progresar.',
     science:'Uno de los ejercicios más funcionales. Desarrolla fuerza de agarre, estabilidad del core y capacidad de carga como ningún otro.',
-    sets:'3-4',reps:'30-60 seg',rest:'90 seg'}
+            sets:'3-4',reps:'30-60 seg',rest:'90 seg'}
+
+  // ═══ NUEVOS V12: CORE (5) ═══
+  ,{id:'deadbug',name:'Bicho Muerto / Dead Bug',muscle:'core',type:'bodyweight',loc:'both',diff:'beginner',primary:'Core profundo (Transverso)',secondary:'Oblicuos',evidence:'high',equip:'Nada',cue:'Aplastá una hormiga imaginaria contra el piso con tu espalda baja.',swap:'plank,pallof',errors:['Despegar la espalda baja del piso (pierde todo el efecto)','Moverse rápido sin control'],
+    steps:['Acostate boca arriba, brazos hacia el techo, rodillas a 90° (como una silla volcada)','Aplastá la espalda baja contra el piso FUERTE','Extendé un brazo hacia atrás y la pierna contraria hacia adelante','Bajá hasta casi tocar el piso, sin despegar la espalda baja','Volvé al centro y cambiá de lado'],
+    tips:'Si la espalda se despega del piso, no bajes tanto las piernas. Es un ejercicio lento y de mucho control anti-extensión.',
+    science:'Protege la columna enseñando al core a estabilizarse mientras las extremidades se mueven de forma independiente.',
+    sets:'3',reps:'10-12 por lado',rest:'60 seg'},
+  {id:'russian-twist',name:'Giro Ruso / Russian Twist',muscle:'core',type:'bodyweight',loc:'both',diff:'intermediate',primary:'Oblicuos',secondary:'Recto abdominal',evidence:'medium',equip:'Disco, mancuerna o nada',cue:'Girá los hombros y el pecho, no solo los brazos.',swap:'pallof,cable-crunch',errors:['Mover solo las manos de lado a lado sin rotar el torso','Arquear la espalda baja','Hacerlo demasiado rápido usando inercia'],
+    steps:['Sentáte en el piso, rodillas flexionadas, talones apoyados (o en el aire si sos avanzado)','Incliná el torso hacia atrás unos 45° manteniendo la espalda recta','Agarrá un peso con ambas manos a la altura del pecho','Rotá los hombros y el torso hacia la derecha hasta que el peso casi toque el piso','Volvé y rotá hacia la izquierda'],
+    tips:'El error #1 es mover los brazos y dejar el pecho mirando al frente. El pecho tiene que apuntar hacia donde va el peso. Evitalo o hacelo SIN peso si tenés historial de dolor lumbar (la flexión + rotación bajo carga es el mecanismo #1 de hernia discal).',
+    science:'Excelente para la fuerza rotacional del core, esencial en deportes y movimientos explosivos.',
+    sets:'3',reps:'12-20 por lado',rest:'60 seg'},
+  {id:'leg-raise-floor',name:'Elevación de Piernas (Piso)',muscle:'core',type:'bodyweight',loc:'both',diff:'beginner',primary:'Abdomen inferior',secondary:'Flexores de cadera',evidence:'high',equip:'Nada (Colchoneta)',cue:'Enrollá la cadera hacia el ombligo al subir; no es solo subir las piernas rectas.',swap:'hanging-raise,ab-wheel',errors:['Arquear la espalda baja al bajar las piernas','Meter las manos debajo de la cola (es trampa, debilita el core)','No enrollar la pelvis'],
+    steps:['Acostate boca arriba, piernas estiradas, brazos a los costados','Apretá el abdomen para pegar la espalda baja al piso','Levantá las piernas juntas hasta que apunten al techo','Al llegar arriba, levantá apenas la cadera del piso para máxima contracción','Bajá lentamente sin que la espalda se despegue'],
+    tips:'Si tu espalda se despega del piso al bajar, no bajes tanto las piernas. La salud lumbar es prioridad.',
+    science:'Trabaja la retroversión pélvica, fortaleciendo el abdomen inferior mucho mejor que los crunches tradicionales.',
+    sets:'3',reps:'12-15',rest:'60 seg'},
+  {id:'side-plank',name:'Plancha Lateral',muscle:'core',type:'bodyweight',loc:'both',diff:'intermediate',primary:'Oblicuos, Cuadrado lumbar',secondary:'Hombros, Glúteos',evidence:'high',equip:'Nada',cue:'Imaginá que estás entre dos paredes de cristal y no podés tocar ninguna.',swap:'plank,pallof',errors:['Dejar caer la cadera hacia el piso','Rotar el pecho hacia abajo','Hombro de apoyo no alineado con el codo'],
+    steps:['Acostate de lado apoyado en un antebrazo','El codo debe estar exactamente debajo del hombro','Apilá un pie sobre el otro (o uno delante del otro para más equilibrio)','Levantá la cadera formando una línea recta de cabeza a pies','Apretá oblicuos y glúteos. Aguantá.'],
+    tips:'Si duele el hombro, revisá la alineación del codo. Podés hacerlo apoyando la rodilla inferior si es muy difícil al principio.',
+    science:'El mejor ejercicio isométrico para los estabilizadores laterales de la columna. Previene escoliosis y dolores lumbares.',
+    sets:'3',reps:'30-60 seg por lado',rest:'45 seg'},
+  {id:'woodchopper',name:'Leñador / Woodchopper',muscle:'core',type:'compound',loc:'both',diff:'intermediate',primary:'Oblicuos',secondary:'Hombros, Core rotacional',evidence:'high',equip:'Polea alta o Banda elástica',cue:'Imaginá que sos un leñador dando un hachazo diagonal hacia abajo.',swap:'russian-twist,pallof',errors:['Doblar los codos en vez de usar el torso','Rotar las rodillas en exceso','Usar mucho peso y perder la postura'],
+    steps:['Polea o banda atada arriba. Paráte de costado al anclaje','Agarrá el mango con ambas manos, brazos estirados','Tirá diagonalmente hacia abajo cruzando tu cuerpo, hasta la rodilla opuesta','El movimiento sale de girar el torso, los brazos se mantienen casi rectos','Volvé controlando el peso hacia arriba'],
+    tips:'Tus caderas deben estar firmes, el giro viene de la cintura para arriba. Controlá la fase excéntrica (cuando volvés arriba).',
+    science:'Entrena al core de manera funcional, cruzando patrones de movimiento desde el hombro opuesto a la cadera opuesta.',
+    sets:'3',reps:'10-15 por lado',rest:'60 seg'},
+
+  // ═══ NUEVOS V12: ANTEBRAZOS (3) ═══
+  {id:'handgrip',name:'Hand Grip / Pinza',muscle:'antebrazos',type:'isolation',loc:'both',diff:'beginner',primary:'Fuerza de agarre (Crush)',secondary:'',evidence:'medium',equip:'Hand Gripper (Pinza)',cue:'Apretá como si quisieras aplastar una manzana con una sola mano.',swap:'towel-hang,farmer-walk',errors:['Soltar de golpe perdiendo la tensión excéntrica','Usar un gripper muy duro y hacer medias reps'],
+    steps:['Agarrá la pinza asegurando que asiente bien en la base de la palma','Apretá explosivamente hasta que los mangos se toquen','Aguantá 1 segundo cerrado','Abrí lentamente resistiendo la fuerza del resorte'],
+    tips:'Para hipertrofia hacé series de 10-15 reps. Para fuerza máxima hacé menos reps con un gripper muy pesado.',
+    science:'El agarre de "crush" (aplastar) usa una biomecánica y fibras distintas al agarre isométrico de sostener peso.',
+    sets:'3',reps:'10-15',rest:'60 seg'},
+  {id:'towel-hang',name:'Colgado con Toalla',muscle:'antebrazos',type:'bodyweight',loc:'both',diff:'advanced',primary:'Fuerza de agarre isométrico',secondary:'Dorsales, Hombros',evidence:'high',equip:'Barra de dominadas + 2 toallas',cue:'Apretá las toallas como si las estuvieras exprimiendo.',swap:'farmer-walk,handgrip',errors:['Usar toallas muy finas (menos trabajo de agarre)','Relajar los hombros y colgar de las articulaciones'],
+    steps:['Pasá dos toallas de mano por encima de la barra de dominadas','Agarrá una toalla con cada mano fuertemente','Colgáte manteniendo los hombros activos (no dejes que toquen tus orejas)','Aguantá el máximo tiempo posible'],
+    tips:'Es brutal. Si no podés sostener tu peso, apoyá ligeramente la punta de los pies en una silla.',
+    science:'Engrosa los antebrazos rápidamente al forzarlos a sostener carga pesada en un agarre vertical y grueso.',
+    sets:'3',reps:'Al fallo (20-60 seg)',rest:'90 seg'},
+  {id:'reverse-curl',name:'Curl Inverso',muscle:'antebrazos',type:'isolation',loc:'both',diff:'intermediate',primary:'Braquiorradial (parte superior del antebrazo)',secondary:'Bíceps',evidence:'high',equip:'Barra o mancuernas',cue:'Subí el peso con el dorso de la mano apuntando al techo.',swap:'hammer-curl,wrist-curl',errors:['Subir los codos','Quebrar las muñecas hacia atrás','Balancear el cuerpo'],
+    steps:['Agarrá una barra o mancuernas con agarre prono (palmas hacia abajo)','Codos pegados al cuerpo','Subí el peso flexionando los codos hasta contraer por completo','Mantené las muñecas rectas y firmes','Bajá de forma controlada'],
+    tips:'Vas a tener que usar menos peso que en un curl normal. Es normal. Enfocate en sentir el músculo del antebrazo trabajar.',
+    science:'Aísla el braquiorradial, el músculo más visible del antebrazo cuando tenés los brazos en reposo.',
+    sets:'3',reps:'10-15',rest:'60 seg'},
+
+  // ═══ NUEVOS V12: ESPALDA (FOCO CASA + GYM) (6) ═══
+  {id:'inverted-row',name:'Remo Invertido',muscle:'espalda',type:'bodyweight',loc:'both',diff:'intermediate',primary:'Espalda media, Romboides',secondary:'Bíceps, Core',evidence:'high',equip:'Mesa fuerte o Barra baja',cue:'Tirá el pecho hacia la mesa, cuerpo recto como una tabla.',swap:'barbell-row,db-row',errors:['Dejar caer la cadera','Tirar con el cuello hacia adelante','Usar una mesa frágil (¡Peligro!)'],
+    steps:['Metete debajo de una mesa resistente (o barra a la altura de la cintura en el gym)','Agarrate del borde con manos más anchas que los hombros','Cuerpo recto apoyado en los talones','Tirá de tu cuerpo hasta que el pecho toque la mesa','Bajá controlado extendiendo los brazos'],
+    tips:'El mejor ejercicio de espalda con peso corporal después de las dominadas. Si es muy difícil, flexioná las rodillas y apoyá toda la planta del pie.',
+    science:'Equilibra los empujes (flexiones) de manera perfecta y es muy amigable con la espalda baja.',
+    sets:'3-4',reps:'8-15',rest:'90 seg'},
+  {id:'towel-row',name:'Remo Isométrico (Toalla)',muscle:'espalda',type:'isolation',loc:'casa',diff:'beginner',primary:'Dorsales, Espalda media',secondary:'Bíceps',evidence:'low',equip:'Toalla + Poste o Puerta',cue:'Tirá con todas tus fuerzas aunque no te muevas. Máxima tensión.',swap:'band-pulldown,db-row',errors:['Relajarse (es un ejercicio isométrico, requiere esfuerzo del 100%)','Doblar la espalda baja'],
+    steps:['Pasá una toalla resistente por la manija de una puerta o un poste seguro','Agarrá un extremo con cada mano, alejate hasta tensar la toalla','Sentate un poco como en sentadilla media','Tirá de la toalla hacia atrás con TODA tu fuerza, como si quisieras arrancar la puerta','Aguantá la tensión máxima por 5-10 segundos'],
+    tips:'Al ser isométrico (sin movimiento), el resultado depende 100% de cuánto esfuerzo le pongas mentalmente.',
+    science:'La isometría recluta unidades motoras de alto umbral. Sirve para mantener fuerza cuando no hay equipo disponible.',
+    sets:'4',reps:'5 reps de 10 seg',rest:'60 seg'},
+  {id:'sliding-pulldown',name:'Jalón Deslizante (Piso)',muscle:'espalda',type:'bodyweight',loc:'casa',diff:'advanced',primary:'Dorsal ancho',secondary:'Core',evidence:'medium',equip:'Toalla y piso resbaladizo',cue:'Clavá las manos en el piso y arrastrá tu cuerpo hacia adelante usando los dorsales.',swap:'pullup,band-pulldown',errors:['Usar las piernas para empujar','Arquear la espalda baja en exceso'],
+    steps:['Acostate boca abajo en un piso liso (cerámica o madera) con una toalla debajo de tu pecho/panza','Estirá los brazos hacia adelante y apoyá las palmas en el piso','Apretá el piso y tirá de tus brazos hacia tus costados, deslizando tu cuerpo hacia adelante','Extendé los brazos para deslizarte hacia atrás a la posición inicial'],
+    tips:'Simula el movimiento de una dominada o jalón. Requiere mucha fuerza de dorsal. Si es muy pesado, ayudate apenas con las puntas de los pies.',
+    science:'Utiliza la fricción del piso como resistencia para crear un ejercicio de cadena cerrada para la espalda.',
+    sets:'3',reps:'8-12',rest:'90 seg'},
+  {id:'superman',name:'Superman',muscle:'espalda',type:'bodyweight',loc:'both',diff:'beginner',primary:'Erectores espinales (Espalda baja)',secondary:'Glúteos',evidence:'high',equip:'Nada',cue:'Volá. Despegá muslos y pecho del piso apretando la espalda y los glúteos.',swap:'rdl,deadlift',errors:['Mirar hacia arriba forzando las cervicales (mirá al piso)','Dar tirones bruscos en vez de subir controlado'],
+    steps:['Acostate boca abajo con brazos y piernas completamente estirados','Contraé los glúteos y la espalda baja para levantar los brazos, pecho y piernas del piso simultáneamente','Mantené la cabeza neutral (mirando al piso)','Aguantá la posición "volando" 2 segundos arriba','Bajá lentamente'],
+    tips:'No importa qué tan alto subas, importa la contracción en la espalda baja. Movimiento lento y controlado.',
+    science:'Fortalece los estabilizadores de la columna lumbar sin carga compresiva, reduciendo dolor de espalda.',
+    sets:'3',reps:'12-15',rest:'60 seg'},
+  {id:'tbar-row',name:'Remo en T',muscle:'espalda',type:'compound',loc:'gym',diff:'intermediate',primary:'Dorsal, Espalda media',secondary:'Bíceps',evidence:'high',equip:'Barra en T o Máquina de Remo',cue:'Tirá los codos hacia atrás rozando el cuerpo y sacá pecho arriba.',swap:'barbell-row,cable-row',errors:['Estar demasiado erguido (se convierte en un encogimiento)','Usar mucho peso y hacer la mitad del recorrido'],
+    steps:['Parate sobre la máquina o barra en T con agarre estrecho (manos juntas)','Incliná el torso a 45 grados, pecho afuera','Tirá el peso hacia la boca del estómago / ombligo','Apretá la espalda arriba 1 seg y bajá controlado'],
+    tips:'El agarre estrecho permite que los codos viajen muy cerca del cuerpo, aislando el dorsal ancho mejor que los remos abiertos.',
+    science:'La posición fija reduce la inestabilidad respecto al remo con barra, permitiendo mayor sobrecarga muscular directa.',
+    sets:'3-4',reps:'8-12',rest:'90 seg'},
+  {id:'pull-over',name:'Pullover con Mancuerna',muscle:'espalda',type:'compound',loc:'both',diff:'intermediate',primary:'Dorsal ancho, Pecho',secondary:'Serrato anterior, Tríceps',evidence:'medium',equip:'Mancuerna + Banco',cue:'Brazos semiflexionados fijos; bajá el peso estirando el torso y subí con la espalda.',swap:'lat-pulldown,cable-fly',errors:['Doblar mucho los codos (se convierte en extensión de tríceps)','Bajar la cadera excesivamente'],
+    steps:['Acostate perpendicular a un banco, apoyando solo la espalda alta (caderas al aire)','Agarrá una mancuerna con ambas manos formando un diamante','Brazos extendidos sobre el pecho con codos levemente flexionados','Bajá la mancuerna hacia atrás de tu cabeza hasta sentir un gran estiramiento en dorsales y pecho','Volvé a subir la mancuerna hasta la posición inicial sobre el pecho'],
+    tips:'Ejercicio clásico de la época dorada del culturismo. Expande la caja torácica y trabaja tanto el pecho como la espalda.',
+    science:'La curva de resistencia recae fuerte en la posición estirada. Activa fuertemente los dorsales y la porción clavicular del pectoral.',
+    sets:'3',reps:'10-15',rest:'90 seg'},
+
+  // ═══ NUEVOS V12: PECHO (FOCO CASA + GYM) (4) ═══
+  {id:'decline-pushup',name:'Flexiones Declinadas',muscle:'pecho',type:'bodyweight',loc:'both',diff:'intermediate',primary:'Pecho superior, Hombro delantero',secondary:'Tríceps',evidence:'high',equip:'Silla o escalón',cue:'Apuntá tu pecho hacia el piso. La cadera no se hunde.',swap:'incline-bench,incline-db',errors:['Arquear la espalda baja (cadera hundida)','Manos muy adelante (tensión en cuello)'],
+    steps:['Colocá las manos en el piso, más anchas que los hombros','Subí los pies a una silla, cajón o sillón','Cuerpo recto y abdomen contraído','Bajá hasta que el pecho casi toque el piso','Empujá con fuerza hacia arriba'],
+    tips:'Al tener los pies elevados, simulás el ángulo de un press inclinado, atacando la parte superior del pectoral.',
+    science:'Cambia el centro de gravedad, cargando mayor porcentaje de tu peso corporal sobre el tren superior en un ángulo de inclinación.',
+    sets:'3-4',reps:'8-15',rest:'90 seg'},
+  {id:'incline-pushup',name:'Flexiones Inclinadas',muscle:'pecho',type:'bodyweight',loc:'both',diff:'beginner',primary:'Pecho inferior',secondary:'Tríceps',evidence:'medium',equip:'Mesa, silla o pared',cue:'Empujá el mueble como si lo quisieras alejar de vos.',swap:'pushup,dips',errors:['Doblar la cintura (sacar cola)','Codos a 90° (lesivos para hombro)'],
+    steps:['Apoyá las manos en un mueble firme (cama, silla, mesa) más alto que el piso','Cuerpo recto de pies a cabeza','Bajá el pecho hacia el borde del mueble con los codos a 45°','Empujá hacia arriba extendiendo brazos'],
+    tips:'Excelente para principiantes que aún no dominan la flexión en el piso. Cuanto más alto el apoyo, más fácil es el ejercicio.',
+    science:'Simula un press declinado, enfocándose en la porción inferior del pecho mientras reduce la carga total del peso corporal.',
+    sets:'3',reps:'10-20',rest:'60 seg'},
+  {id:'archer-pushup',name:'Flexiones Arquero',muscle:'pecho',type:'bodyweight',loc:'both',diff:'advanced',primary:'Pecho (unilateral)',secondary:'Hombros, Tríceps, Core',evidence:'high',equip:'Nada',cue:'Bajá como un ascensor sobre un solo brazo, el otro es solo apoyo.',swap:'pushup,bench',errors:['Doblar el brazo extendido','Rotar la cadera hacia un lado'],
+    steps:['Posición de flexiones con las manos mucho más anchas de lo normal','Mantené un brazo completamente estirado mientras flexionás el otro codo','Todo el cuerpo se desplaza y baja sobre el brazo flexionado','El brazo estirado solo desliza (o asiste levemente)','Empujá y volvé al centro. Repetí al otro lado'],
+    tips:'Si es muy duro, hacelo con las rodillas apoyadas. Es el paso previo a la flexión a un solo brazo.',
+    science:'Sobrecarga drásticamente un lado del pecho (hasta un 70% de tu peso corporal en un solo brazo), ideal si no tenés pesas en casa.',
+    sets:'3',reps:'5-10 por lado',rest:'90 seg'},
+  {id:'floor-press',name:'Press de Piso (Floor Press)',muscle:'pecho',type:'compound',loc:'both',diff:'beginner',primary:'Pecho (parte media), Tríceps',secondary:'Hombros',evidence:'high',equip:'Mancuernas o Mochila con peso',cue:'Que los tríceps descansen un milisegundo en el piso antes de empujar.',swap:'bench,pushup',errors:['Dejar caer los codos golpeando el piso','Rebotar','No hacer rango completo hasta apoyar tríceps'],
+    steps:['Acostate boca arriba en el piso con las rodillas dobladas y pies apoyados','Agarrá las mancuernas, brazos estirados arriba','Bajá controlado hasta que toda la parte trasera del brazo (tríceps) toque suavemente el piso','Hacé una micropausa de 1 segundo apoyado en el piso','Empujá hacia arriba de forma explosiva'],
+    tips:'Al estar en el piso no tenés rango completo de estiramiento del pecho, por lo que es un ejercicio seguro para los hombros y bestial para los tríceps y fuerza de empuje.',
+    science:'Limita la extensión del hombro, aislando el trabajo de empuje en los tríceps y porción final del pecho. Muy usado en Powerlifting para mejorar la fuerza.',
+    sets:'3',reps:'8-12',rest:'90 seg'},
+
+  // ═══ NUEVOS V12: PIERNAS Y GLÚTEOS (5) ═══
+  {id:'step-up',name:'Subidas al Cajón / Step Ups',muscle:'piernas',type:'compound',loc:'both',diff:'intermediate',primary:'Cuádriceps, Glúteos',secondary:'Core (equilibrio)',evidence:'high',equip:'Silla firme, escalón o cajón',cue:'Empujá el cajón hacia abajo. No saltes con la pierna del piso.',swap:'lunge,bulgarian',errors:['Empujar con la pierna de abajo para darse envión','Dejarse caer al bajar','Usar un cajón muy alto perdiendo postura'],
+    steps:['Parate frente a un cajón o silla a la altura de tu rodilla','Apoyá un pie completamente firme en el cajón','Incliná el torso ligeramente hacia adelante y empujá con la pierna de arriba para subir','Subí hasta pararte completamente sobre el cajón','Bajá MUY LENTO (3-4 segundos) controlando con la pierna de arriba'],
+    tips:'La bajada controlada es donde está el 80% del beneficio de este ejercicio. Si usás impulso, no sirve. Usá mancuernas para más dificultad.',
+    science:'El trabajo unilateral extremo activa el glúteo mayor y medio al máximo por la necesidad de estabilización pélvica.',
+    sets:'3',reps:'8-12 por pierna',rest:'90 seg'},
+  {id:'good-morning',name:'Buenos Días / Good Morning',muscle:'piernas',type:'compound',loc:'both',diff:'intermediate',primary:'Isquiotibiales, Espalda baja',secondary:'Glúteos, Core',evidence:'high',equip:'Barra, banda o nada',cue:'Saludá a alguien doblando la cadera hacia atrás. La espalda es una mesa.',swap:'rdl,leg-curl',errors:['Doblar la espalda alta','Doblar mucho las rodillas (se hace sentadilla)','Mirar hacia el techo'],
+    steps:['Barra en la espalda alta (como en sentadilla) o banda elástica pisada y tras nuca','Pies ancho de caderas, rodillas apenas desbloqueadas','Empujá las caderas hacia atrás, bajando el torso hasta que esté casi paralelo al piso','Mantené pecho afuera y espalda recta','Apretá glúteos e isquios para volver arriba'],
+    tips:'Es literalmente un Peso Muerto Rumano pero con el peso en la espalda. Exige más al core. Arrancá con MUY poco peso hasta dominar la técnica.',
+    science:'Al tener la carga alejada de la cadera (palanca larga), genera gran torque y estiramiento en toda la cadena posterior.',
+    sets:'3',reps:'8-12',rest:'90 seg'},
+  {id:'seated-calf',name:'Elevaciones de Gemelos Sentado',muscle:'piernas',type:'isolation',loc:'both',diff:'beginner',primary:'Sóleo (parte baja del gemelo)',secondary:'',evidence:'high',equip:'Máquina o mancuernas sobre rodillas',cue:'Tus rodillas son un ascensor, subilas hasta el último piso y bajalas al subsuelo.',swap:'calf-raise',errors:['Rebotar (los tendones de Aquiles absorben el trabajo)','Hacer rango corto','No pausar abajo'],
+    steps:['Sentate en la máquina (o en una silla con mancuernas apoyadas cerca de las rodillas)','Apoyá la punta de los pies en el borde','Bajá los talones hasta sentir máximo estiramiento. Pausá 2 segundos','Elevá los talones lo más alto posible. Pausá 1 segundo arriba','Bajá controlado'],
+    tips:'El Sóleo responde a altas repeticiones y tiempos bajo tensión lentos. La pausa abajo (estiramiento) es innegociable.',
+    science:'Al flexionar la rodilla a 90°, el Gastrocnemio (gemelo superior) se relaja y el Sóleo (el 60% del volumen de la pantorrilla) hace todo el trabajo.',
+    sets:'4',reps:'15-20',rest:'60 seg'},
+  {id:'nordic-curl',name:'Curl Nórdico',muscle:'piernas',type:'bodyweight',loc:'both',diff:'advanced',primary:'Isquiotibiales (excéntrico)',secondary:'',evidence:'high',equip:'Algo para trabar los pies (sillón, amigo)',cue:'Caé como un tronco recto hacia adelante, frenando la caída con la parte de atrás de tus piernas.',swap:'leg-curl,rdl',errors:['Doblar la cadera (sacar cola) para facilitar la caída','No controlar nada y desplomarse'],
+    steps:['Arrodillate en un cojín o colchoneta','Trabá tus tobillos firmemente debajo de un sillón pesado, o que un amigo te sostenga','Mantené el cuerpo en línea recta de rodillas a cabeza','Dejate caer hacia adelante MUY lentamente, resistiendo la gravedad con los isquiotibiales','Cuando no aguantes más, apoyá las manos, hacé una flexión y volvé a la posición inicial'],
+    tips:'Es uno de los ejercicios más duros. Si podés resistir 3 segundos antes de caer, estás genial. Con el tiempo ganarás rango.',
+    science:'El mejor ejercicio excéntrico para prevenir desgarros en isquiotibiales, usado por atletas de élite en todo el mundo.',
+    sets:'3',reps:'5-8',rest:'2 min'},
+  {id:'abductor-machine',name:'Máquina Abductores / Apertura',muscle:'gluteos',type:'isolation',loc:'gym',diff:'beginner',primary:'Glúteo medio y menor',secondary:'Tensor de la fascia lata',evidence:'medium',equip:'Máquina de Abductores',cue:'Apretá las rodillas hacia afuera y sostené un segundo en la apertura máxima.',swap:'cable-kickback',errors:['Usar el peso de todo el cuerpo balanceándose','Hacerlo muy rápido (rebotar los pesos)'],
+    steps:['Sentate en la máquina con las almohadillas por fuera de las rodillas','Seleccioná un peso desafiante pero controlable','Abrid las piernas empujando contra las almohadillas','Pausá 1 segundo en máxima apertura','Volvé al centro controlando que las placas de peso no golpeen de golpe'],
+    tips:'Inclinarte levemente hacia adelante en el asiento puede cambiar el ángulo y activar el glúteo de otra manera. Probá qué se siente mejor para vos.',
+    science:'Desarrolla el "side booty" (glúteo medio), fundamental para la estabilidad de la cadera al caminar o hacer sentadillas.',
+    sets:'3',reps:'12-15',rest:'60 seg'},
+
+  // ═══ NUEVOS V12: HOMBROS Y BRAZOS (3) ═══
+  {id:'front-raise',name:'Elevaciones Frontales',muscle:'hombros',type:'isolation',loc:'both',diff:'beginner',primary:'Hombro delantero (Deltoides anterior)',secondary:'',evidence:'medium',equip:'Mancuernas, barra o disco',cue:'Subí el peso hasta que tape tus ojos, sin hamacarte.',swap:'db-ohp,ohp',errors:['Tirarse hacia atrás para subir el peso','Levantar por encima de la cabeza (innecesario)','Flexionar mucho los codos'],
+    steps:['Parate derecho con mancuernas o un disco frente a tus muslos','Brazos casi estirados (mínima flexión de codo)','Subí el peso directamente hacia adelante hasta la altura de los hombros/ojos','Bajá controlado en 2-3 segundos'],
+    tips:'La mayoría de la gente tiene el hombro delantero muy desarrollado por hacer mucho Press de Banca. Usá este ejercicio solo si sentís que te falta volumen frontal.',
+    science:'Aísla completamente el deltoides anterior. Peso liviano y estricto es la clave.',
+    sets:'3',reps:'12-15',rest:'60 seg'},
+  {id:'upright-row',name:'Remo al Mentón',muscle:'hombros',type:'compound',loc:'both',diff:'intermediate',primary:'Hombro medio, Trapecio superior',secondary:'Bíceps',evidence:'high',equip:'Barra, polea o mancuernas',cue:'Tirá de los codos hacia el techo. Las manos solo siguen el movimiento.',swap:'lat-raise,shrugs',errors:['Manos más altas que los codos (lesivo para rotadores)','Agarre muy cerrado (choca huesos del hombro)'],
+    steps:['Agarrá una barra o mancuernas con agarre prono, un poco más ancho que los hombros','Parate derecho, pecho arriba','Tirá de la barra hacia arriba guiando el movimiento con los CODOS','Subí hasta la parte media del pecho (no hasta el mentón literalmente)','Bajá controlado'],
+    tips:'Agarre ancho = más hombros, menos riesgo de lesión. Agarre cerrado = menos hombros, dolor de muñecas. No subas más allá del pecho.',
+    science:'Controvertido por potencial impacto (impingement) en hombros. Usar agarre ancho a la altura de los hombros y no subir excesivamente elimina los riesgos.',
+    sets:'3-4',reps:'10-12',rest:'90 seg'},
+  {id:'tricep-kickback',name:'Patada de Tríceps',muscle:'triceps',type:'isolation',loc:'both',diff:'beginner',primary:'Tríceps',secondary:'',evidence:'medium',equip:'Mancuerna o polea',cue:'Tu codo está atornillado a tu costilla. Extendé el brazo como si pasaras un bastón de relevos atrás.',swap:'pushdown,diamond-pushup',errors:['Mover el codo hacia arriba y abajo','Usar mucho peso y hacer un swing','Inclinarse muy poco hacia adelante'],
+    steps:['Apoyá una mano y rodilla en un banco (como en remo con mancuerna)','El brazo de trabajo debe tener el codo a la altura de las costillas y a 90°','Extendé el antebrazo hacia atrás hasta enderezarlo por completo','Apretá el tríceps duro 1 segundo','Volvé a 90° controladamente'],
+    tips:'Usa POCO peso. La tensión se da solo en el final del recorrido (si usás mancuernas). Con polea baja es muchísimo más efectivo porque mantiene tensión constante.',
+    science:'Con peso libre tiene una curva de resistencia pobre (cero esfuerzo al inicio, todo al final), pero en polea o bandas es un excelente ejercicio de contracción máxima.',
+    sets:'3',reps:'12-15',rest:'60 seg'}
+  // ═══ LA EXPANSIÓN A 100 V12: GLÚTEOS (+5) ═══
+  ,{id:'cable-pull-through',name:'Pull Through en Polea',muscle:'gluteos',type:'compound',loc:'gym',diff:'intermediate',primary:'Glúteo máximo',secondary:'Isquiotibiales, Espalda baja',evidence:'high',equip:'Polea baja + Cuerda',cue:'Bisagra de cadera. Empujá la cuerda hacia adelante con la fuerza de tus glúteos, no con los brazos.',swap:'rdl,glute-bridge',errors:['Hacer una sentadilla en vez de tirar la cadera atrás','Tirar con los brazos','Arquear la espalda'],
+    steps:['Polea baja con cuerda. Dále la espalda a la máquina con la cuerda entre las piernas','Da dos pasos hacia adelante para tensar el cable','Mantené las rodillas semiflexionadas y empujá la cadera bien hacia atrás','Vas a sentir que la polea te estira los isquiotibiales','Contraé los glúteos para volver a la posición inicial erguida'],
+    tips:'El peso no se levanta, se empuja hacia adelante. Es el mismo movimiento que el Peso Muerto Rumano pero con resistencia horizontal.',
+    science:'Al tener la resistencia viniendo de atrás, la máxima tensión se da en la posición de máxima contracción del glúteo (arriba), complementando al peso muerto.',
+    sets:'3',reps:'12-15',rest:'90 seg'},
+  {id:'frog-pump',name:'Frog Pumps / Bombeo Rana',muscle:'gluteos',type:'bodyweight',loc:'both',diff:'beginner',primary:'Glúteo máximo y medio',secondary:'',evidence:'medium',equip:'Nada (o mancuerna)',cue:'Juntá las suelas de las zapatillas y empujá la cadera al techo.',swap:'glute-bridge,hip-thrust',errors:['Empujar con la espalda baja','No apretar en la parte más alta'],
+    steps:['Acostate boca arriba en el piso','Juntá las plantas de los pies y dejá caer las rodillas hacia los costados (posición de rana)','Mantené el mentón pegado al pecho para no arquear la espalda','Empujá las caderas hacia arriba apretando los glúteos al máximo','Bajá sin relajar del todo'],
+    tips:'Inventado por Bret Contreras (El "Glute Guy"). Es excelente como finalizador (finisher) al terminar tu rutina de piernas para vaciar el tanque.',
+    science:'La abducción externa de las caderas desactiva los isquiotibiales, obligando al glúteo a hacer el 100% del trabajo de elevación.',
+    sets:'3-4',reps:'20-30',rest:'60 seg'},
+  {id:'lateral-band-walk',name:'Caminata Lateral con Banda',muscle:'gluteos',type:'isolation',loc:'both',diff:'beginner',primary:'Glúteo medio y menor',secondary:'',evidence:'high',equip:'Banda elástica circular',cue:'Caminá como un cangrejo manteniendo la banda siempre tensa. Los pies nunca se juntan.',swap:'abductor-machine',errors:['Juntar los pies perdiendo la tensión de la banda','Inclinar el torso de lado a lado (pingüino)','Pasar la banda por encima de las rodillas (es más fácil)'],
+    steps:['Ponete la banda alrededor de los tobillos (o en la punta de los pies para más dificultad)','Bajá a una posición de media sentadilla','Da un paso lateral abriendo la pierna, sintiendo el trabajo en el costado del glúteo','Seguí con la otra pierna pero NUNCA las juntes del todo','Da 10 pasos a la derecha y 10 a la izquierda'],
+    tips:'Mantené los pies paralelos, que las puntas no apunten hacia afuera. El torso debe estar como una estatua.',
+    science:'El glúteo medio es el principal estabilizador lateral de la cadera. Fortalecerlo previene dolores de rodilla y mejora la sentadilla profunda.',
+    sets:'3',reps:'15-20 pasos/lado',rest:'60 seg'},
+  {id:'glute-hyperextension',name:'Hiperextensión (Foco Glúteo)',muscle:'gluteos',type:'isolation',loc:'gym',diff:'intermediate',primary:'Glúteo máximo',secondary:'Isquiotibiales',evidence:'high',equip:'Silla Romana (Banco a 45°)',cue:'Hacé una joroba con la espalda alta y meté la barbilla al pecho. Subí solo usando las nalgas.',swap:'cable-pull-through,rdl',errors:['Arquear la espalda (esto transfiere el trabajo a las lumbares)','Subir demasiado alto'],
+    steps:['Colocate en la silla romana con el pad justo por debajo de la pelvis (que te deje doblar la cintura)','Redondeá la parte alta de la espalda a propósito (como si fueras un gato enojado)','Meté el mentón al pecho y cruzá los brazos','Bajá controladamente y subí apretando los glúteos hasta alinear el cuerpo, no más arriba'],
+    tips:'Si arqueás la espalda y mirás al frente, vas a trabajar las lumbares. Si te encorvás, bloqueás las lumbares y el glúteo hace todo el esfuerzo.',
+    science:'La posición encorvada inhibe la acción de los erectores espinales, aislando la extensión de cadera puramente en el glúteo mayor.',
+    sets:'3',reps:'12-15',rest:'90 seg'},
+  {id:'reverse-lunge',name:'Estocada Inversa / Hacia Atrás',muscle:'gluteos',type:'compound',loc:'both',diff:'beginner',primary:'Glúteo máximo, Cuádriceps',secondary:'Core',evidence:'high',equip:'Mancuernas o Nada',cue:'Da el paso hacia atrás y bajá como un ascensor, no como una escalera mecánica.',swap:'lunge,bulgarian',errors:['Pisar en la misma línea (como caminando por la cuerda floja, perdiendo equilibrio)','Golpear la rodilla contra el piso'],
+    steps:['Parate derecho con mancuernas a los lados','Da un paso largo hacia ATRÁS con un pie','Bajá la cadera recto hacia el piso hasta que la rodilla trasera casi toque el suelo','Empujá el piso con la pierna delantera para volver a la posición inicial','Alterná piernas o hacé todas las de un lado primero'],
+    tips:'Mucho más amigable para las rodillas que la estocada hacia adelante, ya que evita que el peso del cuerpo se desplace sobre la articulación frontal.',
+    science:'Permite mantener una espinilla más vertical en la pierna delantera, reduciendo la fuerza de cizalla en la rodilla y aumentando la carga en el glúteo.',
+    sets:'3',reps:'10-12 por pierna',rest:'90 seg'},
+
+  // ═══ CORE (+5) ═══
+  {id:'crunch',name:'Crunch / Abdominales Cortos',muscle:'core',type:'bodyweight',loc:'both',diff:'beginner',primary:'Recto abdominal superior',secondary:'',evidence:'medium',equip:'Nada',cue:'Imaginá que querés acercar tus costillas a tu ombligo.',swap:'cable-crunch,ab-wheel',errors:['Tirar de la cabeza/cuello con las manos','Despegar la espalda baja del piso (se convierte en Sit-Up)','Hacerlo muy rápido'],
+    steps:['Acostate boca arriba, rodillas flexionadas y pies en el piso','Manos cruzadas en el pecho o a los costados de la cabeza (sin agarrar la nuca)','Despegá solo los hombros y escápulas del piso contrayendo el abdomen','Aguantá 1 segundo arriba expulsando el aire','Bajá lentamente'],
+    tips:'Si te duele el cuello, mirá un punto fijo en el techo. No levantes la zona lumbar del piso, el rango es muy corto.',
+    science:'Aísla la flexión espinal. Aunque fue demonizado un tiempo, si no tenés patologías previas de columna, es excelente para la hipertrofia abdominal directa.',
+    sets:'3',reps:'15-25',rest:'45 seg'},
+  {id:'bicycle-crunch',name:'Bicicletas / Bicycle Crunches',muscle:'core',type:'bodyweight',loc:'both',diff:'beginner',primary:'Oblicuos, Recto abdominal',secondary:'Flexores de cadera',evidence:'high',equip:'Nada',cue:'No busques el codo, llevá tu HOMBRO hacia la rodilla contraria.',swap:'russian-twist,woodchopper',errors:['Mover los brazos rápido sin rotar el torso','Tirar de la nuca','Hacer el ejercicio como si estuvieras apurado'],
+    steps:['Acostate, manos a los costados de la cabeza, piernas levantadas a 90°','Estirá la pierna derecha mientras llevás la rodilla izquierda hacia el pecho','Rotá el torso llevando el HOMBRO derecho hacia la rodilla izquierda','Alterná de forma lenta y controlada'],
+    tips:'Hacerlo lento triplica la efectividad. Si vas rápido, estás usando el impulso de las piernas y no el abdomen.',
+    science:'Según estudios de electromiografía (ACE), es el ejercicio #1 o #2 con mayor activación combinada del recto abdominal y los oblicuos externos.',
+    sets:'3',reps:'15-20 por lado',rest:'60 seg'},
+  {id:'mountain-climber',name:'Escaladores / Mountain Climbers',muscle:'core',type:'bodyweight',loc:'both',diff:'beginner',primary:'Core entero',secondary:'Hombros, Tríceps, Cardio',evidence:'medium',equip:'Nada',cue:'Tu espalda debe ser una mesa donde puedo apoyar un vaso de agua sin que se caiga.',swap:'plank,ab-wheel',errors:['Levantar mucho la cadera','Rebotar el cuerpo arriba y abajo','Mirar los pies (mirá entre tus manos)'],
+    steps:['Ponete en posición de plancha con los brazos extendidos (posición alta de flexión)','Llevá una rodilla hacia tu pecho sin que el pie toque el piso','Devolvé la pierna atrás y hacé lo mismo con la otra','Aumentá la velocidad pero mantené la cadera totalmente firme'],
+    tips:'Es un ejercicio dinámico. Te va a subir las pulsaciones. Apretá el abdomen fuerte para que la cadera no salte.',
+    science:'Integra estabilización isométrica del tren superior y del core con flexión dinámica de cadera. Quema muchas calorías.',
+    sets:'3',reps:'30-45 seg',rest:'60 seg'},
+  {id:'hollow-body',name:'Hollow Body Hold',muscle:'core',type:'bodyweight',loc:'both',diff:'advanced',primary:'Core completo (Estabilización isométrica)',secondary:'Flexores de cadera',evidence:'high',equip:'Nada',cue:'Convertí tu cuerpo en una banana firme. Aplastá el piso con la espalda baja.',swap:'plank,deadbug',errors:['Dejar un hueco en la espalda baja (peligroso y quita el efecto)','No apretar los glúteos','Subir demasiado las piernas'],
+    steps:['Acostate boca arriba, piernas rectas juntas, brazos estirados hacia atrás','Apretá el abdomen hundiendo la espalda baja contra el piso (¡No puede haber espacio!)','Levantá las piernas a 10cm del piso','Levantá los hombros y brazos del piso','Mantené esa posición de "U" o bote el mayor tiempo posible'],
+    tips:'Si tu espalda baja se despega, subí las piernas más alto o flexioná un poco las rodillas. La regla de oro es ESPALDA PEGADA.',
+    science:'Es el ejercicio base de los gimnastas olímpicos. Genera una tensión brutal en toda la musculatura estabilizadora transfiriendo fuerza a todo el cuerpo.',
+    sets:'3',reps:'Al fallo (20-45 seg)',rest:'60 seg'},
+  {id:'v-up',name:'Bisagras / V-Ups',muscle:'core',type:'bodyweight',loc:'both',diff:'advanced',primary:'Recto abdominal superior e inferior',secondary:'Flexores de cadera',evidence:'high',equip:'Nada',cue:'Tus manos y tus pies deben saludarse arriba, justo encima de tu ombligo.',swap:'hanging-raise,leg-raise-floor',errors:['Flexionar mucho las rodillas','No subir el torso (hacer solo elevación de piernas)','Dejarse caer al bajar'],
+    steps:['Acostate completamente estirado, brazos atrás de la cabeza','Simultáneamente levantá las piernas rectas y el torso con los brazos','Tocá la punta de tus pies formando una "V" con el cuerpo','Bajá controlado sin que las manos y pies toquen el piso, y repetí'],
+    tips:'Requiere mucha flexibilidad de isquiotibiales y fuerza abdominal. Si es muy difícil, hacelo con una sola pierna alternando (Single Leg V-Up).',
+    science:'Es uno de los ejercicios de flexión abdominal más complejos porque cierra las dos palancas (piernas y torso) contra la gravedad al mismo tiempo.',
+    sets:'3',reps:'10-15',rest:'60 seg'},
+
+  // ═══ PIERNAS (+3) ═══
+  {id:'front-squat',name:'Sentadilla Frontal',muscle:'piernas',type:'compound',loc:'gym',diff:'advanced',primary:'Cuádriceps',secondary:'Core, Glúteos, Espalda alta',evidence:'high',equip:'Barra',cue:'Los codos deben apuntar a la pared de enfrente, NUNCA al piso.',swap:'goblet-squat,hack-squat',errors:['Bajar los codos al descender (hace que se caiga la barra)','Inclinar el torso hacia adelante','Agarrar la barra muy rígido (usá solo 2-3 dedos)'],
+    steps:['Apoyá la barra en los hombros delanteros/clavícula','Agarrá la barra apoyando los dedos por debajo, con los codos muy altos (agarre olímpico) o cruzá los brazos','Pies ancho de hombros','Bajá manteniendo el torso completamente erguido, mucho más vertical que en una sentadilla normal','Subí empujando el techo con los codos'],
+    tips:'Vas a levantar mucho menos peso que en la sentadilla trasera. Es normal. El core trabaja muchísimo para que no te vayas de boca.',
+    science:'La posición anterior de la barra obliga a mantener un torso vertical, lo que incrementa masivamente la flexión de rodilla y transfiere casi toda la carga a los cuádriceps.',
+    sets:'3-4',reps:'6-10',rest:'2-3 min'},
+  {id:'sissy-squat',name:'Sentadilla Sissy',muscle:'piernas',type:'bodyweight',loc:'both',diff:'advanced',primary:'Cuádriceps (aislamiento extremo)',secondary:'',evidence:'medium',equip:'Nada (o peso corporal)',cue:'Tus muslos y tu torso son una tabla rígida de surf. Solo se doblan las rodillas.',swap:'leg-extension,front-squat',errors:['Doblar la cintura (sacar cola)','Apoyar los talones (los talones VAN al aire)'],
+    steps:['Parate con los pies ancho de caderas. Agarrate de algo con una mano para equilibrio','Levantá los talones (quedás de puntas de pie)','Echá las rodillas hacia adelante y al piso, mientras el torso se inclina hacia atrás','Formá una línea recta desde la cabeza hasta las rodillas','Bajá todo lo que tu movilidad permita y empujá para subir'],
+    tips:'Es la extensión de cuádriceps versión peso corporal. Cuidado si tenés problemas de rodilla previos. Empezá con muy poco rango de movimiento.',
+    science:'Genera un estiramiento activo brutal en el recto femoral, uno de los mecanismos clave para la hipertrofia pura del cuádriceps.',
+    sets:'3',reps:'8-12',rest:'90 seg'},
+  {id:'sumo-squat',name:'Sentadilla Sumo',muscle:'piernas',type:'compound',loc:'both',diff:'intermediate',primary:'Aductores (Cara interna), Glúteos',secondary:'Cuádriceps',evidence:'high',equip:'Mancuerna pesada o Kettlebell',cue:'Separá el piso con los pies mientras bajás.',swap:'goblet-squat,squat',errors:['Rodillas colapsando hacia adentro','Bajar el pecho hacia el piso en vez de flexionar rodillas'],
+    steps:['Parate con los pies mucho más anchos que tus hombros, puntas mirando a 45° hacia afuera','Sostené una mancuerna pesada o pesa rusa con ambas manos dejando que cuelgue en el centro','Mantené el pecho arriba y flexioná las rodillas','Bajá hasta que la mancuerna casi toque el piso','Empujá con los talones y apretá glúteos arriba'],
+    tips:'Excelente para entrenar pesado en casa con una sola mancuerna. La apertura extrema transfiere mucho trabajo a la cara interna de las piernas.',
+    science:'El stance amplio aumenta el reclutamiento del aductor magnus y permite un torso más erguido, protegiendo las lumbares.',
+    sets:'3-4',reps:'10-15',rest:'90 seg'},
+
+  // ═══ PECHO (+2) ═══
+  {id:'pec-deck',name:'Máquina Peck Deck / Mariposa',muscle:'pecho',type:'isolation',loc:'gym',diff:'beginner',primary:'Pectoral mayor',secondary:'Hombro delantero',evidence:'high',equip:'Máquina Peck Deck',cue:'Juntá tus bíceps en el centro, olvidate de tus manos.',swap:'cable-fly,db-fly',errors:['Sentarse muy alto o muy bajo (hombros sufren)','Separar la espalda del respaldo al empujar'],
+    steps:['Ajustá el asiento para que los mangos queden a la altura de tu pecho medio','Mantené la espalda y cabeza bien pegadas al respaldo','Agarrá los mangos y llevá los brazos hacia el frente en un abrazo','Apretá el pecho FUERTE 2 segundos en el centro','Abrí controladamente hasta sentir estiramiento, pero sin que las pesas toquen fondo'],
+    tips:'Es una de las mejores máquinas de hipertrofia. Te permite aislar el pecho hasta el fallo total sin el riesgo de que se te caigan mancuernas en la cara.',
+    science:'Mantiene un perfil de resistencia perfecto: a diferencia de las mancuernas, en la máquina tenés máxima tensión cuando el pecho está completamente contraído (manos juntas).',
+    sets:'3',reps:'12-15',rest:'60 seg'},
+  {id:'machine-chest-press',name:'Press de Pecho en Máquina',muscle:'pecho',type:'compound',loc:'gym',diff:'beginner',primary:'Pecho',secondary:'Tríceps, Hombro delantero',evidence:'high',equip:'Máquina de Press',cue:'Inflá el pecho hacia arriba y mantené los hombros clavados atrás.',swap:'bench,db-ohp',errors:['Empujar los hombros hacia adelante al final del movimiento','Codos muy arriba (a la altura de los hombros)'],
+    steps:['Ajustá el asiento: los agarres deben quedar alineados a mitad del pecho','Juntá las escápulas y sacá pecho','Empujá el peso hacia adelante enfocándote en usar el pecho','Regresá de forma lenta y controlada en 3 segundos'],
+    tips:'Ideal para principiantes o para cuando ya estás muy fatigado del Press de Banca libre y querés sumar volumen seguro.',
+    science:'Al eliminar el requerimiento de estabilización, el sistema nervioso puede reclutar más fibras musculares del pectoral para la fuerza bruta.',
+    sets:'3',reps:'10-12',rest:'90 seg'},
+
+  // ═══ HOMBROS (+2) ═══
+  {id:'pike-pushup',name:'Flexiones Pike / Carpa',muscle:'hombros',type:'bodyweight',loc:'both',diff:'intermediate',primary:'Deltoides anterior y medio',secondary:'Tríceps, Pectoral superior',evidence:'high',equip:'Nada',cue:'Imaginá que querés meter tu cabeza debajo del sillón.',swap:'ohp,db-ohp',errors:['Bajar el pecho hacia las manos en vez de la cabeza','Mirar al frente (el cuello duele, mirá a tus rodillas)','Abrir los codos a 90°'],
+    steps:['Hacé una "V" invertida con tu cuerpo: manos y pies en el piso, cadera apuntando al techo','El cuerpo debe estar doblado por la mitad en la cadera','Bajá en diagonal, llevando la coronilla de la cabeza por DELANTE de tus manos','Formá un triángulo entre tus dos manos y tu cabeza en el piso','Empujá hacia atrás a la posición de la "V"'],
+    tips:'Es EL ejercicio de hombros con peso corporal. Si es muy fácil, subí los pies a una silla. Si es muy difícil, alejá más las manos de los pies.',
+    science:'Imita la biomecánica de un Press Militar por encima de la cabeza, pero usando tu propio peso. Sobrecarga enormemente el deltoides anterior.',
+    sets:'3',reps:'8-12',rest:'90 seg'},
+  {id:'machine-shoulder-press',name:'Press de Hombros en Máquina',muscle:'hombros',type:'compound',loc:'gym',diff:'beginner',primary:'Deltoides anterior',secondary:'Tríceps, Trapecio superior',evidence:'high',equip:'Máquina de Hombros',cue:'Presioná tu espalda contra el asiento, no te arquees para empujar más.',swap:'db-ohp,ohp',errors:['Levantar la cola del asiento para ayudar con el pecho','Bajar el peso de golpe'],
+    steps:['Sentate y agarrá las manijas (agarre neutro o prono, el que sea más cómodo)','Mantené la espalda recta y pegada al respaldo','Empujá hacia arriba de forma explosiva','Bajá controlando el peso hasta que las manos lleguen casi a la altura de las orejas'],
+    tips:'Perfecto para llegar al fallo muscular real sin riesgo de que una mancuerna o barra pesada te caiga encima.',
+    science:'Las máquinas de trayectoria guiada permiten aplicar máxima fuerza bruta al deltoides, aislando el trabajo de empuje vertical de manera eficiente.',
+    sets:'3',reps:'8-12',rest:'90 seg'},
+
+  // ═══ BRAZOS (+2) ═══
+  {id:'cable-curl',name:'Curl de Bíceps en Polea',muscle:'biceps',type:'isolation',loc:'gym',diff:'beginner',primary:'Bíceps',secondary:'Antebrazos',evidence:'high',equip:'Polea baja + Barra recta o Cuerda',cue:'Codos atornillados a las costillas.',swap:'barbell-curl,db-curl',errors:['Dejar que el peso te tire hacia adelante','Mover los codos hacia arriba al contraer'],
+    steps:['Enganchá una barra a la polea baja. Parate derecho, a un paso de la máquina','Agarrá la barra con palmas hacia arriba','Flexioná los codos subiendo el peso, apretando el bíceps arriba','Bajá en 3 segundos, sintiendo cómo el cable estira el músculo abajo'],
+    tips:'Podes probarlo dándole la espalda a la polea (Cable Curl de Espaldas) para obtener un estiramiento extremo del bíceps.',
+    science:'La polea provee una resistencia perpendicular constante, eliminando los "puntos muertos" del curl con mancuerna tradicional.',
+    sets:'3',reps:'12-15',rest:'60 seg'},
+  {id:'bench-dip',name:'Fondos en Banco / Silla',muscle:'triceps',type:'bodyweight',loc:'both',diff:'beginner',primary:'Tríceps',secondary:'Pecho, Hombro delantero',evidence:'medium',equip:'Banco, Silla o Cama firme',cue:'Tu espalda debe rozar el banco al bajar, no te vayas hacia adelante.',swap:'diamond-pushup,pushdown',errors:['Alejar mucho el cuerpo del banco (destruye los hombros)','Subir los hombros a las orejas','Doblar muy poco los codos'],
+    steps:['Apoyá las manos en el borde del banco, dedos apuntando hacia vos','Piernas estiradas al frente (más difícil) o rodillas dobladas (más fácil)','Bajá el cuerpo rozando el banco hasta que el codo esté a 90°','Empujá hacia arriba extendiendo los tríceps al máximo'],
+    tips:'NO lo hagas si tenés dolores de hombro o poca movilidad de rotación interna. Para más hipertrofia, poné un disco de peso en tus piernas.',
+    science:'Un ejercicio de cadena cerrada accesible en cualquier lado. Mantiene al tríceps bajo gran carga con tu propio peso corporal.',
+    sets:'3',reps:'10-15',rest:'60 seg'}
 ];
 
 // ═══ METHODS ═══
@@ -1609,7 +1858,8 @@ function toggleTm() {
       if (tmRem <= 0) {
         clearInterval(tmInt); tmRun = false; tmRem = 0;
         vib([200, 100, 200]);
-        toast('⏰ ¡Descanso terminado!');
+        const tModal = document.getElementById('timerModal');
+        if(tModal) tModal.classList.add('show');
         const lbl = document.getElementById('timerLbl');
         if (lbl) lbl.textContent = '⏰ ¡Tiempo! Vamos con la siguiente serie';
       }
@@ -1685,7 +1935,7 @@ function getAllLogs(){
   for(let i=0;i<localStorage.length;i++){
     const k=localStorage.key(i);
     // Excluimos las variables de sistema nuevas para que no rompan el dashboard
-    if(k.startsWith('gb_') && !['gb_wo_', 'gb_onboarded', 'gb_selected_split', 'gb_active_wo', 'gb_theme'].some(prefix => k.startsWith(prefix))){
+    if(k.startsWith('gb_') && !['gb_wo_', 'gb_onboarded', 'gb_selected_split', 'gb_active_wo', 'gb_theme', 'gb_custom_routines'].some(prefix => k.startsWith(prefix))){
       try{
         const data = JSON.parse(localStorage.getItem(k));
         if(Array.isArray(data)) logs[k.slice(3)]=data; // Aseguramos que sea un array
@@ -1736,7 +1986,9 @@ function renderTrackerDash(){
     // No hay entrenamiento, mostrar selector normal
     html+=`<div style="font-size:12px;color:var(--ink3);margin-bottom:10px">Elegí tu rutina y el día:</div>`;
     
-    const sortedSplits=[...SPLITS].sort((a,b)=>parseInt(a.freq)-parseInt(b.freq));
+    let customRoutines = []; try{ customRoutines = JSON.parse(localStorage.getItem('gb_custom_routines')) || []; }catch(e){}
+    const allSplits = [...SPLITS, ...customRoutines];
+    const sortedSplits=allSplits.sort((a,b)=>(parseInt(a.freq)||99)-(parseInt(b.freq)||99));
     sortedSplits.forEach(s=>{
       const sel=selectedSplit===s.id?'selected':'';
       html+=`<div class="dash-split-pick ${sel}" onclick="pickSplit('${s.id}')">
@@ -1746,7 +1998,7 @@ function renderTrackerDash(){
     });
     
     if(selectedSplit){
-      const sp=SPLITS.find(s=>s.id===selectedSplit);
+      const sp=allSplits.find(s=>s.id===selectedSplit);
       if(sp){
         html+=`<div class="dash-day-pick">`;
         sp.days.forEach((d,i)=>{
@@ -1814,7 +2066,9 @@ function cancelActiveWo(){
 }
 
 function startWorkout(){
-  const sp=SPLITS.find(s=>s.id===selectedSplit);
+  let customRoutines = []; try{ customRoutines = JSON.parse(localStorage.getItem('gb_custom_routines')) || []; }catch(e){}
+  const allSplits = [...SPLITS, ...customRoutines];
+  const sp=allSplits.find(s=>s.id===selectedSplit);
   if(!sp||selectedDay===null)return;
   woSplit=sp;woDay=sp.days[selectedDay];woFree=false;
   woSets={};
@@ -1882,6 +2136,31 @@ function addFreeExercise(eid){
 
 function closeExPicker(){document.getElementById('exPickerOverlay').classList.remove('show')}
 
+function saveAsCustomRoutine(){
+  if(woDay.exercises.length === 0){ toast('⚠️ Agregá ejercicios primero'); return; }
+  const name = prompt('¿Qué nombre le querés poner a tu rutina personalizada?');
+  if(!name) return;
+  
+  const exNames = woDay.exercises.map(id => {const ex=EX.find(x=>x.id===id); return ex?ex.name:id});
+  const desc = "Rutina de: " + exNames.slice(0, 3).join(', ') + (exNames.length>3 ? ' y más.' : '.');
+  
+  const newRoutine = {
+      id: 'custom_' + Date.now(),
+      name: name,
+      emoji: '⭐',
+      freq: 'Personalizada',
+      desc: desc,
+      days: [{name: name, exercises: [...woDay.exercises]}]
+  };
+  
+  let customRoutines = [];
+  try{ customRoutines = JSON.parse(localStorage.getItem('gb_custom_routines')) || []; }catch(e){}
+  customRoutines.push(newRoutine);
+  localStorage.setItem('gb_custom_routines', JSON.stringify(customRoutines));
+  toast('✅ Rutina guardada con éxito');
+  renderTrackerDash();
+}
+
 function renderWorkout(){
   if(!woDay)return;
   const today=getToday();
@@ -1930,20 +2209,29 @@ function renderWorkout(){
       <div class="wo-ex-target">${ex.sets} × ${ex.reps} · Descanso: ${ex.rest}</div>`;
     
     // Get last session data for this exercise
+    const isBarbell = ex.equip && ex.equip.toLowerCase().includes('barra');
+    const isTime = ex.reps && ex.reps.includes('seg');
+
     const prevLog=getLog(eid);
     const lastDate=[...new Set(prevLog.filter(e=>e.d!==today).map(e=>e.d))].pop();
     const lastSets=lastDate?prevLog.filter(e=>e.d===lastDate):[];
     
+    html += `<div style="display:flex;justify-content:flex-end;gap:15px;margin-bottom:8px">
+      <button style="background:none;border:none;color:var(--ink3);font-size:12px;font-weight:600;cursor:pointer" onclick="if(woSets['${eid}'].length>1){woSets['${eid}'].pop(); saveActiveWo(); renderWorkout();}">- Quitar Serie</button>
+      <button style="background:none;border:none;color:var(--accent);font-size:12px;font-weight:600;cursor:pointer" onclick="woSets['${eid}'].push({w:'',r:'',done:false}); saveActiveWo(); renderWorkout();">+ Agregar Serie</button>
+    </div>`;
+
     sets.forEach((s,si)=>{
       const lastHint=lastSets[si]?`${lastSets[si].w}×${lastSets[si].r}`:'';
-      html+=`<div class="wo-set-row">
-        <span class="wo-set-label">S${si+1}</span>
-        <div style="position:relative;flex:1.2;display:flex">
-          <input class="wo-set-input" id="w_${eid}_${si}" style="width:100%;border-radius:var(--rxs) 0 0 var(--rxs);border-right:none" placeholder="${lastHint||'kg'}" value="${s.w}" type="number" step="0.5" inputmode="decimal" onchange="woUpdateSet('${eid}',${si},'w',this.value)">
-          <button style="background:var(--surface);border:1px solid var(--border);border-left:1px solid rgba(255,255,255,0.05);border-radius:0 var(--rxs) var(--rxs) 0;padding:0 8px;color:var(--ink3);cursor:pointer;transition:all .2s" onclick="showPlateCalc(document.getElementById('w_${eid}_${si}').value)">🏋️</button>
+      html+=`<div class="wo-set-row" style="gap:4px">
+        <span class="wo-set-label" style="min-width:20px">S${si+1}</span>
+        <div style="position:relative;flex:1;display:flex;min-width:0">
+          <input class="wo-set-input" id="w_${eid}_${si}" style="${isBarbell?'width:100%;border-radius:var(--rxs) 0 0 var(--rxs);border-right:none':'width:100%'};padding:8px 4px" placeholder="${lastHint||'kg'}" value="${s.w}" type="number" step="0.5" inputmode="decimal" onchange="woUpdateSet('${eid}',${si},'w',this.value)">
+          ${isBarbell ? `<button style="background:var(--surface);border:1px solid var(--border);border-left:1px solid rgba(255,255,255,0.05);border-radius:0 var(--rxs) var(--rxs) 0;padding:0 6px;color:var(--ink3);cursor:pointer;transition:all .2s" onclick="showPlateCalc(document.getElementById('w_${eid}_${si}').value)">🏋️</button>` : ''}
         </div>
-        <input class="wo-set-input" style="flex:0.8" placeholder="reps" value="${s.r}" type="number" inputmode="numeric" onchange="woUpdateSet('${eid}',${si},'r',this.value)">
-        <button class="wo-set-check ${s.done?'done':''}" onclick="woCheckSet('${eid}',${si})">${s.done?'✓':''}</button>
+        <input class="wo-set-input" style="width:48px;flex-shrink:0;padding:8px 2px" placeholder="${isTime?'seg':'reps'}" value="${s.r}" type="number" inputmode="numeric" onchange="woUpdateSet('${eid}',${si},'r',this.value)">
+        <input class="wo-set-input" style="width:40px;flex-shrink:0;font-size:11px;padding:8px 2px" placeholder="RPE" value="${s.rpe||''}" type="number" inputmode="numeric" onchange="woUpdateSet('${eid}',${si},'rpe',this.value)" title="RPE (1-10)">
+        <button class="wo-set-check ${s.done?'done':''}" style="flex-shrink:0;margin-left:2px" onclick="woCheckSet('${eid}',${si})">${s.done?'✓':''}</button>
       </div>`;
     });
     html+=`</div>`;
@@ -1951,16 +2239,23 @@ function renderWorkout(){
   
   // Add exercise button (free workout)
   if(woFree){
-    html+=`<button class="dash-start" style="background:var(--surface);color:var(--ink2);box-shadow:none;border:1px dashed var(--border);font-size:16px;margin-bottom:10px" onclick="openExPicker()">➕ AGREGAR EJERCICIO</button>`;
+    html+=`<div style="display:flex;gap:10px;margin-bottom:10px">
+      <button class="dash-start" style="flex:1;background:var(--surface);color:var(--ink2);box-shadow:none;border:1px dashed var(--border);font-size:14px;margin-bottom:0;padding:12px" onclick="openExPicker()">➕ EJERCICIO</button>
+      <button class="dash-start" style="flex:1;background:var(--accent-dim);color:var(--accent);box-shadow:none;border:1px solid var(--accent);font-size:14px;margin-bottom:0;padding:12px" onclick="saveAsCustomRoutine()">💾 GUARDAR RUTINA</button>
+    </div>`;
   }
 
-  // Notes
-  let savedNotes='';
-  try{const wo=JSON.parse(localStorage.getItem('gb_wo_'+today));if(wo)savedNotes=wo.notes||''}catch(e){}
+ // Notes
+ let savedNotes='';
+  try{
+    const active = JSON.parse(localStorage.getItem('gb_active_wo'));
+    if(active && active.notes) savedNotes = active.notes;
+    else { const wo=JSON.parse(localStorage.getItem('gb_wo_'+today)); if(wo)savedNotes=wo.notes||''; }
+  }catch(e){}
   
   html+=`<div class="wo-notes">
     <div style="font-size:12px;color:var(--ink3);margin-bottom:6px">📝 Notas de hoy</div>
-    <textarea id="woNotes" placeholder="¿Cómo te sentiste? ¿Algo para recordar?">${savedNotes}</textarea>
+    <textarea id="woNotes" placeholder="¿Cómo te sentiste? ¿Algo para recordar?" onchange="saveActiveWo()" onkeyup="saveActiveWo()">${savedNotes}</textarea>
   </div>`;
   
   // Finish button
@@ -1978,7 +2273,9 @@ function renderWorkout(){
 }
 
 function saveActiveWo(){
-  if(woDay) localStorage.setItem('gb_active_wo', JSON.stringify({woSplit, woDay, woSets, woFree, date: getToday()}));
+  const notesEl = document.getElementById('woNotes');
+  const curNotes = notesEl ? notesEl.value : '';
+  if(woDay) localStorage.setItem('gb_active_wo', JSON.stringify({woSplit, woDay, woSets, woFree, notes: curNotes, date: getToday()}));
 }
 
 function woUpdateSet(eid,si,field,val){
@@ -1997,7 +2294,7 @@ function woCheckSet(eid,si){
   const log=getLog(eid);
   
   if(set.done){
-    log.push({w:weightVal,r:parseInt(set.r),d:today,t:Date.now()});
+    log.push({w:weightVal,r:parseInt(set.r),rpe:parseFloat(set.rpe)||0,d:today,t:Date.now()});
     saveLog(eid,log);
     checkForPR(eid,weightVal); // Fix: Usamos weightVal para evitar NaN
     
@@ -2009,7 +2306,7 @@ function woCheckSet(eid,si){
   } else {
     // Fix: Si se destilda, buscamos y borramos la entrada de hoy
     for(let i=log.length-1; i>=0; i--){
-      if(log[i].d===today && log[i].w===weightVal && log[i].r===parseInt(set.r)){
+      if(log[i].d===today && log[i].w===weightVal && log[i].r===parseInt(set.r) && (log[i].rpe||0)===(parseFloat(set.rpe)||0)){
         log.splice(i,1); break;
       }
     }
@@ -2061,6 +2358,11 @@ function finishWorkout(){
   
   vib([50, 100, 50, 100, 150]);
   toast('🎉 ¡Entrenamiento guardado!');
+  
+  if(confirm('Entrenamiento guardado. ¿Querés descargar una imagen resumen para compartir?')) {
+    shareWorkoutImage(today, dayName, woData.totalSets);
+  }
+  
   goPage('tracker');
 }
 
@@ -2145,10 +2447,26 @@ function renderStats(){
     <div class="stat-streak-lbl">${streak===1?'día consecutivo':'días consecutivos'}</div>
   </div>`;
   
+  // Tonnage (7 days)
+  const last7 = Array(7).fill(0).map((_,i) => new Date(Date.now()-i*86400000).toISOString().slice(0,10));
+  let weeklyTonnage = 0;
+  Object.values(logs).forEach(entries => {
+    entries.filter(e => last7.includes(e.d)).forEach(e => { weeklyTonnage += (e.w * e.r); });
+  });
+
   // Summary boxes
+  html+=`<div style="display:flex;gap:10px;margin-bottom:10px">
+    <div class="stat-card" style="flex:1;text-align:center;padding:15px;margin-bottom:0">
+      <div style="font-size:22px;font-weight:700;color:var(--accent)">${weeklyTonnage.toLocaleString()} kg</div>
+      <div style="font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:1px;margin-top:4px">Tonelaje (7 Días)</div>
+    </div>
+    <div class="stat-card" style="flex:1;text-align:center;padding:15px;margin-bottom:0">
+      <div style="font-size:22px;font-weight:700;color:var(--green)">${totalSets}</div>
+      <div style="font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:1px;margin-top:4px">Series Totales</div>
+    </div>
+  </div>`;
   html+=`<div class="stat-row">
     <div class="stat-box"><div class="stat-box-num">${totalDays.size}</div><div class="stat-box-lbl">días entrenados</div></div>
-    <div class="stat-box"><div class="stat-box-num">${totalSets}</div><div class="stat-box-lbl">series totales</div></div>
     <div class="stat-box"><div class="stat-box-num">${Object.keys(prs).length}</div><div class="stat-box-lbl">ejercicios con PR</div></div>
   </div>`;
   
@@ -2174,24 +2492,34 @@ function renderStats(){
   }
   html+=`</div></div>`;
   
-  // Weekly volume by muscle
-  html+=`<div class="stitle" style="margin-top:14px;margin-bottom:8px">VOLUMEN SEMANAL POR MÚSCULO</div>`;
-  html+=`<div class="stat-card">`;
+  // Weekly volume by muscle (Pie Chart)
+  html+=`<div class="stitle" style="margin-top:14px;margin-bottom:8px">DISTRIBUCIÓN MUSCULAR (7 DÍAS)</div>`;
+  html+=`<div class="stat-card" style="display:flex;align-items:center;gap:15px">`;
   if(Object.keys(vol).length){
-    const colors={hombros:'var(--blue)',pecho:'var(--accent)',espalda:'var(--green)',biceps:'var(--yellow)',triceps:'var(--purple)',antebrazos:'var(--yellow)',core:'var(--pink)',piernas:'var(--blue)',gluteos:'var(--pink)'};
-    const maxVol=Math.max(...Object.values(vol),1);
-    MUSCLES.forEach(m=>{
-      const v=vol[m.id]||0;
-      const pct=Math.round((v/maxVol)*100);
-      const color=colors[m.id]||'var(--accent)';
-      html+=`<div class="vol-bar-container">
-        <span class="vol-bar-label">${m.emoji} ${m.name}</span>
-        <div class="vol-bar-track"><div class="vol-bar-fill" style="width:${pct}%;background:${color}"></div></div>
-        <span class="vol-bar-num" style="color:${color}">${v}</span>
-      </div>`;
+    const colors={hombros:'var(--blue)',pecho:'var(--accent)',espalda:'var(--green)',biceps:'var(--yellow)',triceps:'var(--purple)',antebrazos:'var(--pink)',core:'var(--accent2)',piernas:'#38BDF8',gluteos:'#F43F5E'};
+    let totalVol = Object.values(vol).reduce((a,b)=>a+b,0);
+    let conicString = [];
+    let currentPct = 0;
+    let legendHtml = `<div style="flex:1;display:flex;flex-direction:column;gap:6px">`;
+    
+    // Ordenar de mayor a menor volumen
+    const sortedVol = Object.entries(vol).sort((a,b)=>b[1]-a[1]);
+    
+    sortedVol.forEach(([mId, v]) => {
+      const exM = MUSCLES.find(m=>m.id===mId);
+      const color = colors[mId] || 'var(--accent)';
+      const pct = (v / totalVol) * 100;
+      conicString.push(`${color} ${currentPct}% ${currentPct + pct}%`);
+      currentPct += pct;
+      legendHtml += `<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink2)"><div style="width:12px;height:12px;border-radius:3px;background:${color}"></div><span style="flex:1">${exM?exM.name:mId}</span><strong style="color:var(--ink)">${Math.round(pct)}%</strong></div>`;
     });
+    legendHtml += `</div>`;
+    
+    // Dibuja el gráfico circular usando CSS conic-gradient
+    html += `<div style="width:110px;height:110px;border-radius:50%;background:conic-gradient(${conicString.join(', ')});flex-shrink:0;box-shadow:inset 0 0 20px rgba(0,0,0,0.1)"></div>`;
+    html += legendHtml;
   } else {
-    html+=`<div style="text-align:center;padding:20px;color:var(--ink3);font-size:13px">Sin datos esta semana. ¡Empezá a entrenar!</div>`;
+    html+=`<div style="text-align:center;width:100%;color:var(--ink3);font-size:13px;padding:10px 0">Sin datos esta semana. ¡Empezá a entrenar!</div>`;
   }
   html+=`</div>`;
   
@@ -2507,6 +2835,41 @@ function searchEx(q) {
       <div class="ex-muscle-info"><strong>Músculo:</strong> ${e.primary}</div>
     </div>`;
   }).join('');
+}
+
+function shareWorkoutImage(date, splitName, totalSets) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1080; canvas.height = 1080;
+  const ctx = canvas.getContext('2d');
+  
+  ctx.fillStyle = localStorage.getItem('gb_theme') === 'light' ? '#F7F7F7' : '#0A0A0A';
+  ctx.fillRect(0,0,1080,1080);
+  ctx.fillStyle = '#FF5E3A'; ctx.fillRect(0, 0, 1080, 20);
+  
+  ctx.fillStyle = localStorage.getItem('gb_theme') === 'light' ? '#111111' : '#FFFFFF';
+  ctx.font = 'bold 100px "Bebas Neue", sans-serif';
+  ctx.textAlign = 'center'; ctx.fillText('GYMBRAIN', 540, 200);
+  
+  ctx.fillStyle = '#FF5E3A';
+  ctx.font = 'bold 40px Montserrat, sans-serif';
+  ctx.fillText('ENTRENAMIENTO COMPLETADO', 540, 320);
+  
+  ctx.fillStyle = localStorage.getItem('gb_theme') === 'light' ? '#333333' : '#E0E0E0';
+  ctx.font = 'bold 80px Montserrat, sans-serif';
+  ctx.fillText(splitName || 'Entrenamiento Libre', 540, 500, 900);
+  
+  ctx.fillStyle = '#4ADE80';
+  ctx.font = 'bold 140px "Bebas Neue", sans-serif';
+  ctx.fillText(totalSets + ' SERIES', 540, 750);
+  
+  ctx.fillStyle = '#74706A';
+  ctx.font = '30px Montserrat, sans-serif';
+  ctx.fillText('Fecha: ' + date.split('-').reverse().join('/'), 540, 950);
+  
+  const link = document.createElement('a');
+  link.download = `GymBrain_${date.replace(/-/g,'')}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
 }
 
 // ═══ PWA INJECTION ═══
