@@ -4769,7 +4769,7 @@
       const allSplits = [...SPLITS, ...customRoutines];
       const sp = allSplits.find(s => s.id === selectedSplit);
       if (!sp || selectedDay === null) return;
-      woSplit = sp; woDay = sp.days[selectedDay]; woFree = false;
+      woSplit = sp; woDay = JSON.parse(JSON.stringify(sp.days[selectedDay])); woFree = false;
       woSets = {};
       woDay.exercises.forEach(eid => {
         const ex = EX.find(e => e.id === eid);
@@ -4911,6 +4911,36 @@
       toast('🗑️ Rutina borrada');
     }
 
+    function updateCustomRoutine() {
+      if (!woSplit || !woSplit.id.startsWith('custom_')) return;
+      let customRoutines = [];
+      try { customRoutines = JSON.parse(localStorage.getItem('gb_custom_routines')) || []; } catch (e) { }
+
+      const idx = customRoutines.findIndex(r => r.id === woSplit.id);
+      if (idx !== -1) {
+        // Buscamos qué día estamos modificando
+        const dayIdx = customRoutines[idx].days.findIndex(d => d.name === woDay.name);
+        if (dayIdx !== -1) {
+          customRoutines[idx].days[dayIdx].exercises = [...woDay.exercises];
+        } else {
+          customRoutines[idx].days[0].exercises = [...woDay.exercises];
+        }
+
+        // Actualizamos el texto descriptivo
+        const exNames = woDay.exercises.map(id => { const ex = EX.find(x => x.id === id); return ex ? ex.name : id });
+        customRoutines[idx].desc = "Rutina de: " + exNames.slice(0, 3).join(', ') + (exNames.length > 3 ? ' y más.' : '.');
+        localStorage.setItem('gb_custom_routines', JSON.stringify(customRoutines));
+
+        toast('✅ Rutina actualizada');
+        const btn = document.getElementById('btnUpdateCustom');
+        if (btn) {
+          btn.innerHTML = '✅ ACTUALIZADA';
+          btn.style.opacity = '0.5';
+          btn.onclick = null;
+        }
+      }
+    }
+
     function renderWorkout() {
       if (!woDay) return;
       const today = getToday();
@@ -4987,13 +5017,19 @@
         html += `</div>`;
       });
 
-      // Add exercise button (free workout)
-      if (woFree) {
-        html += `<div style="display:flex;gap:10px;margin-bottom:10px">
-      <button class="dash-start" style="flex:1;background:var(--surface);color:var(--ink2);box-shadow:none;border:1px dashed var(--border);font-size:14px;margin-bottom:0;padding:12px" onclick="openExPicker()">EJERCICIO</button>
-      <button id="btnSaveCustom" class="dash-start" style="flex:1;background:var(--accent-dim);color:var(--accent);box-shadow:none;border:1px solid var(--accent);font-size:14px;margin-bottom:0;padding:12px" onclick="saveAsCustomRoutine()">GUARDAR RUTINA</button>
-    </div>`;
+      // Botones siempre visibles para modificar cualquier rutina sobre la marcha
+      let saveBtnHtml = '';
+      if (woSplit && woSplit.id.startsWith('custom_')) {
+        // Si es una rutina personalizada, permitimos actualizarla directamente
+        saveBtnHtml = `<button id="btnUpdateCustom" class="dash-start" style="flex:1;background:var(--accent-dim);color:var(--accent);box-shadow:none;border:1px solid var(--accent);font-size:14px;margin-bottom:0;padding:12px" onclick="updateCustomRoutine()">ACTUALIZAR RUTINA</button>`;
+      } else {
+        // Si es Libre o Default, permitimos guardarla como una NUEVA rutina personalizada
+        saveBtnHtml = `<button id="btnSaveCustom" class="dash-start" style="flex:1;background:var(--accent-dim);color:var(--accent);box-shadow:none;border:1px solid var(--accent);font-size:14px;margin-bottom:0;padding:12px" onclick="saveAsCustomRoutine()">GUARDAR RUTINA</button>`;
       }
+      html += `<div style="display:flex;gap:10px;margin-bottom:10px">
+  <button class="dash-start" style="flex:1;background:var(--surface);color:var(--ink2);box-shadow:none;border:1px dashed var(--border);font-size:14px;margin-bottom:0;padding:12px" onclick="openExPicker()">+ EJERCICIO</button>
+  ${saveBtnHtml}
+</div>`;
 
       // Notes
       let savedNotes = '';
