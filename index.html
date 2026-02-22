@@ -1069,9 +1069,7 @@
       margin-bottom: 6px
     }
 
-    .supp-emoji {
-      font-size: 20px
-    }
+    /* icon css moved */
 
     .supp-name {
       font-family: 'Bebas Neue', sans-serif;
@@ -1155,9 +1153,7 @@
       margin-bottom: 8px
     }
 
-    .creator-emoji {
-      font-size: 20px
-    }
+    /* icon css moved */
 
     .creator-name {
       font-family: 'Bebas Neue', sans-serif;
@@ -1260,9 +1256,7 @@
       gap: 8px
     }
 
-    .learn-emoji {
-      font-size: 20px
-    }
+    /* icon css moved */
 
     .learn-name {
       font-family: 'Bebas Neue', sans-serif;
@@ -2125,8 +2119,27 @@
       margin-bottom: 4px
     }
 
-    .method-emoji {
-      font-size: 22px
+    .method-icon,
+    .split-icon,
+    .supp-icon,
+    .creator-icon,
+    .learn-icon {
+      width: 24px;
+      height: 24px;
+      color: var(--accent);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .method-icon svg,
+    .split-icon svg,
+    .supp-icon svg,
+    .creator-icon svg,
+    .learn-icon svg {
+      width: 100%;
+      height: 100%;
     }
 
     .method-name {
@@ -2203,9 +2216,7 @@
       margin-bottom: 4px
     }
 
-    .split-emoji {
-      font-size: 22px
-    }
+    /* icon css moved */
 
     .split-name {
       font-size: 15px;
@@ -3838,7 +3849,7 @@
     // ═══ METHODS ═══
     const METHODS = [
       {
-        id: 'dropset', name: 'Drop Sets', emoji: '📉', diff: 'intermediate',
+        id: 'dropset', name: 'Drop Sets', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>', diff: 'intermediate',
         desc: 'Hacés una serie hasta no poder más, bajás el peso 20-30% y seguís sin descanso. Repetí 2-3 veces.',
         detail: 'Ideal para el último ejercicio de un músculo. Genera mucho estrés metabólico (la "quemadura") que estimula crecimiento. Cada drop recluta más fibras musculares para compensar la fatiga. Usá en aislamiento, no en compuestos pesados.',
         example: 'Curl con mancuernas: 15kg x hasta no poder → 10kg x hasta no poder → 7kg x hasta no poder. Sin descanso entre drops.',
@@ -3846,7 +3857,7 @@
         when: 'Usalo en la última serie del último ejercicio para un músculo. Ideal en máquinas donde cambiar peso es rápido. Evitá en sentadilla o peso muerto.'
       },
       {
-        id: 'restpause', name: 'Rest-Pause', emoji: '⏸', diff: 'intermediate',
+        id: 'restpause', name: 'Rest-Pause', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="4" height="16" x="6" y="4"/><rect width="4" height="16" x="14" y="4"/></svg>', diff: 'intermediate',
         desc: 'Hacés una serie hasta no poder más, descansás 10-15 seg, y seguís. Repetí 2-3 veces.',
         detail: 'Te permite hacer más repeticiones con el MISMO peso. Es como comprimir 3 series en 1 con micro-descansos — tu cuerpo recupera algo de ATP (energía rápida) pero el músculo sigue fatigado. Muy eficiente en tiempo.',
         example: 'Prensa de piernas: 100kg x 10 (no das más) → 15 seg → 100kg x 4 → 15 seg → 100kg x 2-3.',
@@ -3854,7 +3865,7 @@
         when: 'Ideal cuando tenés poco tiempo. Funciona en ejercicios de aislamiento o máquinas. Evitá donde la fatiga es peligrosa (sentadilla, peso muerto).'
       },
       {
-        id: 'myoreps', name: 'Myo-Reps', emoji: '🔄', diff: 'intermediate',
+        id: 'myoreps', name: 'Myo-Reps', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>', diff: 'intermediate',
         desc: 'Una serie larga de 12-20 reps, luego mini-series de 3-5 reps con 5 seg de descanso.',
         detail: 'Cada mini-serie arranca con el músculo ya cansado, así que TODAS las reps son "reps efectivas" (las últimas 5 antes del fallo son las que más estimulan crecimiento). Parás cuando no llegás a 3 reps. Es la técnica más eficiente según la investigación de Borge Fagerli.',
         example: 'Laterales: 10kg x 15 → 5 seg → x5 → 5 seg → x5 → 5 seg → x4 → x3 (parás).',
@@ -3862,7 +3873,7 @@
         when: 'Perfecto para ejercicios de aislamiento al final del entrenamiento. También para casa donde tenés peso limitado.'
       },
       {
-        id: 'superset', name: 'Superseries', emoji: '🔗', diff: 'beginner',
+        id: 'superset', name: 'Superseries', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>', diff: 'beginner',
         desc: 'Dos ejercicios seguidos sin descanso. Pueden ser del mismo músculo o de músculos opuestos.',
         detail: 'Músculos opuestos (ej: bíceps + tríceps) ahorra tiempo sin perder rendimiento — mientras uno trabaja, el otro descansa. Del mismo músculo (ej: press + apertura) genera más fatiga para hipertrofia. La primera opción es mejor para eficiencia.',
         example: 'Antagonista: Press de banca x 10 → Remo con barra x 10 → descanso 90 seg → repetir.',
@@ -3870,7 +3881,7 @@
         when: 'Usá superseries antagonistas (músculos opuestos) cuando tenés poco tiempo. Superseries del mismo músculo solo al final del entrenamiento para generar máxima fatiga.'
       },
       {
-        id: 'tempo', name: 'Tempo Training', emoji: '🐌', diff: 'beginner',
+        id: 'tempo', name: 'Tempo Training', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg>', diff: 'beginner',
         desc: 'Controlás la velocidad de cada parte del movimiento con un conteo específico.',
         detail: 'Se escribe como 4 números: ej. 3-1-2-0 = 3 seg bajando, 1 seg pausa abajo, 2 seg subiendo, 0 pausa arriba. Aumenta el tiempo bajo tensión sin necesitar más peso. Ideal para aprender control y para entrenar en casa con peso limitado.',
         example: 'Sentadilla tempo 3-1-2-0: bajás contando 3, pausás 1 seg abajo, subís contando 2, arriba directo.',
@@ -3878,7 +3889,7 @@
         when: 'Ideal para principiantes que necesitan mejorar técnica. También para entrenamiento en casa cuando el peso disponible es poco — el tempo compensa.'
       },
       {
-        id: 'cluster', name: 'Cluster Sets', emoji: '💎', diff: 'advanced',
+        id: 'cluster', name: 'Cluster Sets', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg>', diff: 'advanced',
         desc: 'Dividís una serie pesada en mini-series de 2-3 reps con 15-20 seg de descanso entre cada una.',
         detail: 'Te permite hacer más repeticiones con un peso pesado del que normalmente podrías. Tu cuerpo recupera algo de fosfocreatina (energía rápida) en esos 15-20 seg, pero el músculo sigue cargado. Excelente para ganar fuerza.',
         example: 'Sentadilla pesada: 2 reps → 20 seg → 2 reps → 20 seg → 2 reps = 6 reps totales con un peso que normalmente harías solo 3-4.',
@@ -3886,7 +3897,7 @@
         when: 'Solo para ejercicios compuestos pesados donde querés ganar fuerza: sentadilla, peso muerto, press de banca, press militar. Nunca en aislamiento — no tiene sentido.'
       },
       {
-        id: 'mechanical', name: 'Mechanical Drop Set', emoji: '🔧', diff: 'advanced',
+        id: 'mechanical', name: 'Mechanical Drop Set', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>', diff: 'advanced',
         desc: 'En vez de bajar el peso, cambiás a una versión más fácil del mismo ejercicio.',
         detail: 'Aprovechás que distintas posiciones del cuerpo hacen el ejercicio más fácil o difícil. El músculo sigue trabajando pero con ventaja mecánica. No necesitás cambiar el peso. Es como hacer trampa de manera inteligente y controlada.',
         example: 'Bíceps: Curl inclinado (difícil) → sin descanso → Curl parado (más fácil) → sin descanso → Curl martillo (el antebrazo ayuda).',
@@ -3898,7 +3909,7 @@
     // ═══ SPLITS ═══
     const SPLITS = [
       {
-        id: 'ppl', name: 'Push / Pull / Legs', emoji: '🔥', freq: '6 días',
+        id: 'ppl', name: 'Push / Pull / Legs', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 12 12 17 22 12"/><polyline points="2 17 12 22 22 17"/></svg>', freq: '6 días',
         desc: 'El más popular para crecimiento muscular. Cada músculo 2 veces por semana. Para intermedios con tiempo.',
         days: [
           { name: 'PUSH — Pecho, Hombro, Tríceps', exercises: ['bench', 'incline-db', 'ohp', 'lat-raise', 'pushdown', 'overhead-ext'] },
@@ -3910,7 +3921,7 @@
         ]
       },
       {
-        id: 'arnold', name: 'Arnold Split', emoji: '🏆', freq: '6 días',
+        id: 'arnold', name: 'Arnold Split', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>', freq: '6 días',
         desc: 'El split clásico de Arnold Schwarzenegger. Agrupa pecho+espalda, hombros+brazos, piernas. Cada músculo 2x/semana.',
         days: [
           { name: 'PECHO + ESPALDA', exercises: ['bench', 'pullup', 'incline-db', 'barbell-row', 'cable-fly', 'lat-pulldown'] },
@@ -3922,7 +3933,7 @@
         ]
       },
       {
-        id: 'brosplit', name: 'Bro Split', emoji: '💥', freq: '5 días',
+        id: 'brosplit', name: 'Bro Split', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>', freq: '5 días',
         desc: 'Un músculo por día. Simple y divertido. Cada músculo 1x/semana pero con MUCHO volumen por sesión. Para intermedios/avanzados.',
         days: [
           { name: 'PECHO', exercises: ['bench', 'incline-db', 'incline-bench', 'dips', 'cable-fly', 'db-fly'] },
@@ -3933,7 +3944,7 @@
         ]
       },
       {
-        id: 'ul', name: 'Upper / Lower', emoji: '⚡', freq: '4 días',
+        id: 'ul', name: 'Upper / Lower', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><line x1="3" y1="12" x2="21" y2="12"/></svg>', freq: '4 días',
         desc: 'Perfecto con 4 días disponibles. Cada músculo 2 veces por semana. Buen balance gym/vida.',
         days: [
           { name: 'UPPER 1 — Fuerza', exercises: ['bench', 'barbell-row', 'ohp', 'pullup', 'barbell-curl', 'pushdown'] },
@@ -3943,7 +3954,7 @@
         ]
       },
       {
-        id: 'fb', name: 'Full Body', emoji: '💪', freq: '3 días',
+        id: 'fb', name: 'Full Body', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>', freq: '3 días',
         desc: 'Ideal para principiantes o poco tiempo. Cada sesión trabaja todo el cuerpo. Máxima frecuencia.',
         days: [
           { name: 'DÍA A', exercises: ['squat', 'bench', 'barbell-row', 'lat-raise', 'db-curl', 'calf-raise'] },
@@ -3952,7 +3963,7 @@
         ]
       },
       {
-        id: 'casa', name: 'Full Body en Casa', emoji: '🏠', freq: '3-4 días',
+        id: 'casa', name: 'Full Body en Casa', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>', freq: '3-4 días',
         desc: 'Sin gym, sin excusas. Solo necesitás mancuernas (o botellas) y ganas. Podés hacer 3 o 4 días.',
         days: [
           { name: 'DÍA A — Empuje + Piernas', exercises: ['pushup', 'db-ohp', 'goblet-squat', 'lunge', 'diamond-pushup', 'plank'] },
@@ -3966,7 +3977,7 @@
     // ═══ SUPPLEMENTS ═══
     const SUPPS = [
       {
-        id: 'creatina', name: 'Creatina Monohidrato', emoji: '⚡', verdict: 'yes', verdictLabel: 'Recomendado',
+        id: 'creatina', name: 'Creatina Monohidrato', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>', verdict: 'yes', verdictLabel: 'Recomendado',
         oneliner: 'El suplemento más estudiado del mundo. Funciona. Punto.',
         what: 'La creatina es una molécula que tu cuerpo ya produce naturalmente. Se almacena en los músculos como fosfocreatina y se usa para producir ATP (energía rápida) durante esfuerzos intensos y cortos. Suplementarla satura tus reservas al máximo.',
         evidence: 'Más de 500 estudios en humanos. Aumenta fuerza ~5-10%, masa muscular ~1-2kg en las primeras semanas (agua intramuscular + rendimiento), y mejora recuperación. También tiene beneficios cognitivos.',
@@ -3976,7 +3987,7 @@
         extra: 'No retiene agua subcutánea (debajo de la piel) — la retención es INTRAmuscular, lo que hace que el músculo se vea más lleno. No daña los riñones en personas sanas. La monohidrato es la más barata y la más estudiada — no necesitás versiones "premium".'
       },
       {
-        id: 'proteina', name: 'Proteína Whey', emoji: '🥛', verdict: 'yes', verdictLabel: 'Recomendado',
+        id: 'proteina', name: 'Proteína Whey', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 10v12H7V10l1.5-5.5A2 2 0 0 1 10.43 3h3.14a2 2 0 0 1 1.93 1.5L17 10Z"/><line x1="7" x2="17" y1="10" y2="10"/></svg>', verdict: 'yes', verdictLabel: 'Recomendado',
         oneliner: 'La forma más práctica de llegar a tu objetivo de proteína diaria.',
         what: 'Proteína de suero de leche en polvo. Se absorbe rápido y tiene todos los aminoácidos esenciales en proporciones óptimas. No es mágica — es simplemente proteína en formato conveniente.',
         evidence: 'Evidencia sólida de que consumir 1.6-2.2g de proteína por kg de peso corporal optimiza la ganancia muscular. El whey no es superior a otras fuentes de proteína — la ventaja es la practicidad.',
@@ -3986,7 +3997,7 @@
         extra: 'Concentrate (WPC) es más barato y funciona perfecto. Isolate (WPI) tiene menos lactosa. Si sos intolerante a la lactosa, probá isolate o proteína vegana. No es obligatorio — si llegás con comida, no lo necesitás.'
       },
       {
-        id: 'cafeina', name: 'Cafeína', emoji: '☕', verdict: 'yes', verdictLabel: 'Recomendado',
+        id: 'cafeina', name: 'Cafeína', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/></svg>', verdict: 'yes', verdictLabel: 'Recomendado',
         oneliner: 'Mejora el rendimiento, la fuerza y la concentración. Y es barata.',
         what: 'La cafeína es un estimulante del sistema nervioso central. Bloquea los receptores de adenosina (la molécula que te da sueño), aumentando el estado de alerta y reduciendo la percepción de esfuerzo.',
         evidence: 'Fuerte evidencia de mejora en rendimiento de fuerza (~3-5%), resistencia (~2-4%), y potencia. Reduce la percepción de esfuerzo (sentís que el peso es más liviano). Funciona mejor si no la consumís a diario.',
@@ -3996,7 +4007,7 @@
         extra: 'La tolerancia se desarrolla rápido. Si querés maximizar el efecto en el gym, intentá no tomar café todos los días o ciclá la cafeína (2 semanas sí, 1 semana no). El sueño es más importante que cualquier pre-workout — nunca sacrifiques sueño por cafeína.'
       },
       {
-        id: 'vitamina-d', name: 'Vitamina D3', emoji: '☀️', verdict: 'situational', verdictLabel: 'Situacional',
+        id: 'vitamina-d', name: 'Vitamina D3', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>', verdict: 'situational', verdictLabel: 'Situacional',
         oneliner: 'Esencial si no tomás suficiente sol. Y la mayoría no toma suficiente.',
         what: 'Vitamina que tu cuerpo produce cuando te exponés al sol. Es clave para huesos, sistema inmune, estado de ánimo, y niveles de testosterona. La mayoría de la gente tiene niveles subóptimos, especialmente en invierno.',
         evidence: 'Corregir deficiencia de vitamina D mejora fuerza muscular, reduce riesgo de lesiones, y puede mejorar niveles hormonales. Si tus niveles ya son óptimos, suplementar extra no da beneficios adicionales.',
@@ -4006,7 +4017,7 @@
         extra: 'Combiná con vitamina K2 si tomás dosis altas — ayuda a dirigir el calcio a los huesos y no a las arterias. Si vivís en latitudes altas o trabajás adentro todo el día, es casi seguro que la necesitás.'
       },
       {
-        id: 'omega3', name: 'Omega 3 (EPA/DHA)', emoji: '🐟', verdict: 'situational', verdictLabel: 'Situacional',
+        id: 'omega3', name: 'Omega 3 (EPA/DHA)', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7 6.36 7 4c0 2.36-1.15 4.16-2.29 5.06S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M17 20c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S17 10 17 7.64c0 2.36-1.15 4.16-2.29 5.06S13 14.79 13 15.95c0 2.22 1.8 4.05 4 4.05z"/></svg>', verdict: 'situational', verdictLabel: 'Situacional',
         oneliner: 'Antiinflamatorio natural. Útil si no comés pescado regularmente.',
         what: 'Ácidos grasos esenciales que tu cuerpo no puede producir. EPA y DHA son las formas activas. Se encuentran en pescados grasos (salmón, sardina, caballa). La mayoría de la gente no consume suficiente.',
         evidence: 'Reduce inflamación sistémica, mejora salud cardiovascular, puede mejorar recuperación muscular y reducir dolor articular. Los beneficios son más notables si tu dieta es baja en pescado.',
@@ -4040,37 +4051,37 @@
     // ═══ CREATORS ═══
     const CREATORS = [
       {
-        name: 'Jeff Nippard', emoji: '🔬', spec: 'Ciencia del entrenamiento',
+        name: 'Jeff Nippard', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31"/><path d="M14 9.3V1.99"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/><line x1="5.52" x2="18.48" y1="16" y2="16"/></svg>', spec: 'Ciencia del entrenamiento',
         desc: 'Combina investigación científica con experiencia práctica. Sus videos explican la ciencia detrás de cada ejercicio y técnica con animaciones y referencias a estudios.',
         best: 'Ideal para entender el POR QUÉ detrás de cada decisión de entrenamiento.'
       },
       {
-        name: 'Dr. Mike Israetel (Renaissance Periodization)', emoji: '🧬', spec: 'Hipertrofia y volumen',
+        name: 'Dr. Mike Israetel (Renaissance Periodization)', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>', spec: 'Hipertrofia y volumen',
         desc: 'Doctorado en fisiología del deporte. Su contenido sobre volumen de entrenamiento, periodización y recuperación es de lo mejor que existe. Estilo directo y sin rodeos.',
         best: 'El mejor para aprender sobre cuántas series hacer, cómo organizar el volumen, y cuándo hacer deload.'
       },
       {
-        name: 'Jeff Cavaliere (Athlean-X)', emoji: '🏥', spec: 'Prevención de lesiones',
+        name: 'Jeff Cavaliere (Athlean-X)', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>', spec: 'Prevención de lesiones',
         desc: 'Fisioterapeuta que trabajó con atletas profesionales de la MLB. Enfocado en entrenar de forma segura y eficiente, corrigiendo errores comunes que causan lesiones.',
         best: 'Mirá sus videos si tenés algún dolor o querés aprender a proteger las articulaciones.'
       },
       {
-        name: 'John Meadows (Mountain Dog)', emoji: '🏔', spec: 'Técnicas de intensidad',
+        name: 'John Meadows (Mountain Dog)', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>', spec: 'Técnicas de intensidad',
         desc: 'Culturista IFBB y creador de Mountain Dog Training. Especialista en técnicas avanzadas de intensidad y variaciones creativas de ejercicios. Lamentablemente falleció en 2021, pero su contenido sigue siendo oro.',
         best: 'Para intermedios/avanzados que buscan técnicas de intensidad y variaciones que el 99% no conoce.'
       },
       {
-        name: 'Jeremy Ethier', emoji: '📐', spec: 'Principiantes y técnica',
+        name: 'Jeremy Ethier', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 1 0 2.829 2.828z"/><path d="m3.928 16.088 14.536-14.536"/><path d="M7.643 6.25l2.121 2.122"/><path d="m14.007 12.614 2.122 2.121"/></svg>', spec: 'Principiantes y técnica',
         desc: 'Kinesiólogo que hace videos extremadamente claros y bien producidos. Descompone la ciencia en pasos accionables y simples.',
         best: 'Si estás empezando, arrancá por acá. Sus videos de "cómo hacer X correctamente" son excelentes.'
       },
       {
-        name: 'Squat University (Dr. Aaron Horschig)', emoji: '🦵', spec: 'Movilidad y biomecánica',
+        name: 'Squat University (Dr. Aaron Horschig)', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="14" x="8" y="5" rx="4"/><path d="M12 2v3"/><path d="M12 19v3"/></svg>', spec: 'Movilidad y biomecánica',
         desc: 'Doctor en terapia física especializado en movimiento y movilidad. Contenido excepcional sobre sentadilla, movilidad de tobillo/cadera, y prevención de lesiones.',
         best: 'Si sentís rigidez, tenés problemas de movilidad, o querés mejorar tu técnica de sentadilla.'
       },
       {
-        name: 'Eugene Teo', emoji: '🧘', spec: 'Conexión mente-músculo',
+        name: 'Eugene Teo', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c-2-2.67-4-4-6-4a4 4 0 1 0 0 8c2 0 4-1.33 6-4Zm0 0c2-2.67 4-4 6-4a4 4 0 1 1 0 8c-2 0-4-1.33-6-4Z"/></svg>', spec: 'Conexión mente-músculo',
         desc: 'Entrenador australiano enfocado en la técnica perfecta y la conexión mente-músculo. Sus videos de "cómo sentir X músculo" son únicos en YouTube.',
         best: 'Para intermedios que quieren mejorar la calidad de cada repetición y sentir cada músculo trabajar.'
       }
@@ -4113,7 +4124,7 @@
     // ═══ LEARN ═══
     const LEARN = [
       {
-        id: 'overload', name: 'Sobrecarga Progresiva', emoji: '📈',
+        id: 'overload', name: 'Sobrecarga Progresiva', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>',
         desc: 'El principio #1 del entrenamiento. Sin esto, no crecés.',
         content: `<p>La <span class="gterm" onclick="showGloss('progressive_overload')">sobrecarga progresiva</span> es el concepto más importante del entrenamiento. Significa que para que un músculo crezca, necesitás darle un estímulo mayor al que ya está acostumbrado.</p>
     <p><strong>¿Cómo aplicarla?</strong> No siempre es agregar peso. Hay varias formas:</p>
@@ -4126,7 +4137,7 @@
     </div>
     <p style="margin-top:10px"><strong>Ejemplo práctico:</strong> Si esta semana hiciste press de banca 60kg × 3 series × 8 reps, la próxima sesión intentá 60kg × 3 × 9. Cuando llegues a 3×12, subí a 62.5kg y volvé a empezar desde 3×8.</p>`},
       {
-        id: 'volume', name: 'Volumen Semanal por Músculo', emoji: '📊',
+        id: 'volume', name: 'Volumen Semanal por Músculo', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect width="4" height="7" x="7" y="10" rx="1"/><rect width="4" height="12" x="15" y="5" rx="1"/></svg>',
         desc: 'Cuántas series por semana necesita cada músculo para crecer.',
         content: `<p>El <span class="gterm" onclick="showGloss('volumen')">volumen</span> es la cantidad de series efectivas que hacés por músculo por semana. Es uno de los factores más importantes para <span class="gterm" onclick="showGloss('hipertrofia')">hipertrofia</span>.</p>
     <table class="learn-table">
@@ -4144,7 +4155,7 @@
     </table>
     <p><strong>Importante:</strong> Estos números son de series DIRECTAS (ej: para bíceps, solo cuentan curls, no remos). Empezá en el mínimo y subí gradualmente. Si dejás de progresar o estás siempre cansado, estás haciendo demasiado. Hacé un <span class="gterm" onclick="showGloss('deload')">deload</span> cada 4-8 semanas.</p>`},
       {
-        id: 'frequency', name: 'Frecuencia: ¿Cuántas veces por semana?', emoji: '🔁',
+        id: 'frequency', name: 'Frecuencia: ¿Cuántas veces por semana?', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>',
         desc: 'Por qué entrenar cada músculo 2 veces por semana es ideal.',
         content: `<p>La <span class="gterm" onclick="showGloss('frecuencia')">frecuencia</span> es cuántas veces por semana entrenás cada músculo. La ciencia dice:</p>
     <div class="learn-highlight">
@@ -4158,7 +4169,7 @@
     </div>
     <p style="margin-top:10px"><strong>Excepciones:</strong> 1x/semana puede funcionar para avanzados con alto volumen por sesión (Bro Split). 3x/semana puede funcionar para principiantes con Full Body. Lo más importante es el volumen semanal total, no solo la frecuencia.</p>`},
       {
-        id: 'rpe-rir', name: 'RPE y RIR: ¿Qué tan fuerte entrenar?', emoji: '🔥',
+        id: 'rpe-rir', name: 'RPE y RIR: ¿Qué tan fuerte entrenar?', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>',
         desc: 'Cómo saber si estás entrenando lo suficiente (ni mucho ni poco).',
         content: `<p>El <span class="gterm" onclick="showGloss('rpe')">RPE</span> (Esfuerzo Percibido) y <span class="gterm" onclick="showGloss('rir')">RIR</span> (Reps en Reserva) son escalas para medir qué tan cerca del <span class="gterm" onclick="showGloss('fallo')">fallo muscular</span> estás:</p>
     <table class="learn-table">
@@ -4329,7 +4340,7 @@
         const ex2 = m.example2 ? `<div class="method-example" style="margin-top:6px"><strong>Ejemplo 2:</strong> ${m.example2}</div>` : '';
         const wh = m.when ? `<div class="method-when" style="margin-top:8px"><strong>🎯 ¿Cuándo usarlo?</strong> ${m.when}</div>` : '';
         return `<div class="method-card" onclick="this.querySelector('.method-detail').classList.toggle('open')">
-      <div class="method-top"><span class="method-emoji">${m.emoji}</span><span class="method-name">${m.name}</span><span class="method-diff ${dc}">${dl}</span></div>
+      <div class="method-top"><span class="method-icon">${m.icon}</span><span class="method-name">${m.name}</span><span class="method-diff ${dc}">${dl}</span></div>
       <div class="method-desc">${m.desc}</div>
       <div class="method-detail"><p>${m.detail}</p><div class="method-example"><strong>Ejemplo:</strong> ${m.example}</div>${ex2}${wh}</div>
     </div>`;
@@ -4340,7 +4351,7 @@
       const sorted = [...SPLITS].sort((a, b) => { const na = parseInt(a.freq), nb = parseInt(b.freq); return na - nb });
       document.getElementById('splitsList').innerHTML = sorted.map(s => `
     <div class="split-card" onclick="this.querySelector('.split-detail').classList.toggle('open')">
-      <div class="split-top"><span class="split-emoji">${s.emoji}</span><span class="split-name">${s.name}</span><span class="split-freq">${s.freq}</span></div>
+      <div class="split-top"><span class="split-icon">${s.icon}</span><span class="split-name">${s.name}</span><span class="split-freq">${s.freq}</span></div>
       <div class="split-desc">${s.desc}</div>
       <div class="split-detail">${s.days.map(d => `
         <div class="builder-day"><div class="builder-day-title">${d.name}</div>
@@ -4362,7 +4373,7 @@
       document.getElementById('suppList').innerHTML = sorted.map(s => {
         const vc = s.verdict === 'yes' ? 'sv-yes' : s.verdict === 'maybe' ? 'sv-maybe' : 'sv-situational';
         return `<div class="supp-card" onclick="this.querySelector('.supp-detail').classList.toggle('open')">
-      <div class="supp-top"><span class="supp-emoji">${s.emoji}</span><span class="supp-name">${s.name}</span><span class="supp-verdict ${vc}">${s.verdictLabel}</span></div>
+      <div class="supp-top"><span class="supp-icon">${s.icon}</span><span class="supp-name">${s.name}</span><span class="supp-verdict ${vc}">${s.verdictLabel}</span></div>
       <div class="supp-oneliner">${s.oneliner}</div>
       <div class="supp-detail">
         <div class="supp-field"><div class="supp-field-label">¿QUÉ ES?</div>${s.what}</div>
@@ -4380,7 +4391,7 @@
       const sorted = [...CREATORS].sort((a, b) => a.name.localeCompare(b.name, 'es'));
       document.getElementById('creatorsList').innerHTML = sorted.map(c => `
     <div class="creator-card">
-      <div class="creator-top"><span class="creator-emoji">${c.emoji}</span><span class="creator-name">${c.name}</span><span class="creator-spec">${c.spec}</span></div>
+      <div class="creator-top"><span class="creator-icon">${c.icon}</span><span class="creator-name">${c.name}</span><span class="creator-spec">${c.spec}</span></div>
       <div class="creator-desc">${c.desc}</div>
       <div class="creator-best">⭐ ${c.best}</div>
     </div>
@@ -4411,7 +4422,7 @@
     function renderLearn() {
       document.getElementById('learnList').innerHTML = LEARN.map(l => `
     <div class="learn-card" onclick="this.querySelector('.learn-detail').classList.toggle('open')">
-      <div class="learn-top"><span class="learn-emoji">${l.emoji}</span><span class="learn-name">${l.name}</span><span class="learn-arrow">›</span></div>
+      <div class="learn-top"><span class="learn-icon">${l.icon}</span><span class="learn-name">${l.name}</span><span class="learn-arrow">›</span></div>
       <div class="learn-desc">${l.desc}</div>
       <div class="learn-detail">${l.content}</div>
     </div>
@@ -4594,7 +4605,7 @@
         sortedSplits.forEach(s => {
           const sel = selectedSplit === s.id ? 'selected' : '';
           html += `<div class="dash-split-pick ${sel}" onclick="pickSplit('${s.id}')">
-        <span class="dash-split-emoji">${s.emoji}</span>
+        <span class="split-icon">${s.icon}</span>
         <div class="dash-split-info"><div class="dash-split-name">${s.name}</div><div class="dash-split-freq">${s.freq}</div></div>
       </div>`;
         });
