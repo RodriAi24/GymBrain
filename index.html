@@ -227,6 +227,14 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05)
     }
 
+    body.light-mode .icon-sun {
+      display: none !important;
+    }
+
+    body.light-mode .icon-moon {
+      display: block !important;
+    }
+
     .theme-toggle:active {
       transform: scale(.85) rotate(15deg)
     }
@@ -2978,15 +2986,42 @@
           style="background:var(--surface);border:none;width:30px;height:30px;border-radius:50%;color:var(--ink2);font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer"
           onclick="toggleMoreMenu()">✕</button>
       </div>
-      <button class="more-item" onclick="toggleMoreMenu();goPage('onerm')"><span>🧮</span>Calculadora 1RM</button>
+      <button class="more-item" onclick="toggleMoreMenu();goPage('onerm')"><span
+          style="width:20px;height:20px;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            style="width:16px;height:16px">
+            <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
+            <line x1="8" y1="12" x2="16" y2="12" />
+            <line x1="12" y1="16" x2="12" y2="16" />
+          </svg></span>Calculadora 1RM</button>
       <div style="height:1px;background:var(--border);margin:8px 0"></div>
-      <button class="more-item" onclick="toggleMoreMenu();exportData()"><span>💾</span>Respaldar Datos</button>
-      <button class="more-item"
-        onclick="toggleMoreMenu();document.getElementById('importFile').click()"><span>📂</span>Importar Datos</button>
+      <button class="more-item" onclick="toggleMoreMenu();exportData()"><span
+          style="width:20px;height:20px;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            style="width:16px;height:16px">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+            <polyline points="17 21 17 13 7 13 7 21" />
+            <polyline points="7 3 7 8 15 8" />
+          </svg></span>Respaldar Datos</button>
+      <button class="more-item" onclick="toggleMoreMenu();document.getElementById('importFile').click()"><span
+          style="width:20px;height:20px;display:flex;align-items:center;justify-content:center;margin-right:2px"><svg
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" style="width:16px;height:16px">
+            <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
+            <path d="M12 12v9" />
+            <path d="m8 17 4-4 4 4" />
+          </svg></span>Importar Datos</button>
       <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
       <div style="height:1px;background:var(--border);margin:8px 0"></div>
-      <button class="more-item" style="color:var(--accent)"
-        onclick="toggleMoreMenu();clearAllData()"><span>🗑️</span>Borrar Todos los Datos</button>
+      <button class="more-item" style="color:var(--accent)" onclick="toggleMoreMenu();clearAllData()"><span
+          style="width:20px;height:20px;display:flex;align-items:center;justify-content:center;margin-right:2px"><svg
+            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" style="width:16px;height:16px">
+            <polyline points="3 6 5 6 21 6" />
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            <line x1="10" y1="11" x2="10" y2="17" />
+            <line x1="14" y1="11" x2="14" y2="17" />
+          </svg></span>Borrar Todos los Datos</button>
     </div>
   </div>
 
@@ -3000,9 +3035,16 @@
         <div style="font-size:15px;font-weight:600;margin-bottom:12px;color:var(--accent)">1. ¿Dónde vas a entrenar?
         </div>
         <button class="dash-split-pick" style="width:100%;justify-content:center" onclick="obSetLoc('gym')"><span
-            class="dash-split-emoji">🏋️</span><span class="dash-split-name">En un Gimnasio</span></button>
+            class="dash-split-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px">
+              <path d="m2 16 20 6M6 17v-4M10 18v-4M14 19v-4M18 20v-4M8 12l2-6M12 12l2-6M16 12l2-6" />
+            </svg></span><span class="dash-split-name">En un Gimnasio</span></button>
         <button class="dash-split-pick" style="width:100%;justify-content:center" onclick="obSetLoc('casa')"><span
-            class="dash-split-emoji">🏠</span><span class="dash-split-name">En Casa (sin equipo)</span></button>
+            class="dash-split-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px">
+              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg></span><span class="dash-split-name">En Casa (sin equipo)</span></button>
       </div>
 
       <div id="obStep2" style="display:none">
@@ -4027,7 +4069,7 @@
         extra: 'Si comés pescado graso 2-3 veces por semana, probablemente no lo necesitás. Guardálas en la heladera para evitar que se pongan rancias.'
       },
       {
-        id: 'magnesio', name: 'Magnesio', emoji: '💎', verdict: 'situational', verdictLabel: 'Situacional',
+        id: 'magnesio', name: 'Magnesio', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>', verdict: 'situational', verdictLabel: 'Situacional',
         oneliner: 'Mineral esencial para sueño, recuperación y función muscular.',
         what: 'Mineral involucrado en más de 300 procesos del cuerpo: contracción muscular, producción de energía, síntesis de proteínas, y regulación del sistema nervioso. La mayoría de la gente no consume suficiente.',
         evidence: 'La deficiencia de magnesio (muy común) afecta el sueño, la recuperación, y puede causar calambres. Suplementar cuando hay deficiencia mejora calidad de sueño y recuperación muscular.',
@@ -4037,7 +4079,7 @@
         extra: 'El magnesio glicinato es la mejor opción para deportistas: buena absorción + el aminoácido glicina también ayuda al sueño. Si tenés diarrea con un tipo, probá otro.'
       },
       {
-        id: 'melatonina', name: 'Melatonina', emoji: '🌙', verdict: 'maybe', verdictLabel: 'Depende',
+        id: 'melatonina', name: 'Melatonina', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>', verdict: 'maybe', verdictLabel: 'Depende',
         oneliner: 'Puede ayudar con el sueño, pero no es una solución mágica.',
         what: 'Hormona que tu cuerpo produce naturalmente cuando oscurece. Le dice a tu cerebro que es hora de dormir. Suplementarla puede ayudar a inducir el sueño, especialmente si tu ritmo circadiano está desregulado.',
         evidence: 'Evidencia moderada para reducir el tiempo que tardás en dormirte (~7 min menos) y mejorar calidad del sueño. Más útil para jet lag, turnos rotativos, o personas que se duermen muy tarde. No es sedante — facilita el inicio del sueño.',
@@ -4210,8 +4252,6 @@
     function toggleTheme() {
       const isLight = document.body.classList.toggle('light-mode');
       localStorage.setItem('gb_theme', isLight ? 'light' : 'dark');
-      const btn = document.getElementById('themeBtn');
-      if (btn) btn.textContent = isLight ? '🌙' : '☀️';
       const meta = document.getElementById('themeColorMeta');
       if (meta) meta.setAttribute('content', isLight ? '#F7F7F7' : '#0A0A0A'); // Cambia color del Notch de iPhone
     }
@@ -4264,7 +4304,7 @@
         const tc = e.type === 'compound' ? 'bt-compound' : e.type === 'isolation' ? 'bt-isolation' : 'bt-bodyweight';
         const tl = e.type === 'compound' ? 'Compuesto' : e.type === 'isolation' ? 'Aislamiento' : 'Bodyweight';
         const lc = e.loc === 'gym' ? 'bt-gym' : e.loc === 'casa' ? 'bt-casa' : 'bt-gym';
-        const ll = e.loc === 'gym' ? '🏋️ Gym' : e.loc === 'casa' ? '🏠 Casa' : '🏋️🏠 Ambos';
+        const ll = e.loc === 'gym' ? 'Gym' : e.loc === 'casa' ? 'Casa' : 'Ambos';
         const dc = e.diff === 'beginner' ? 'bt-beginner' : e.diff === 'intermediate' ? 'bt-intermediate' : 'bt-advanced';
         const dl = e.diff === 'beginner' ? 'Principiante' : e.diff === 'intermediate' ? 'Intermedio' : 'Avanzado';
         const ec = e.evidence === 'high' ? 'ev-high' : 'ev-med';
@@ -4285,7 +4325,7 @@
       const tc = e.type === 'compound' ? 'bt-compound' : e.type === 'isolation' ? 'bt-isolation' : 'bt-bodyweight';
       const tl = e.type === 'compound' ? 'Compuesto' : e.type === 'isolation' ? 'Aislamiento' : 'Bodyweight';
       const lc = e.loc === 'gym' ? 'bt-gym' : e.loc === 'casa' ? 'bt-casa' : 'bt-gym';
-      const ll = e.loc === 'gym' ? '🏋️ Gym' : e.loc === 'casa' ? '🏠 Casa' : '🏋️🏠 Gym y Casa';
+      const ll = e.loc === 'gym' ? 'Gym' : e.loc === 'casa' ? 'Casa' : 'Ambos';
       const dc = e.diff === 'beginner' ? 'bt-beginner' : e.diff === 'intermediate' ? 'bt-intermediate' : 'bt-advanced';
       const dl = e.diff === 'beginner' ? 'Principiante' : e.diff === 'intermediate' ? 'Intermedio' : 'Avanzado';
       const equipHtml = e.equip ? `<div style="margin-top:10px"><span class="equip-tag">🔧 ${e.equip}</span></div>` : '';
@@ -4326,8 +4366,11 @@
     ${e.swap ? `<div class="det-card">
       <div class="det-label">🔄 Reemplazo Rápido</div>
       <div style="font-size:12px;color:var(--ink3);margin-bottom:8px">Máquina ocupada o no tenés el equipo? Probá estas alternativas:</div>
-      <div class="swap-section">${e.swap.split(',').map(sid => { const se = EX.find(x => x.id === sid); return se ? `<button class="swap-btn" onclick="event.stopPropagation();curExercise='${se.id}';goPage('detail')"><span style="font-size:16px">↔</span><span class="swap-btn-name">${se.name}</span><span class="swap-btn-info">${se.loc === 'gym' ? '🏋️' : '🏠'} ${se.sets}×${se.reps}</span></button>` : '' }).join('')}</div>
-    </div>`: ''}
+      <div class="swap-section">${e.swap.split(',').map(sid => {
+        const se = EX.find(x => x.id === sid); return se ? `<button class="swap-btn" onclick="event.stopPropagation();curExercise='${se.id}';goPage('detail')"><span style="font-size:16px">↔</span><span class="swap-btn-name">${se.name}</span><span class="swap-btn-info">${se.loc === 'gym' ? 'Gym' : 'Casa'} ${se.sets}×${se.reps}</span></button>` : ''
+      }).join('')}</div>
+    </div>`: ''
+        }
     `;
     }
 
@@ -4350,7 +4393,7 @@
     function renderSplits() {
       const sorted = [...SPLITS].sort((a, b) => { const na = parseInt(a.freq), nb = parseInt(b.freq); return na - nb });
       document.getElementById('splitsList').innerHTML = sorted.map(s => `
-    <div class="split-card" onclick="this.querySelector('.split-detail').classList.toggle('open')">
+        <div class="split-card" onclick="this.querySelector('.split-detail').classList.toggle('open')">
       <div class="split-top"><span class="split-icon">${s.icon}</span><span class="split-name">${s.name}</span><span class="split-freq">${s.freq}</span></div>
       <div class="split-desc">${s.desc}</div>
       <div class="split-detail">${s.days.map(d => `
@@ -4364,8 +4407,8 @@
     function renderGlossary() {
       const sorted = Object.entries(GLOSS).sort((a, b) => a[1].title.localeCompare(b[1].title, 'es'));
       document.getElementById('glossList').innerHTML = sorted.map(([k, v]) => `
-    <div class="gloss-card"><div class="gloss-term">${v.title}</div><div class="gloss-def">${v.text}</div></div>
-  `).join('');
+      <div class="gloss-card"><div class="gloss-term">${v.title}</div><div class="gloss-def">${v.text}</div></div>
+      `).join('');
     }
 
     function renderSupps() {
@@ -4390,19 +4433,19 @@
     function renderCreators() {
       const sorted = [...CREATORS].sort((a, b) => a.name.localeCompare(b.name, 'es'));
       document.getElementById('creatorsList').innerHTML = sorted.map(c => `
-    <div class="creator-card">
+        <div class="creator-card">
       <div class="creator-top"><span class="creator-icon">${c.icon}</span><span class="creator-name">${c.name}</span><span class="creator-spec">${c.spec}</span></div>
       <div class="creator-desc">${c.desc}</div>
       <div class="creator-best">⭐ ${c.best}</div>
     </div>
-  `).join('');
+        `).join('');
     }
 
     function renderWarmup() {
       const g = WARMUP.general;
       const sp = WARMUP.specific;
       let html = `
-    <div class="warmup-card">
+        <div class="warmup-card">
       <div class="warmup-title">${g.title}</div>
       <div class="warmup-text">${g.desc}</div>
       <ul class="warmup-list">${g.items.map(i => `<li>${i}</li>`).join('')}</ul>
@@ -4421,12 +4464,12 @@
 
     function renderLearn() {
       document.getElementById('learnList').innerHTML = LEARN.map(l => `
-    <div class="learn-card" onclick="this.querySelector('.learn-detail').classList.toggle('open')">
+      <div class="learn-card" onclick="this.querySelector('.learn-detail').classList.toggle('open')">
       <div class="learn-top"><span class="learn-icon">${l.icon}</span><span class="learn-name">${l.name}</span><span class="learn-arrow">›</span></div>
       <div class="learn-desc">${l.desc}</div>
       <div class="learn-detail">${l.content}</div>
     </div>
-  `).join('');
+        `).join('');
     }
 
     // ═══ GLOSSARY TOOLTIP ═══
@@ -4474,7 +4517,7 @@
             const tModal = document.getElementById('timerModal');
             if (tModal) tModal.classList.add('show');
             const lbl = document.getElementById('timerLbl');
-            if (lbl) lbl.textContent = '⏰ ¡Tiempo! Vamos con la siguiente serie';
+            if (lbl) lbl.textContent = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;display:inline-block;vertical-align:middle;margin-right:4px;margin-bottom:2px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> ¡Tiempo! Vamos con la siguiente serie';
           }
           updTmUI();
         }, 1000);
@@ -4574,12 +4617,12 @@
       const recentDates = [...allDates].sort().reverse().slice(0, 7);
 
       let html = `
-    <div class="dash-today">
+        <div class="dash-today">
       <div class="dash-today-title">📅 HOY — ${new Date().toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>
       <div class="dash-today-count">${todaySets} series</div>
       <div class="dash-today-sub">${todayExercises.size} ejercicios registrados</div>
     </div>
-    <button class="dash-start" style="background:var(--blue);margin-bottom:14px" onclick="goPage('stats')">📊 VER ESTADÍSTICAS Y PRs</button>`;
+        <button class="dash-start" style="background:var(--blue);margin-bottom:14px" onclick="goPage('stats')">📊 VER ESTADÍSTICAS Y PRs</button>`;
 
       // Start workout section
       html += `<div class="stitle" style="margin-bottom:10px">INICIAR ENTRENAMIENTO</div>`;
@@ -4590,11 +4633,11 @@
         const totalSets = Object.values(woSets).reduce((t, sets) => t + sets.length, 0);
         html += `
       <button class="dash-start" style="background:var(--green);color:#000" onclick="goPage('workout')">
-        🔄 CONTINUAR: ${woFree ? 'Entreno Libre' : woDay.name.split('—')[0].trim()} (${doneSets}/${totalSets})
+        🔄 CONTINUAR: ${woFree ? 'Entreno Libre' : woDay.name.split('—')[0].trim()}(${doneSets} / ${totalSets})
       </button>
-      <div style="text-align:center;margin-bottom:14px">
-        <button style="background:none;border:none;color:var(--ink4);font-family:'Montserrat',sans-serif;font-size:13px;text-decoration:underline;cursor:pointer" onclick="cancelActiveWo()">Cancelar sesión en curso</button>
-      </div>`;
+        <div style="text-align:center;margin-bottom:14px">
+          <button style="background:none;border:none;color:var(--ink4);font-family:'Montserrat',sans-serif;font-size:13px;text-decoration:underline;cursor:pointer" onclick="cancelActiveWo()">Cancelar sesión en curso</button>
+        </div>`;
       } else {
         // No hay entrenamiento, mostrar selector normal
         html += `<div style="font-size:12px;color:var(--ink3);margin-bottom:10px">Elegí tu rutina y el día:</div>`;
@@ -4840,7 +4883,7 @@
         <span class="wo-set-label" style="min-width:20px">S${si + 1}</span>
         <div style="position:relative;flex:1;display:flex;min-width:0">
           <input class="wo-set-input" id="w_${eid}_${si}" style="${isBarbell ? 'width:100%;border-radius:var(--rxs) 0 0 var(--rxs);border-right:none' : 'width:100%'};padding:8px 4px" placeholder="${lastHint || 'kg'}" value="${s.w}" type="number" step="0.5" inputmode="decimal" onchange="woUpdateSet('${eid}',${si},'w',this.value)">
-          ${isBarbell ? `<button style="background:var(--surface);border:1px solid var(--border);border-left:1px solid rgba(255,255,255,0.05);border-radius:0 var(--rxs) var(--rxs) 0;padding:0 6px;color:var(--ink3);cursor:pointer;transition:all .2s" onclick="showPlateCalc(document.getElementById('w_${eid}_${si}').value)">🏋️</button>` : ''}
+          ${isBarbell ? `<button style="background:var(--surface);border:1px solid var(--border);border-left:1px solid rgba(255,255,255,0.05);border-radius:0 var(--rxs) var(--rxs) 0;padding:2px 6px;color:var(--ink3);cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center" onclick="showPlateCalc(document.getElementById('w_${eid}_${si}').value)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></button>` : ''}
         </div>
         <input class="wo-set-input" style="width:48px;flex-shrink:0;padding:8px 2px" placeholder="${isTime ? 'seg' : 'reps'}" value="${s.r}" type="number" inputmode="numeric" onchange="woUpdateSet('${eid}',${si},'r',this.value)">
         <input class="wo-set-input" style="width:40px;flex-shrink:0;font-size:11px;padding:8px 2px" placeholder="RPE" value="${s.rpe || ''}" type="number" inputmode="numeric" onchange="woUpdateSet('${eid}',${si},'rpe',this.value)" title="RPE (1-10)">
@@ -5441,7 +5484,7 @@
         const tc = e.type === 'compound' ? 'bt-compound' : e.type === 'isolation' ? 'bt-isolation' : 'bt-bodyweight';
         const tl = e.type === 'compound' ? 'Compuesto' : e.type === 'isolation' ? 'Aislamiento' : 'Bodyweight';
         const lc = e.loc === 'gym' ? 'bt-gym' : e.loc === 'casa' ? 'bt-casa' : 'bt-gym';
-        const ll = e.loc === 'gym' ? '🏋️ Gym' : e.loc === 'casa' ? '🏠 Casa' : '🏋️🏠 Ambos';
+        const ll = e.loc === 'gym' ? 'Gym' : e.loc === 'casa' ? 'Casa' : 'Ambos';
         return `<div class="ex-card" style="animation-delay:0s;opacity:1;transform:none" onclick="curExercise='${e.id}';goPage('detail')">
       <div class="ex-top"><span class="ex-badge ${tc}">${tl}</span><span class="ex-badge ${lc}">${ll}</span></div>
       <div style="display:flex;align-items:center;gap:8px;margin:6px 0 4px"><span class="ex-name">${e.name}</span><span class="ex-arrow">›</span></div>
@@ -5520,7 +5563,6 @@
 
     if (localStorage.getItem('gb_theme') === 'light') {
       document.body.classList.add('light-mode');
-      if (document.getElementById('themeBtn')) document.getElementById('themeBtn').textContent = '🌙';
       const meta = document.getElementById('themeColorMeta');
       if (meta) meta.setAttribute('content', '#F7F7F7'); // Aplica color claro al Notch al cargar
     }
