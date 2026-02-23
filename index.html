@@ -4821,7 +4821,7 @@
     function pickDay(i) { selectedDay = i; renderTrackerDash() }
 
     // ═══ WORKOUT LOG ═══
-    let woSplit = null, woDay = null, woSets = {}, woFree = false, woForceOpen = {}, dragExIdx = null;
+    let woSplit = null, woDay = null, woSets = {}, woFree = false, woForceOpen = {};
 
     function cancelActiveWo() {
       if (confirm('¿Seguro que querés cancelar el entrenamiento en curso? Las series que ya tildaste quedarán guardadas en tu historial, pero se cerrará esta sesión.')) {
@@ -4848,20 +4848,15 @@
       woForceOpen[eid] = !woForceOpen[eid];
       renderWorkout();
     }
-    // Drag & Drop Handlers
-    function ds(e, idx) { dragExIdx = idx; e.dataTransfer.effectAllowed = 'move'; setTimeout(() => e.target.style.opacity = '0.4', 0); }
-    function dOver(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; }
-    function dDrop(e, targetIdx) {
-      e.preventDefault();
-      if (dragExIdx === null || dragExIdx === targetIdx) return;
-      const temp = woDay.exercises[dragExIdx];
-      woDay.exercises.splice(dragExIdx, 1);
-      woDay.exercises.splice(targetIdx, 0, temp);
-      dragExIdx = null;
+    function moveWoEx(idx, dir) {
+      if (dir < 0 && idx === 0) return;
+      if (dir > 0 && idx === woDay.exercises.length - 1) return;
+      const temp = woDay.exercises[idx];
+      woDay.exercises[idx] = woDay.exercises[idx + dir];
+      woDay.exercises[idx + dir] = temp;
       saveActiveWo();
       renderWorkout();
     }
-    function dEnd(e) { e.target.style.opacity = '1'; dragExIdx = null; }
 
     function startWorkout() {
       let customRoutines = []; try { customRoutines = JSON.parse(localStorage.getItem('gb_custom_routines')) || []; } catch (e) { }
@@ -5079,15 +5074,15 @@
           return;
         }
 
-        html += `<div class="wo-ex" draggable="true" ondragstart="ds(event, ${exIdx})" ondragover="dOver(event)" ondrop="dDrop(event, ${exIdx})" ondragend="dEnd(event)" style="transition: opacity 0.2s">
+        html += `<div class="wo-ex">
       <div class="wo-ex-top">
-        <div style="display:flex;align-items:center;cursor:grab;padding-right:8px;color:var(--ink3)" title="Mantener presionado para arrastrar">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg>
-        </div>
+        <div class="wo-ex-num">${exIdx + 1}</div>
         <div class="wo-ex-name" onclick="curExercise='${eid}';goPage('detail')">${ex.name}</div>
-        <button style="background:var(--accent-dim);border:1px solid rgba(255,94,58,0.2);border-radius:4px;color:var(--accent);width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="removeWoEx(${exIdx})">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
-        </button>
+        <div style="display:flex;gap:4px;align-items:center">
+          <button style="background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--ink3);width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:${exIdx === 0 ? '0.3' : '1'}" onclick="moveWoEx(${exIdx}, -1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="m18 15-6-6-6 6"/></svg></button>
+          <button style="background:var(--surface);border:1px solid var(--border);border-radius:4px;color:var(--ink3);width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:${exIdx === woDay.exercises.length - 1 ? '0.3' : '1'}" onclick="moveWoEx(${exIdx}, 1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="m6 9 6 6 6-6"/></svg></button>
+          <button style="background:var(--accent-dim);border:1px solid rgba(255,94,58,0.2);border-radius:4px;color:var(--accent);width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:4px" onclick="removeWoEx(${exIdx})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+        </div>
       </div>`;
         const curRest = getRestForEx(eid);
         const restOpts = [30, 45, 60, 90, 120, 150, 180, 240, 300];
