@@ -2612,19 +2612,21 @@
 
   <div class="app">
     <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">
-      <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px">
-          <circle cx="12" cy="12" r="5"/>
-          <line x1="12" y1="1" x2="12" y2="3"/>
-          <line x1="12" y1="21" x2="12" y2="23"/>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-          <line x1="1" y1="12" x2="3" y2="12"/>
-          <line x1="21" y1="12" x2="23" y2="12"/>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px">
+        <circle cx="12" cy="12" r="5" />
+        <line x1="12" y1="1" x2="12" y2="3" />
+        <line x1="12" y1="21" x2="12" y2="23" />
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+        <line x1="1" y1="12" x2="3" y2="12" />
+        <line x1="21" y1="12" x2="23" y2="12" />
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
       </svg>
-      <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;display:none">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;display:none">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
       </svg>
     </button>
 
@@ -2753,7 +2755,12 @@
           <input type="text" id="exSearchInput" placeholder="Buscar ejercicio (ej: Curl...)"
             style="width:100%;padding:12px 36px 12px 36px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);color:var(--ink);font-family:'Montserrat',sans-serif;font-size:14px;outline:none"
             oninput="searchEx(this.value)">
-          <span style="position:absolute;left:12px;top:11px;pointer-events:none;display:flex"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;color:var(--ink3)"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+          <span style="position:absolute;left:12px;top:11px;pointer-events:none;display:flex"><svg viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              style="width:16px;height:16px;color:var(--ink3)">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg></span>
           <button id="exSearchClear"
             style="display:none;position:absolute;right:12px;top:12px;background:var(--ink3);color:var(--bg);border:none;border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:bold;cursor:pointer;align-items:center;justify-content:center"
             onclick="document.getElementById('exSearchInput').value=''; searchEx('');">✕</button>
@@ -2761,8 +2768,18 @@
       </div>
       <div class="loc-filter" id="exFilterBar">
         <button class="loc-chip active" onclick="setLoc('all',this)">Todos</button>
-        <button class="loc-chip" onclick="setLoc('gym',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><line x1="2" x2="22" y1="12" y2="12"/><rect width="4" height="10" x="4" y="7" rx="1"/><rect width="4" height="10" x="16" y="7" rx="1"/></svg> Gym</button>
-        <button class="loc-chip" onclick="setLoc('casa',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Casa</button>
+        <button class="loc-chip" onclick="setLoc('gym',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px">
+            <line x1="2" x2="22" y1="12" y2="12" />
+            <rect width="4" height="10" x="4" y="7" rx="1" />
+            <rect width="4" height="10" x="16" y="7" rx="1" />
+          </svg> Gym</button>
+        <button class="loc-chip" onclick="setLoc('casa',this)"><svg viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            style="width:14px;height:14px">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg> Casa</button>
       </div>
       <div class="stitle" id="exStitle">ELEGÍ UN MÚSCULO</div>
       <div class="muscle-grid" id="muscleGrid"></div>
@@ -2776,15 +2793,26 @@
       </div>
       <div class="loc-filter">
         <button class="loc-chip active" id="ml-all" onclick="setLoc('all',this)">Todos</button>
-        <button class="loc-chip" id="ml-gym" onclick="setLoc('gym',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><line x1="2" x2="22" y1="12" y2="12"/><rect width="4" height="10" x="4" y="7" rx="1"/><rect width="4" height="10" x="16" y="7" rx="1"/></svg> Gym</button>
-        <button class="loc-chip" id="ml-casa" onclick="setLoc('casa',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Casa</button>
+        <button class="loc-chip" id="ml-gym" onclick="setLoc('gym',this)"><svg viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            style="width:14px;height:14px">
+            <line x1="2" x2="22" y1="12" y2="12" />
+            <rect width="4" height="10" x="4" y="7" rx="1" />
+            <rect width="4" height="10" x="16" y="7" rx="1" />
+          </svg> Gym</button>
+        <button class="loc-chip" id="ml-casa" onclick="setLoc('casa',this)"><svg viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            style="width:14px;height:14px">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg> Casa</button>
       </div>
       <div class="exlist" id="exList"></div>
     </div>
 
     <!-- ═══ EXERCISE DETAIL ═══ -->
     <div class="page" id="page-detail">
-      <div class="back-row"><button class="back-btn" id="detBackBtn" onclick="goPage('muscle')">← Volver</button>
+      <div class="back-row"><button class="back-btn" id="detBackBtn" onclick="goPage(navHistory)">← Volver</button>
         <div class="back-title" id="detTitleBar"></div>
       </div>
       <div class="det-section" id="detailContent"></div>
@@ -2831,8 +2859,18 @@
           <button class="timer-preset" onclick="setTm(180,this)">3:00</button>
         </div>
         <div class="timer-controls">
-          <button class="timer-btn reset" onclick="resetTm()">↺</button>
-          <button class="timer-btn start" id="tmStartBtn" onclick="toggleTm()">▶</button>
+          <button class="timer-btn reset" onclick="resetTm()"
+            style="display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              style="width:24px;height:24px">
+              <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+              <path d="M3 3v5h5" />
+            </svg></button>
+          <button class="timer-btn start" id="tmStartBtn" onclick="toggleTm()"
+            style="display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" fill="currentColor"
+              style="width:24px;height:24px">
+              <path d="M5 3l14 9-14 9V3z" />
+            </svg></button>
         </div>
       </div>
       <div class="rest-guide">
@@ -3068,7 +3106,7 @@
               stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px">
               <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
               <polyline points="9 22 9 12 15 12 15 22" />
-            </svg></span><span class="dash-split-name">En Casa (sin equipo)</span></button>
+            </svg></span><span class="dash-split-name">En Casa (solo mancuernas)</span></button>
       </div>
 
       <div id="obStep2" style="display:none">
@@ -4276,7 +4314,7 @@
     ];
 
     // ═══ APP STATE ═══
-    let curMuscle = null, curExercise = null, locFilter = 'all';
+    let curMuscle = null, curExercise = null, locFilter = 'all', navHistory = 'home';
     let tmSec = 90, tmRun = false, tmInt = null, tmRem = 90, tmEnd = 0;
 
     // HELPERS: Fecha Local (Arregla bug UTC) y Haptics
@@ -4303,6 +4341,7 @@
     }
 
     function goPage(p) {
+      if (p !== 'detail') navHistory = p; // Guarda la página de origen, excepto si vamos al detalle
       document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
       document.querySelectorAll('.nav-tab').forEach(x => x.classList.remove('active'));
       const pe = document.getElementById('page-' + p); if (pe) pe.classList.add('active');
@@ -4350,7 +4389,7 @@
         const tc = e.type === 'compound' ? 'bt-compound' : e.type === 'isolation' ? 'bt-isolation' : 'bt-bodyweight';
         const tl = e.type === 'compound' ? 'Compuesto' : e.type === 'isolation' ? 'Aislamiento' : 'Bodyweight';
         const lc = e.loc === 'gym' ? 'bt-gym' : e.loc === 'casa' ? 'bt-casa' : 'bt-gym';
-        const ll = e.loc === 'gym' ? IC_GYM+' Gym' : e.loc === 'casa' ? IC_CASA+' Casa' : IC_GYM+IC_CASA+' Ambos';
+        const ll = e.loc === 'gym' ? IC_GYM + ' Gym' : e.loc === 'casa' ? IC_CASA + ' Casa' : IC_GYM + IC_CASA + ' Ambos';
         const dc = e.diff === 'beginner' ? 'bt-beginner' : e.diff === 'intermediate' ? 'bt-intermediate' : 'bt-advanced';
         const dl = e.diff === 'beginner' ? 'Principiante' : e.diff === 'intermediate' ? 'Intermedio' : 'Avanzado';
         const ec = e.evidence === 'high' ? 'ev-high' : 'ev-med';
@@ -4371,7 +4410,7 @@
       const tc = e.type === 'compound' ? 'bt-compound' : e.type === 'isolation' ? 'bt-isolation' : 'bt-bodyweight';
       const tl = e.type === 'compound' ? 'Compuesto' : e.type === 'isolation' ? 'Aislamiento' : 'Bodyweight';
       const lc = e.loc === 'gym' ? 'bt-gym' : e.loc === 'casa' ? 'bt-casa' : 'bt-gym';
-      const ll = e.loc === 'gym' ? IC_GYM+' Gym' : e.loc === 'casa' ? IC_CASA+' Casa' : IC_GYM+IC_CASA+' Ambos';
+      const ll = e.loc === 'gym' ? IC_GYM + ' Gym' : e.loc === 'casa' ? IC_CASA + ' Casa' : IC_GYM + IC_CASA + ' Ambos';
       const dc = e.diff === 'beginner' ? 'bt-beginner' : e.diff === 'intermediate' ? 'bt-intermediate' : 'bt-advanced';
       const dl = e.diff === 'beginner' ? 'Principiante' : e.diff === 'intermediate' ? 'Intermedio' : 'Avanzado';
       const equipHtml = e.equip ? `<div style="margin-top:10px"><span class="equip-tag">${e.equip}</span></div>` : '';
@@ -4529,6 +4568,26 @@
     function toggleMoreMenu() { document.getElementById('moreOverlay').classList.toggle('show') }
 
     // ═══ TIMER UNIFICADO ═══
+    const SVG_PLAY = `<svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px"><path d="M5 3l14 9-14 9V3z"/></svg>`;
+    const SVG_PAUSE = `<svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>`;
+    const SVG_RESET = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`;
+    function getRestForEx(eid) {
+      let prefs = {};
+      try { prefs = JSON.parse(localStorage.getItem('gb_rest_prefs')) || {}; } catch (e) { }
+      if (prefs[eid]) return prefs[eid];
+      const ex = EX.find(x => x.id === eid);
+      if (!ex || !ex.rest) return 90;
+      if (ex.rest.includes('seg')) return parseInt(ex.rest) || 90;
+      if (ex.rest.includes('min')) { const m = parseInt(ex.rest); return m ? m * 60 : 90; }
+      return 90;
+    }
+    function saveRestPref(eid, sec) {
+      let prefs = {};
+      try { prefs = JSON.parse(localStorage.getItem('gb_rest_prefs')) || {}; } catch (e) { }
+      prefs[eid] = parseInt(sec);
+      localStorage.setItem('gb_rest_prefs', JSON.stringify(prefs));
+    }
+
     function updTmUI() {
       const m = Math.floor(tmRem / 60), s = tmRem % 60;
       const str = m + ':' + (s < 10 ? '0' : '') + s;
@@ -4537,9 +4596,14 @@
       const woDisp = document.getElementById('woTimerDisp');
       if (woDisp) { woDisp.textContent = str; woDisp.style.color = tmRem <= 0 ? 'var(--accent)' : 'var(--ink)'; }
       const startBtn = document.getElementById('tmStartBtn');
-      if (startBtn) { startBtn.textContent = tmRun ? '⏸' : '▶'; startBtn.className = tmRun ? 'timer-btn pause' : 'timer-btn start'; }
+      if (startBtn) { startBtn.innerHTML = tmRun ? SVG_PAUSE : SVG_PLAY; startBtn.className = tmRun ? 'timer-btn pause' : 'timer-btn start'; }
       const woStartBtn = document.getElementById('woStartBtn');
-      if (woStartBtn) woStartBtn.textContent = tmRun ? '⏸' : '▶';
+      if (woStartBtn) {
+        woStartBtn.innerHTML = tmRun ? SVG_PAUSE : SVG_PLAY;
+        woStartBtn.className = 'wo-timer-btn';
+        woStartBtn.style.background = tmRun ? 'rgba(255,214,10,0.2)' : 'var(--accent-dim)';
+        woStartBtn.style.color = tmRun ? 'var(--yellow)' : 'var(--accent)';
+      }
     }
 
     function setTm(s, el) {
@@ -4757,7 +4821,7 @@
     function pickDay(i) { selectedDay = i; renderTrackerDash() }
 
     // ═══ WORKOUT LOG ═══
-    let woSplit = null, woDay = null, woSets = {}, woFree = false;
+    let woSplit = null, woDay = null, woSets = {}, woFree = false, woForceOpen = {}, dragExIdx = null;
 
     function cancelActiveWo() {
       if (confirm('¿Seguro que querés cancelar el entrenamiento en curso? Las series que ya tildaste quedarán guardadas en tu historial, pero se cerrará esta sesión.')) {
@@ -4770,6 +4834,34 @@
         renderTrackerDash();
       }
     }
+
+    function removeWoEx(idx) {
+      if (confirm('¿Seguro que querés quitar este ejercicio de la sesión de hoy?')) {
+        const eid = woDay.exercises[idx];
+        woDay.exercises.splice(idx, 1);
+        delete woSets[eid];
+        saveActiveWo();
+        renderWorkout();
+      }
+    }
+    function toggleExOpen(eid) {
+      woForceOpen[eid] = !woForceOpen[eid];
+      renderWorkout();
+    }
+    // Drag & Drop Handlers
+    function ds(e, idx) { dragExIdx = idx; e.dataTransfer.effectAllowed = 'move'; setTimeout(() => e.target.style.opacity = '0.4', 0); }
+    function dOver(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; }
+    function dDrop(e, targetIdx) {
+      e.preventDefault();
+      if (dragExIdx === null || dragExIdx === targetIdx) return;
+      const temp = woDay.exercises[dragExIdx];
+      woDay.exercises.splice(dragExIdx, 1);
+      woDay.exercises.splice(targetIdx, 0, temp);
+      dragExIdx = null;
+      saveActiveWo();
+      renderWorkout();
+    }
+    function dEnd(e) { e.target.style.opacity = '1'; dragExIdx = null; }
 
     function startWorkout() {
       let customRoutines = []; try { customRoutines = JSON.parse(localStorage.getItem('gb_custom_routines')) || []; } catch (e) { }
@@ -4954,13 +5046,10 @@
 
       // Timer bar (Unificado)
       const tmStr = Math.floor(tmRem / 60) + ':' + (tmRem % 60 < 10 ? '0' : '') + (tmRem % 60);
-      let html = `<div class="wo-timer-bar">
-    <button class="wo-timer-btn wo-timer-reset" onclick="resetTm()">↺</button>
-    <div class="wo-timer-display" id="woTimerDisp" style="${tmRem <= 0 ? 'color:var(--accent)' : ''}">${tmStr}</div>
-    <button class="wo-timer-btn wo-timer-start" id="woStartBtn" onclick="toggleTm()">${tmRun ? '⏸' : '▶'}</button>
-  </div>
-  <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
-    ${[60, 90, 120, 180].map(s => `<button style="padding:6px 10px;background:${tmSec === s ? 'var(--accent-dim)' : 'var(--surface)'};border:1px solid ${tmSec === s ? 'var(--accent)' : 'var(--border)'};border-radius:var(--rxs);color:${tmSec === s ? 'var(--accent)' : 'var(--ink3)'};font-size:11px;font-family:'Montserrat',sans-serif;cursor:pointer" onclick="setTm(${s}, null); renderWorkout()">${s}s</button>`).join('')}
+      let html = `<div class="wo-timer-bar" style="justify-content:center">
+    <button class="wo-timer-btn wo-timer-reset" onclick="resetTm()" style="display:flex;align-items:center;justify-content:center">${SVG_RESET}</button>
+    <div class="wo-timer-display" id="woTimerDisp" style="flex:none;width:100px;${tmRem <= 0 ? 'color:var(--accent)' : ''}">${tmStr}</div>
+    <button class="wo-timer-btn ${tmRun ? 'pause' : 'start'}" id="woStartBtn" onclick="toggleTm()" style="display:flex;align-items:center;justify-content:center">${tmRun ? SVG_PAUSE : SVG_PLAY}</button>
   </div>`;
 
       // Exercises
@@ -4976,24 +5065,41 @@
         const sets = woSets[eid] || [];
         const allDone = sets.length > 0 && sets.every(s => s.done);
 
-        if (allDone) {
-          // Ejercicio Completado -> Mini tarjeta colapsada
-          html += `<div class="wo-ex" style="border-color:var(--green);background:var(--green-dim);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="toast('Ejercicio completado ✅')">
+        if (allDone && !woForceOpen[eid]) {
+          html += `<div class="wo-ex" style="border-color:var(--green);background:var(--green-dim);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer" onclick="toggleExOpen('${eid}')">
         <div style="display:flex;align-items:center;gap:10px">
           <div style="color:var(--green);display:flex"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M20 6 9 17l-5-5"/></svg></div>
           <div style="font-size:14px;font-weight:600;color:var(--ink)">${ex.name}</div>
         </div>
-        <div style="font-size:11px;color:var(--green);font-weight:600">${sets.length} series</div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <div style="font-size:11px;color:var(--green);font-weight:600">${sets.length} series</div>
+          <div style="color:var(--ink3);font-size:12px;margin-top:2px">✎</div>
+        </div>
       </div>`;
-          return; // Salta al siguiente ejercicio sin renderizar los inputs
+          return;
         }
 
-        html += `<div class="wo-ex">
+        html += `<div class="wo-ex" draggable="true" ondragstart="ds(event, ${exIdx})" ondragover="dOver(event)" ondrop="dDrop(event, ${exIdx})" ondragend="dEnd(event)" style="transition: opacity 0.2s">
       <div class="wo-ex-top">
-        <div class="wo-ex-num">${exIdx + 1}</div>
+        <div style="display:flex;align-items:center;cursor:grab;padding-right:8px;color:var(--ink3)" title="Mantener presionado para arrastrar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/></svg>
+        </div>
         <div class="wo-ex-name" onclick="curExercise='${eid}';goPage('detail')">${ex.name}</div>
-      </div>
-      <div class="wo-ex-target">${ex.sets} × ${ex.reps} · Descanso: ${ex.rest}</div>`;
+        <button style="background:var(--accent-dim);border:1px solid rgba(255,94,58,0.2);border-radius:4px;color:var(--accent);width:26px;height:26px;display:flex;align-items:center;justify-content:center;cursor:pointer" onclick="removeWoEx(${exIdx})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+        </button>
+      </div>`;
+        const curRest = getRestForEx(eid);
+        const restOpts = [30, 45, 60, 90, 120, 150, 180, 240, 300];
+        html += `<div class="wo-ex-target" style="display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:6px">
+            <span>${ex.sets} × ${ex.reps} ·</span>
+            <select onchange="saveRestPref('${eid}', this.value)" style="background:transparent;border:none;color:var(--accent);font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;outline:none;appearance:none;cursor:pointer;padding:0">
+              ${restOpts.map(o => `<option value="${o}" ${curRest === o ? 'selected' : ''}>⏱ ${o >= 60 ? Math.floor(o / 60) + 'm ' + (o % 60 ? o % 60 + 's' : '') : o + 's'}</option>`).join('')}
+            </select>
+          </div>
+        ${woForceOpen[eid] ? `<span style="color:var(--accent);font-weight:600;font-size:11px;cursor:pointer;text-decoration:underline" onclick="toggleExOpen('${eid}')">Cerrar</span>` : ''}
+      </div>`;
 
         // Get last session data for this exercise
         const isBarbell = ex.equip && ex.equip.toLowerCase().includes('barra');
@@ -5006,10 +5112,10 @@
         html += `<div style="display:flex;justify-content:flex-end;gap:15px;margin-bottom:8px">
       <button style="background:none;border:none;color:var(--ink3);font-size:12px;font-weight:600;cursor:pointer" onclick="if(woSets['${eid}'].length>1){woSets['${eid}'].pop(); saveActiveWo(); renderWorkout();}">- Quitar Serie</button>
       <button style="background:none;border:none;color:var(--accent);font-size:12px;font-weight:600;cursor:pointer" onclick="woSets['${eid}'].push({w:'',r:'',done:false}); saveActiveWo(); renderWorkout();">+ Agregar Serie</button>
-    </div>`;
+    </div> `;
 
         sets.forEach((s, si) => {
-          const lastHint = lastSets[si] ? `${lastSets[si].w}×${lastSets[si].r}` : '';
+          const lastHint = lastSets[si] ? `${lastSets[si].w}×${lastSets[si].r} ` : '';
           html += `<div class="wo-set-row" style="gap:4px">
         <span class="wo-set-label" style="min-width:20px">S${si + 1}</span>
         <div style="position:relative;flex:1;display:flex;min-width:0">
@@ -5028,15 +5134,15 @@
       let saveBtnHtml = '';
       if (woSplit && woSplit.id.startsWith('custom_')) {
         // Si es una rutina personalizada, permitimos actualizarla directamente
-        saveBtnHtml = `<button id="btnUpdateCustom" class="dash-start" style="flex:1;background:var(--accent-dim);color:var(--accent);box-shadow:none;border:1px solid var(--accent);font-size:14px;margin-bottom:0;padding:12px" onclick="updateCustomRoutine()">ACTUALIZAR RUTINA</button>`;
+        saveBtnHtml = `<button id="btnUpdateCustom" class="dash-start" style="flex:1;background:var(--accent-dim);color:var(--accent);box-shadow:none;border:1px solid var(--accent);font-size:14px;margin-bottom:0;padding:12px" onclick="updateCustomRoutine()"> ACTUALIZAR RUTINA</button> `;
       } else {
         // Si es Libre o Default, permitimos guardarla como una NUEVA rutina personalizada
-        saveBtnHtml = `<button id="btnSaveCustom" class="dash-start" style="flex:1;background:var(--accent-dim);color:var(--accent);box-shadow:none;border:1px solid var(--accent);font-size:14px;margin-bottom:0;padding:12px" onclick="saveAsCustomRoutine()">GUARDAR RUTINA</button>`;
+        saveBtnHtml = `<button id="btnSaveCustom" class="dash-start" style="flex:1;background:var(--accent-dim);color:var(--accent);box-shadow:none;border:1px solid var(--accent);font-size:14px;margin-bottom:0;padding:12px" onclick="saveAsCustomRoutine()"> GUARDAR RUTINA</button> `;
       }
       html += `<div style="display:flex;gap:10px;margin-bottom:10px">
-  <button class="dash-start" style="flex:1;background:var(--surface);color:var(--ink2);box-shadow:none;border:1px dashed var(--border);font-size:14px;margin-bottom:0;padding:12px" onclick="openExPicker()">+ EJERCICIO</button>
+          <button class="dash-start" style="flex:1;background:var(--surface);color:var(--ink2);box-shadow:none;border:1px dashed var(--border);font-size:14px;margin-bottom:0;padding:12px" onclick="openExPicker()">+ EJERCICIO</button>
   ${saveBtnHtml}
-</div>`;
+</div> `;
 
       // Notes
       let savedNotes = '';
@@ -5049,7 +5155,7 @@
       html += `<div class="wo-notes">
     <div style="font-size:12px;color:var(--ink3);margin-bottom:6px">Notas de hoy</div>
     <textarea id="woNotes" placeholder="¿Cómo te sentiste? ¿Algo para recordar?" onchange="saveActiveWo()" onkeyup="saveActiveWo()">${savedNotes}</textarea>
-  </div>`;
+  </div> `;
 
       // Finish button
       const totalSets = Object.values(woSets).reduce((t, sets) => t + sets.filter(s => s.done).length, 0);
@@ -5057,9 +5163,9 @@
       const isComplete = totalAll > 0 && totalSets === totalAll;
 
       if (isComplete) {
-        html += `<button class="wo-finish" onclick="finishWorkout()">ENTRENAMIENTO COMPLETADO</button>`;
+        html += `<button class="wo-finish" onclick="finishWorkout()"> ENTRENAMIENTO COMPLETADO</button> `;
       } else {
-        html += `<button class="wo-finish" style="background:var(--surface);color:var(--ink);border:1px solid var(--border);box-shadow:none" onclick="finishWorkout()">GUARDAR Y SALIR (${totalSets}/${totalAll} series)</button>`;
+        html += `<button class="wo-finish" style="background:var(--surface);color:var(--ink);border:1px solid var(--border);box-shadow:none" onclick="finishWorkout()"> GUARDAR Y SALIR(${totalSets} / ${totalAll} series)</button> `;
       }
 
       document.getElementById('workoutContent').innerHTML = html;
@@ -5091,6 +5197,8 @@
         saveLog(eid, log);
         checkForPR(eid, weightVal); // Fix: Usamos weightVal para evitar NaN
 
+        const restSec = getRestForEx(eid);
+        tmSec = restSec;
         if (tmRun) { clearInterval(tmInt); tmRun = false; }
         tmRem = tmSec;
         toggleTm();
@@ -5150,13 +5258,19 @@
       resetTm();
 
       vib([50, 100, 50, 100, 150]);
-      toast('🎉 ¡Entrenamiento guardado!');
 
-      if (confirm('Entrenamiento guardado. ¿Querés descargar una imagen resumen para compartir?')) {
-        shareWorkoutImage(today, dayName, woData.totalSets);
-      }
-
+      // Refrescamos el Tracker antes de ir
+      renderTrackerDash();
       goPage('tracker');
+
+      setTimeout(() => {
+        shootConfetti();
+        if (confirm('🎉 ¡Gran trabajo hoy! ¿Querés descargar una imagen resumen de tu sesión para compartir en Instagram/WhatsApp?')) {
+          shareWorkoutImage(today, dayName, woData.totalSets);
+        } else if (confirm('🔥 ¿Querés configurar una alarma en tu calendario para no olvidarte de entrenar mañana?')) {
+          setWorkoutReminder();
+        }
+      }, 300);
     }
 
     // ═══ STATS & PRs ═══
@@ -5238,7 +5352,7 @@
     <div class="stat-streak-fire">${streak >= 3 ? '🔥🔥🔥' : streak >= 1 ? '🔥' : '💤'}</div>
     <div class="stat-streak-num">${streak}</div>
     <div class="stat-streak-lbl">${streak === 1 ? 'día consecutivo' : 'días consecutivos'}</div>
-  </div>`;
+  </div> `;
 
       // Tonnage (7 days)
       const last7 = Array(7).fill(0).map((_, i) => new Date(Date.now() - i * 86400000).toISOString().slice(0, 10));
@@ -5257,15 +5371,15 @@
       <div style="font-size:22px;font-weight:700;color:var(--green)">${totalSets}</div>
       <div style="font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:1px;margin-top:4px">Series Totales</div>
     </div>
-  </div>`;
+  </div> `;
       html += `<div class="stat-row">
     <div class="stat-box"><div class="stat-box-num">${totalDays.size}</div><div class="stat-box-lbl">días entrenados</div></div>
     <div class="stat-box"><div class="stat-box-num">${Object.keys(prs).length}</div><div class="stat-box-lbl">ejercicios con PR</div></div>
-  </div>`;
+  </div> `;
 
       // Frequency heatmap (last 28 days)
-      html += `<div class="stitle" style="margin-bottom:8px">FRECUENCIA (ÚLTIMOS 28 DÍAS)</div>`;
-      html += `<div class="stat-card"><div class="freq-grid">`;
+      html += `<div class="stitle" style="margin-bottom:8px"> FRECUENCIA(ÚLTIMOS 28 DÍAS)</div> `;
+      html += `<div class="stat-card"> <div class="freq-grid">`;
       const dayLabels = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
       dayLabels.forEach(d => { html += `<div class="freq-cell-label">${d}</div>` });
       const todayObj = new Date();
@@ -5283,17 +5397,17 @@
           html += `<div class="freq-cell" style="background:${intensity};${isToday}" title="${d}: ${sets} series"></div>`;
         }
       }
-      html += `</div></div>`;
+      html += `</div></div> `;
 
       // Weekly volume by muscle (Pie Chart)
-      html += `<div class="stitle" style="margin-top:14px;margin-bottom:8px">DISTRIBUCIÓN MUSCULAR (7 DÍAS)</div>`;
-      html += `<div class="stat-card" style="display:flex;align-items:center;gap:15px">`;
+      html += `<div class="stitle" style="margin-top:14px;margin-bottom:8px"> DISTRIBUCIÓN MUSCULAR(7 DÍAS)</div> `;
+      html += `<div class="stat-card" style="display:flex;align-items:center;gap:15px"> `;
       if (Object.keys(vol).length) {
         const colors = { hombros: 'var(--blue)', pecho: 'var(--accent)', espalda: 'var(--green)', biceps: 'var(--yellow)', triceps: 'var(--purple)', antebrazos: 'var(--pink)', core: 'var(--accent2)', piernas: '#38BDF8', gluteos: '#F43F5E' };
         let totalVol = Object.values(vol).reduce((a, b) => a + b, 0);
         let conicString = [];
         let currentPct = 0;
-        let legendHtml = `<div style="flex:1;display:flex;flex-direction:column;gap:6px">`;
+        let legendHtml = `<div style="flex:1;display:flex;flex-direction:column;gap:6px"> `;
 
         // Ordenar de mayor a menor volumen
         const sortedVol = Object.entries(vol).sort((a, b) => b[1] - a[1]);
@@ -5302,22 +5416,22 @@
           const exM = MUSCLES.find(m => m.id === mId);
           const color = colors[mId] || 'var(--accent)';
           const pct = (v / totalVol) * 100;
-          conicString.push(`${color} ${currentPct}% ${currentPct + pct}%`);
+          conicString.push(`${color} ${currentPct}% ${currentPct + pct}% `);
           currentPct += pct;
-          legendHtml += `<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink2)"><div style="width:12px;height:12px;border-radius:3px;background:${color}"></div><span style="flex:1">${exM ? exM.name : mId}</span><strong style="color:var(--ink)">${Math.round(pct)}%</strong></div>`;
+          legendHtml += `<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink2)"><div style="width:12px;height:12px;border-radius:3px;background:${color}"></div><span style="flex:1">${exM ? exM.name : mId}</span><strong style="color:var(--ink)">${Math.round(pct)}%</strong></div> `;
         });
-        legendHtml += `</div>`;
+        legendHtml += `</div> `;
 
         // Dibuja el gráfico circular usando CSS conic-gradient
-        html += `<div style="width:110px;height:110px;border-radius:50%;background:conic-gradient(${conicString.join(', ')});flex-shrink:0;box-shadow:inset 0 0 20px rgba(0,0,0,0.1)"></div>`;
+        html += `<div style="width:110px;height:110px;border-radius:50%;background:conic-gradient(${conicString.join(', ')});flex-shrink:0;box-shadow:inset 0 0 20px rgba(0,0,0,0.1)"></div> `;
         html += legendHtml;
       } else {
-        html += `<div style="text-align:center;width:100%;color:var(--ink3);font-size:13px;padding:10px 0">Sin datos esta semana. ¡Empezá a entrenar!</div>`;
+        html += `<div style="text-align:center;width:100%;color:var(--ink3);font-size:13px;padding:10px 0"> Sin datos esta semana. ¡Empezá a entrenar!</div> `;
       }
-      html += `</div>`;
+      html += `</div> `;
 
       // PRs
-      html += `<div class="stitle" style="margin-top:14px;margin-bottom:8px">🏆 RECORDS PERSONALES</div>`;
+      html += `<div class="stitle" style="margin-top:14px;margin-bottom:8px">🏆 RECORDS PERSONALES</div> `;
       if (Object.keys(prs).length) {
         const sorted = Object.entries(prs).sort((a, b) => b[1].w - a[1].w);
         sorted.forEach(([id, pr]) => {
@@ -5325,14 +5439,14 @@
         <span class="pr-list-name">${pr.name}</span>
         <span class="pr-list-val">${pr.w}kg × ${pr.r}</span>
         <span class="pr-list-date">${pr.d}</span>
-      </div>`;
+      </div> `;
         });
       } else {
-        html += `<div class="stat-card" style="text-align:center;color:var(--ink3);font-size:13px;padding:20px">Todavía no tenés PRs. Registrá tus series para ver tus records acá.</div>`;
+        html += `<div class="stat-card" style="text-align:center;color:var(--ink3);font-size:13px;padding:20px"> Todavía no tenés PRs.Registrá tus series para ver tus records acá.</div> `;
       }
 
       // Exercise history links
-      html += `<div class="stitle" style="margin-top:14px;margin-bottom:8px">📈 PROGRESO POR EJERCICIO</div>`;
+      html += `<div class="stitle" style="margin-top:14px;margin-bottom:8px">📈 PROGRESO POR EJERCICIO</div> `;
       const exercisesWithData = Object.keys(logs).filter(id => logs[id].length > 0).sort((a, b) => {
         const ea = EX.find(x => x.id === a), eb = EX.find(x => x.id === b);
         return (ea ? ea.name : '').localeCompare(eb ? eb.name : '', 'es');
@@ -5346,10 +5460,10 @@
         <span style="font-size:14px;font-weight:600;flex:1">${ex ? ex.name : id}</span>
         <span class="pr-badge">PR: ${maxW}kg</span>
         <span style="color:var(--ink3);font-size:18px">›</span>
-      </button>`;
+      </button> `;
         });
       } else {
-        html += `<div style="text-align:center;padding:20px;color:var(--ink3);font-size:13px">Registrá series para ver gráficos de progreso.</div>`;
+        html += `<div style="text-align:center;padding:20px;color:var(--ink3);font-size:13px"> Registrá series para ver gráficos de progreso.</div> `;
       }
 
       document.getElementById('statsContent').innerHTML = html;
@@ -5388,7 +5502,7 @@
 
       // SVG Chart
       if (maxPerSession.length === 1) {
-        html += `<div class="stat-card" style="text-align:center;padding:30px 20px"><div style="font-size:32px;margin-bottom:12px">📈</div><div style="font-size:14px;color:var(--ink2)">Seguí registrando series en distintas fechas para ver tu gráfico de progreso acá.</div></div>`;
+        html += `<div class="stat-card" style="text-align:center;padding:30px 20px"><div style="font-size:32px;margin-bottom:12px">📈</div><div style="font-size:14px;color:var(--ink2)">Seguí registrando series en distintas fechas para ver tu gráfico de progreso acá.</div></div> `;
       } else if (maxPerSession.length >= 2) {
         const W = 340, H = 140, pad = { t: 10, r: 10, b: 25, l: 35 };
         const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
@@ -5402,7 +5516,7 @@
           return { x, y, s };
         });
 
-        const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+        const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x.toFixed(1)},${p.y.toFixed(1)} `).join(' ');
         const areaPath = linePath + ` L${points[points.length - 1].x.toFixed(1)},${H - pad.b} L${points[0].x.toFixed(1)},${H - pad.b} Z`;
 
         html += `<div class="stat-card"><div class="stitle" style="padding:0;margin-bottom:8px">PESO MÁXIMO POR SESIÓN</div>
@@ -5426,17 +5540,17 @@
     </svg>
     <div style="display:flex;gap:12px;margin-top:6px;font-size:10px;color:var(--ink3)">
       <span>● Sesión</span><span style="color:var(--yellow)">● Nuevo PR</span>
-    </div></div>`;
+    </div></div> `;
       }
 
       // Current PR
       html += `<div class="stat-card" style="text-align:center">
     <div style="font-size:12px;color:var(--ink3);margin-bottom:4px">🏆 RECORD PERSONAL</div>
     <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--accent)">${currentPR}kg</div>
-  </div>`;
+  </div> `;
 
       // Session history (reverse chronological)
-      html += `<div class="stitle" style="margin-top:10px;margin-bottom:8px">TODAS LAS SESIONES</div>`;
+      html += `<div class="stitle" style="margin-top:10px;margin-bottom:8px"> TODAS LAS SESIONES</div> `;
       dates.reverse().forEach(date => {
         const sets = byDate[date];
         const maxWDay = Math.max(...sets.map(s => s.w));
@@ -5447,7 +5561,7 @@
         ${isPR ? '<span class="pr-badge">🏆 Nuevo PR</span>' : ''}
       </div>
       <div style="font-size:13px;color:var(--ink2);line-height:1.8">${sets.map((s, i) => `S${i + 1}: <strong>${s.w}kg</strong> × ${s.r}`).join('<br>')}</div>
-    </div>`;
+    </div> `;
       });
 
       document.getElementById('exhistContent').innerHTML = html;
@@ -5494,11 +5608,11 @@
       if (weight > prevMax && prevMax > 0) {
         vib([100, 50, 100, 50, 200]);
         shootConfetti();
-        toast(`🏆 ¡NUEVO PR! ${ex ? ex.name : exId}: ${weight}kg`);
+        toast(`🏆 ¡NUEVO PR! ${ex ? ex.name : exId}: ${weight} kg`);
       } else if (log.length === 1 && weight > 0) {
         vib([100, 50, 100]);
         shootConfetti();
-        toast(`🌟 ¡Primer registro! PR base: ${weight}kg`);
+        toast(`🌟 ¡Primer registro! PR base: ${weight} kg`);
       }
     }
 
@@ -5522,9 +5636,13 @@
       localStorage.setItem('gb_selected_split', splitId);
       selectedSplit = splitId;
       document.getElementById('onboardOverlay').classList.remove('show');
+
+      // Forzar el inicio del Día 0 de la rutina elegida
+      selectedDay = 0;
+      startWorkout();
+
       shootConfetti();
-      toast('¡Rutina configurada! Ya podés empezar.');
-      goPage('tracker');
+      setTimeout(() => toast('👇 Tocá el círculo para completar tu primera serie'), 1000);
     }
     function checkOnboarding() {
       if (!localStorage.getItem('gb_onboarded')) {
@@ -5549,7 +5667,7 @@
       let html = '';
       needed.forEach(p => {
         const cls = p === 20 ? 'p-20' : p === 10 ? 'p-10' : p === 5 ? 'p-5' : p === 2.5 ? 'p-2_5' : 'p-1_25';
-        html += `<div class="plate-item ${cls}"></div>`;
+        html += `<div class="plate-item ${cls}"></div> `;
       });
       document.getElementById('plateRender').innerHTML = html;
       document.getElementById('plateModal').classList.add('show');
@@ -5569,7 +5687,7 @@
       pcts.forEach(p => {
         let val = Math.round((rm * (p / 100)) * 2) / 2;
         let reps = p === 95 ? '2' : p === 90 ? '3-4' : p === 85 ? '5-6' : p === 80 ? '7-8' : p === 75 ? '9-10' : p === 70 ? '11-12' : p === 65 ? '13-15' : '15+';
-        gridHtml += `<div class="onerm-cell"><span class="onerm-cell-pct">${p}% (${reps}r)</span><span class="onerm-cell-val">${val}kg</span></div>`;
+        gridHtml += `<div class="onerm-cell"><span class="onerm-cell-pct">${p}% (${reps}r)</span><span class="onerm-cell-val">${val}kg</span></div> `;
       });
       document.getElementById('rmGrid').innerHTML = gridHtml;
       document.getElementById('rmRes').style.display = 'block';
@@ -5621,7 +5739,7 @@
         const tc = e.type === 'compound' ? 'bt-compound' : e.type === 'isolation' ? 'bt-isolation' : 'bt-bodyweight';
         const tl = e.type === 'compound' ? 'Compuesto' : e.type === 'isolation' ? 'Aislamiento' : 'Bodyweight';
         const lc = e.loc === 'gym' ? 'bt-gym' : e.loc === 'casa' ? 'bt-casa' : 'bt-gym';
-        const ll = e.loc === 'gym' ? IC_GYM+' Gym' : e.loc === 'casa' ? IC_CASA+' Casa' : IC_GYM+IC_CASA+' Ambos';
+        const ll = e.loc === 'gym' ? IC_GYM + ' Gym' : e.loc === 'casa' ? IC_CASA + ' Casa' : IC_GYM + IC_CASA + ' Ambos';
         return `<div class="ex-card" style="animation-delay:0s;opacity:1;transform:none" onclick="curExercise='${e.id}';goPage('detail')">
       <div class="ex-top"><span class="ex-badge ${tc}">${tl}</span><span class="ex-badge ${lc}">${ll}</span></div>
       <div style="display:flex;align-items:center;gap:8px;margin:6px 0 4px"><span class="ex-name">${e.name}</span><span class="ex-arrow">›</span></div>
@@ -5663,6 +5781,14 @@
       link.download = `GymBrain_${date.replace(/-/g, '')}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
+    }
+
+    function setWorkoutReminder() {
+      const text = encodeURIComponent("💪 Entrenamiento con GymBrain");
+      const details = encodeURIComponent("¡Es hora de tu sesión! No rompas tu racha de entrenamiento.");
+      const gCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&details=${details}&recur=RRULE:FREQ=DAILY`;
+      window.open(gCalUrl, '_blank');
+      toast('📅 Redirigiendo al calendario...');
     }
 
     // ═══ PWA INJECTION ═══
