@@ -240,12 +240,6 @@
     }
 
     /* GENERIC */
-    .header {
-      padding: 20px 20px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between
-    }
 
     .logo {
       display: flex;
@@ -253,16 +247,6 @@
       gap: 10px
     }
 
-    .logo-icon {
-      width: 36px;
-      height: 36px;
-      background: var(--accent-dim);
-      border-radius: var(--rxs);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px
-    }
 
     .logo-text {
       font-family: 'Bebas Neue', sans-serif;
@@ -524,23 +508,6 @@
       transform: scale(1.05)
     }
 
-    .splash-logo {
-      font-size: 60px;
-      margin-bottom: 12px;
-      animation: float 3s ease-in-out infinite
-    }
-
-    @keyframes float {
-
-      0%,
-      100% {
-        transform: translateY(0)
-      }
-
-      50% {
-        transform: translateY(-10px)
-      }
-    }
 
     .splash-title {
       font-family: 'Bebas Neue', sans-serif;
@@ -626,6 +593,25 @@
       background: var(--accent);
       color: #fff;
       box-shadow: 0 4px 12px var(--accent-dim)
+    }
+
+    .stats-period-chip {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink3);
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .stats-period-chip.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
     }
 
     /* MUSCLE GRID */
@@ -866,10 +852,6 @@
 
     .ev-med {
       background: var(--yellow)
-    }
-
-    .ev-low {
-      background: var(--ink3)
     }
 
     .ev-label {
@@ -1573,10 +1555,6 @@
       box-shadow: 0 4px 12px var(--accent-dim)
     }
 
-    .dash-history {
-      margin-top: 16px
-    }
-
     .dash-hist-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -1589,12 +1567,6 @@
       font-size: 11px;
       color: var(--ink3);
       margin-bottom: 4px
-    }
-
-    .dash-hist-title {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 6px
     }
 
     .dash-hist-sets {
@@ -1816,26 +1788,31 @@
     }
 
     .pr-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 4px 10px;
-      background: var(--yellow-dim);
-      border: 1px solid rgba(250, 204, 21, .2);
-      border-radius: 20px;
       font-size: 11px;
       font-weight: 700;
-      color: var(--yellow)
+      color: #000;
+      background: var(--accent);
+      padding: 2px 8px;
+      border-radius: 10px;
+      white-space: nowrap;
     }
 
     .pr-list-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--rxs);
+      padding: 12px 14px;
+      margin-bottom: 6px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px;
-      background: var(--surface);
-      border-radius: var(--rxs);
-      margin-bottom: 6px
+      gap: 10px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .pr-list-item:active {
+      background: var(--card2);
     }
 
     .pr-list-name {
@@ -1847,55 +1824,14 @@
     .pr-list-val {
       font-size: 13px;
       font-weight: 700;
-      color: var(--accent)
+      color: var(--accent);
+      white-space: nowrap;
     }
 
     .pr-list-date {
-      font-size: 10px;
-      color: var(--ink3);
-      margin-left: 8px
-    }
-
-    .vol-bar-container {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 8px
-    }
-
-    .vol-bar-label {
-      font-size: 12px;
-      color: var(--ink2);
-      min-width: 80px
-    }
-
-    .vol-bar-track {
-      flex: 1;
-      height: 20px;
-      background: var(--surface);
-      border-radius: 10px;
-      overflow: hidden;
-      position: relative
-    }
-
-    .vol-bar-fill {
-      height: 100%;
-      border-radius: 10px;
-      transition: width .5s var(--ease)
-    }
-
-    .vol-bar-num {
       font-size: 11px;
-      font-weight: 700;
-      min-width: 30px;
-      text-align: right
-    }
-
-    .chart-container {
-      position: relative;
-      height: 160px;
-      margin: 10px 0;
-      overflow: hidden
+      color: var(--ink4);
+      white-space: nowrap;
     }
 
     .chart-canvas {
@@ -1915,11 +1851,6 @@
       fill: var(--accent-dim)
     }
 
-    .chart-dot {
-      fill: var(--accent);
-      r: 3
-    }
-
     .chart-label {
       font-size: 9px;
       fill: var(--ink3);
@@ -1932,23 +1863,22 @@
     }
 
     .ex-hist-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
       width: 100%;
-      padding: 12px;
-      background: var(--surface);
+      background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--rxs);
-      cursor: pointer;
+      padding: 14px 14px;
       margin-bottom: 6px;
-      text-align: left;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
       font-family: 'Montserrat', sans-serif;
-      transition: all .15s
+      color: var(--ink);
+      transition: all .2s;
     }
 
     .ex-hist-btn:active {
-      background: var(--card2)
+      background: var(--card2);
     }
 
     .freq-grid {
@@ -2001,11 +1931,6 @@
       font-size: 13px;
       font-weight: 600;
       cursor: pointer
-    }
-
-    .wo-timer-start {
-      background: var(--accent);
-      color: #fff
     }
 
     .wo-timer-reset {
@@ -2553,49 +2478,6 @@
       margin-bottom: 5px;
       color: var(--ink)
     }
-
-    .plate-item {
-      border-radius: 4px;
-      margin: 0 1px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 700;
-      color: #000;
-      font-size: 11px
-    }
-
-    .p-20 {
-      height: 60px;
-      width: 14px;
-      background: var(--accent)
-    }
-
-    .p-10 {
-      height: 45px;
-      width: 12px;
-      background: var(--green)
-    }
-
-    .p-5 {
-      height: 35px;
-      width: 10px;
-      background: var(--blue)
-    }
-
-    .p-2_5 {
-      height: 25px;
-      width: 8px;
-      background: var(--yellow)
-    }
-
-    .p-1_25 {
-      height: 20px;
-      width: 6px;
-      background: var(--ink);
-      color: #fff
-    }
   </style>
 </head>
 
@@ -2639,13 +2521,23 @@
       </div>
       <div class="home-grid">
         <div class="home-card" onclick="goPage('tracker')" style="grid-column:1/-1">
-          <div class="hc-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"
+          <div class="hc-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 3v18h18" />
               <path d="m19 9-5 5-4-4-3 3" />
             </svg></div>
-          <div class="hc-name">Mi Progreso</div>
+          <div class="hc-name">Entrenamiento</div>
           <div class="hc-sub" id="homeTrackerSub">Tracker de peso y series</div>
+        </div>
+        <div class="home-card" onclick="goPage('stats')" style="grid-column:1/-1">
+          <div class="hc-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" x2="18" y1="20" y2="10" />
+              <line x1="12" x2="12" y1="20" y2="4" />
+              <line x1="6" x2="6" y1="20" y2="14" />
+            </svg></div>
+          <div class="hc-name">Estadísticas</div>
+          <div class="hc-sub">PRs, volumen y progreso</div>
         </div>
         <div class="home-card" onclick="goPage('exercises')" style="grid-column:1/-1">
           <div class="hc-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"
@@ -2890,7 +2782,7 @@
     <!-- ═══ TRACKER DASHBOARD ═══ -->
     <div class="page" id="page-tracker">
       <div class="back-row"><button class="back-btn" onclick="goPage('home')">← Home</button>
-        <div class="back-title">MI PROGRESO</div>
+        <div class="back-title">ENTRENAMIENTO</div>
       </div>
       <div style="padding:0 20px 20px" id="trackerDash"></div>
     </div>
@@ -2905,7 +2797,7 @@
 
     <!-- ═══ STATS ═══ -->
     <div class="page" id="page-stats">
-      <div class="back-row"><button class="back-btn" onclick="goPage('tracker')">← Progreso</button>
+      <div class="back-row"><button class="back-btn" onclick="goPage('home')">← Home</button>
         <div class="back-title">ESTADÍSTICAS</div>
       </div>
       <div style="padding:0 20px 20px" id="statsContent"></div>
@@ -2984,7 +2876,7 @@
     </div>
 
     <div class="page" id="page-onerm">
-      <div class="back-row"><button class="back-btn" onclick="goPage('home')">← Home</button>
+      <div class="back-row"><button class="back-btn" onclick="goPage('stats')">← Estadísticas</button>
         <div class="back-title">CALCULADORA 1RM</div>
       </div>
       <div style="padding:0 20px 20px">
@@ -3049,14 +2941,6 @@
           style="background:var(--surface);border:none;width:30px;height:30px;border-radius:50%;color:var(--ink2);font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer"
           onclick="toggleMoreMenu()">✕</button>
       </div>
-      <button class="more-item" onclick="toggleMoreMenu();goPage('onerm')"><span
-          style="width:20px;height:20px;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24"
-            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            style="width:16px;height:16px">
-            <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
-            <line x1="8" y1="12" x2="16" y2="12" />
-            <line x1="12" y1="16" x2="12" y2="16" />
-          </svg></span>Calculadora 1RM</button>
       <div style="height:1px;background:var(--border);margin:8px 0"></div>
       <button class="more-item" onclick="toggleMoreMenu();exportData()"><span
           style="width:20px;height:20px;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24"
@@ -3164,11 +3048,22 @@
     </div>
   </div>
 
+  <div class="plate-overlay" id="plateModal" onclick="this.classList.remove('show')">
+    <div class="plate-card" onclick="event.stopPropagation()">
+      <div class="plate-title" id="plateTotal">Total: 0 kg</div>
+      <div style="font-size:13px;color:var(--ink2);margin-bottom:12px" id="plateText">Por lado:</div>
+      <div style="display:flex;align-items:center;justify-content:center;min-height:90px" id="plateRender"></div>
+      <button class="dash-start" style="margin-top:16px;margin-bottom:0"
+        onclick="document.getElementById('plateModal').classList.remove('show')">CERRAR</button>
+    </div>
+  </div>
+
   <script>
     // ═══ SVG ICON STRINGS ═══
     const IC_GYM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;vertical-align:-1px"><line x1="2" x2="22" y1="12" y2="12"/><rect width="4" height="10" x="4" y="7" rx="1"/><rect width="4" height="10" x="16" y="7" rx="1"/></svg>';
     const IC_CASA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;vertical-align:-1px"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>';
     const IC_FLAME = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;vertical-align:-1px"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14 0-5.5 3-7 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.5-2.26 1.4-3.13"/></svg>';
+    const IC_FLAME_LG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:28px;height:28px;color:var(--accent)"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14 0-5.5 3-7 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.5-2.26 1.4-3.13"/></svg>';
 
     // ═══ GLOSSARY ═══
     const GLOSS = {
@@ -4345,7 +4240,7 @@
       document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
       document.querySelectorAll('.nav-tab').forEach(x => x.classList.remove('active'));
       const pe = document.getElementById('page-' + p); if (pe) pe.classList.add('active');
-      const navMap = { home: 'navHome', exercises: '', muscle: '', detail: '', methods: 'navMore', routines: 'navMore', timer: 'navMore', glossary: 'navMore', supplements: 'navMore', creators: 'navMore', warmup: 'navMore', learn: 'navMore', tracker: 'navTracker', workout: 'navTracker', stats: 'navTracker', exhist: 'navTracker', onerm: 'navMore' };
+      const navMap = { home: 'navHome', exercises: '', muscle: '', detail: '', methods: 'navMore', routines: 'navMore', timer: 'navMore', glossary: 'navMore', supplements: 'navMore', creators: 'navMore', warmup: 'navMore', learn: 'navMore', tracker: 'navTracker', workout: 'navTracker', stats: 'navHome', exhist: 'navHome', onerm: 'navHome' };
       const ne = document.getElementById(navMap[p]); if (ne) ne.classList.add('active');
 
       // FIX: Limpiar la barra de búsqueda siempre que cambiás de página
@@ -4731,8 +4626,7 @@
       <div class="dash-today-title">HOY — ${new Date().toLocaleDateString('es-AR', { weekday: 'long', day: 'numeric', month: 'long' })}</div>
       <div class="dash-today-count">${todaySets} series</div>
       <div class="dash-today-sub">${todayExercises.size} ejercicios registrados</div>
-    </div>
-        <button class="dash-start" style="background:var(--blue);margin-bottom:14px" onclick="goPage('stats')">VER ESTADÍSTICAS Y PRs</button>`;
+    </div>`;
 
       // Start workout section
       html += `<div class="stitle" style="margin-bottom:10px">INICIAR ENTRENAMIENTO</div>`;
@@ -5269,6 +5163,24 @@
     }
 
     // ═══ STATS & PRs ═══
+    let statsPeriod = '4w';
+
+    function getStatsStartDate() {
+      if (statsPeriod === 'all') return '2020-01-01';
+      const d = new Date();
+      if (statsPeriod === '4w') d.setDate(d.getDate() - 28);
+      if (statsPeriod === '3m') d.setMonth(d.getMonth() - 3);
+      if (statsPeriod === '6m') d.setMonth(d.getMonth() - 6);
+      return d.toISOString().slice(0, 10);
+    }
+
+    function setStatsPeriod(p, el) {
+      statsPeriod = p;
+      document.querySelectorAll('.stats-period-chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      renderStats();
+    }
+
     function getStreak() {
       const logs = getAllLogs();
       const dates = new Set();
@@ -5277,7 +5189,6 @@
       const sorted = [...dates].sort().reverse();
       const today = getToday();
       const yesterday = getYesterday();
-      // Must include today or yesterday to have active streak
       if (sorted[0] !== today && sorted[0] !== yesterday) return 0;
       let streak = 1;
       for (let i = 0; i < sorted.length - 1; i++) {
@@ -5289,81 +5200,69 @@
       return streak;
     }
 
-    function getPRs() {
+    function renderStats() {
+      const streak = getStreak();
       const logs = getAllLogs();
+      const startDate = getStatsStartDate();
+
+      // Filter logs by period
+      const filteredLogs = {};
+      Object.entries(logs).forEach(([id, entries]) => {
+        const filtered = entries.filter(e => e.d >= startDate);
+        if (filtered.length) filteredLogs[id] = filtered;
+      });
+
+      // PRs — SIEMPRE históricos, no afectados por filtro de período
       const prs = {};
       Object.entries(logs).forEach(([exId, entries]) => {
         let maxW = 0, maxDate = '', maxR = 0;
         entries.forEach(e => {
-          if (e.w > maxW || (e.w === maxW && e.r > maxR)) { maxW = e.w; maxR = e.r; maxDate = e.d }
+          const w = parseFloat(e.w) || 0;
+          const r = parseInt(e.r) || 0;
+          if (w > maxW || (w === maxW && r > maxR)) { maxW = w; maxR = r; maxDate = e.d }
         });
-        if (maxW > 0) {
+        if (maxR > 0) {
           const ex = EX.find(x => x.id === exId);
           prs[exId] = { name: ex ? ex.name : exId, w: maxW, r: maxR, d: maxDate };
         }
       });
-      return prs;
-    }
 
-    function getWeeklyVolume() {
-      const logs = getAllLogs();
-      const now = new Date();
-      const weekAgo = new Date(now - 7 * 86400000).toISOString().slice(0, 10);
-      const vol = {};
-      Object.entries(logs).forEach(([exId, entries]) => {
-        const ex = EX.find(x => x.id === exId);
-        if (!ex) return;
-        const muscle = ex.muscle;
-        const weekSets = entries.filter(e => e.d >= weekAgo).length;
-        if (weekSets) vol[muscle] = (vol[muscle] || 0) + weekSets;
-      });
-      return vol;
-    }
-
-    function getFrequencyData() {
-      const logs = getAllLogs();
-      const dates = {};
-      Object.values(logs).forEach(entries => entries.forEach(e => {
-        dates[e.d] = (dates[e.d] || 0) + 1;
-      }));
-      return dates;
-    }
-
-    function renderStats() {
-      const streak = getStreak();
-      const prs = getPRs();
-      const vol = getWeeklyVolume();
-      const freq = getFrequencyData();
-      const logs = getAllLogs();
-
-      // Total stats
+      // Total stats from filtered data
       let totalSets = 0, totalDays = new Set();
-      Object.values(logs).forEach(entries => entries.forEach(e => { totalSets++; totalDays.add(e.d) }));
+      Object.values(filteredLogs).forEach(entries => entries.forEach(e => { totalSets++; totalDays.add(e.d) }));
 
       let html = '';
 
-      // Streak
+      // Period filter chips
+      html += `<div style="display:flex;gap:8px;margin-bottom:14px">
+  <button class="stats-period-chip ${statsPeriod === '4w' ? 'active' : ''}" onclick="setStatsPeriod('4w',this)">4 Sem</button>
+  <button class="stats-period-chip ${statsPeriod === '3m' ? 'active' : ''}" onclick="setStatsPeriod('3m',this)">3 Meses</button>
+  <button class="stats-period-chip ${statsPeriod === '6m' ? 'active' : ''}" onclick="setStatsPeriod('6m',this)">6 Meses</button>
+  <button class="stats-period-chip ${statsPeriod === 'all' ? 'active' : ''}" onclick="setStatsPeriod('all',this)">Todo</button>
+</div>`;
+
+      // Streak (always uses full data, not filtered)
       html += `<div class="stat-streak">
-    <div class="stat-streak-fire">${streak >= 3 ? '🔥🔥🔥' : streak >= 1 ? '🔥' : '💤'}</div>
+    <div class="stat-streak-fire">${streak >= 1 ? IC_FLAME_LG : ''}</div>
     <div class="stat-streak-num">${streak}</div>
     <div class="stat-streak-lbl">${streak === 1 ? 'día consecutivo' : 'días consecutivos'}</div>
   </div> `;
 
-      // Tonnage (7 days)
-      const last7 = Array(7).fill(0).map((_, i) => new Date(Date.now() - i * 86400000).toISOString().slice(0, 10));
-      let weeklyTonnage = 0;
-      Object.values(logs).forEach(entries => {
-        entries.filter(e => last7.includes(e.d)).forEach(e => { weeklyTonnage += (e.w * e.r); });
+      // Tonnage (filtered period)
+      let periodTonnage = 0;
+      Object.values(filteredLogs).forEach(entries => {
+        entries.forEach(e => { periodTonnage += (e.w * e.r); });
       });
+      const periodLabel = statsPeriod === '4w' ? '4 Semanas' : statsPeriod === '3m' ? '3 Meses' : statsPeriod === '6m' ? '6 Meses' : 'Total';
 
       // Summary boxes
       html += `<div style="display:flex;gap:10px;margin-bottom:10px">
-    <div class="stat-card" style="flex:1;text-align:center;padding:15px;margin-bottom:0">
-      <div style="font-size:22px;font-weight:700;color:var(--accent)">${weeklyTonnage.toLocaleString()} kg</div>
-      <div style="font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:1px;margin-top:4px">Tonelaje (7 Días)</div>
+    <div class="stat-card" style="flex:1;text-align:center;padding:15px;margin-bottom:0;border:1px solid rgba(255,94,58,0.15)">
+      <div style="font-size:24px;font-weight:700;color:var(--accent);font-family:'Bebas Neue',sans-serif;letter-spacing:1px">${periodTonnage.toLocaleString()} kg</div>
+      <div style="font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:1px;margin-top:4px">Tonelaje (${periodLabel})</div>
     </div>
-    <div class="stat-card" style="flex:1;text-align:center;padding:15px;margin-bottom:0">
-      <div style="font-size:22px;font-weight:700;color:var(--green)">${totalSets}</div>
+    <div class="stat-card" style="flex:1;text-align:center;padding:15px;margin-bottom:0;border:1px solid rgba(34,197,94,0.15)">
+      <div style="font-size:24px;font-weight:700;color:var(--green);font-family:'Bebas Neue',sans-serif;letter-spacing:1px">${totalSets}</div>
       <div style="font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:1px;margin-top:4px">Series Totales</div>
     </div>
   </div> `;
@@ -5372,30 +5271,185 @@
     <div class="stat-box"><div class="stat-box-num">${Object.keys(prs).length}</div><div class="stat-box-lbl">ejercicios con PR</div></div>
   </div> `;
 
-      // Frequency heatmap (last 28 days)
-      html += `<div class="stitle" style="margin-bottom:8px"> FRECUENCIA(ÚLTIMOS 28 DÍAS)</div> `;
-      html += `<div class="stat-card"> <div class="freq-grid">`;
+      // --- METRICA 1: VOLUMEN SEMANAL ---
+      const getMondayObj = (dStr) => {
+        const d = new Date(dStr + "T12:00:00");
+        const day = d.getDay();
+        const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+        d.setDate(diff);
+        d.setHours(0, 0, 0, 0);
+        return d;
+      };
+
+      const todayISO = getToday();
+      const thisMonday = getMondayObj(todayISO);
+
+      const volByWeek = {};
+      Object.values(filteredLogs).forEach(entries => {
+        entries.forEach(e => {
+          const mon = getMondayObj(e.d);
+          const diffTime = thisMonday.getTime() - mon.getTime();
+          const weeksAgo = Math.round(diffTime / (7 * 86400000));
+
+          if (!volByWeek[weeksAgo]) volByWeek[weeksAgo] = { w: weeksAgo, count: 0, dateObj: mon };
+          volByWeek[weeksAgo].count++;
+        });
+      });
+
+      const weeksArray = Object.values(volByWeek).sort((a, b) => b.w - a.w); // De más antiguo a más nuevo
+      const displayWeeks = weeksArray.slice(-8); // Hasta últimas 8 semanas
+
+      html += `<div class="stitle" style="margin-top:14px;margin-bottom:8px">VOLUMEN SEMANAL</div>`;
+      if (displayWeeks.length > 0) {
+        const WW = 340, WH = 150, wPad = { t: 25, r: 10, b: 25, l: 30 };
+        const wCw = WW - wPad.l - wPad.r, wCh = WH - wPad.t - wPad.b;
+        const maxVol = Math.max(...displayWeeks.map(w => w.count));
+        const barWidth = Math.min(28, (wCw / displayWeeks.length) * 0.7);
+        const colSpacing = wCw / displayWeeks.length;
+
+        html += `<div class="stat-card">
+          <svg viewBox="0 0 ${WW} ${WH}" class="chart-canvas" style="width:100%;height:auto;overflow:visible">
+            <line x1="${wPad.l}" y1="${wPad.t}" x2="${wPad.l}" y2="${WH - wPad.b}" class="chart-grid"/>
+            <line x1="${wPad.l}" y1="${WH - wPad.b}" x2="${WW - wPad.r}" y2="${WH - wPad.b}" class="chart-grid"/>
+            <text x="${wPad.l - 6}" y="${wPad.t + 4}" text-anchor="end" class="chart-label">${maxVol}</text>
+            <text x="${wPad.l - 6}" y="${WH - wPad.b}" text-anchor="end" class="chart-label">0</text>
+            ${displayWeeks.map((wk, i) => {
+          const xBase = wPad.l + colSpacing * i + colSpacing / 2;
+          const barH = (wk.count / Math.max(1, maxVol)) * wCh;
+          const yBase = WH - wPad.b - barH;
+          const isCurrent = wk.w === 0;
+          const color = isCurrent ? 'var(--accent)' : 'var(--surface)';
+          const strokeHtml = !isCurrent ? 'stroke="var(--border)" stroke-width="1"' : '';
+          const formatWk = wk.w === 0 ? 'Esta' : `${wk.dateObj.getDate()}/${wk.dateObj.getMonth() + 1}`;
+          return `
+                <rect x="${xBase - barWidth / 2}" y="${yBase}" width="${barWidth}" height="${barH}" fill="${color}" ${strokeHtml} rx="3" ry="3"/>
+                <text x="${xBase}" y="${yBase - 6}" text-anchor="middle" class="chart-label" fill="var(--ink)">${wk.count}</text>
+                <text x="${xBase}" y="${WH - wPad.b + 16}" text-anchor="middle" class="chart-label">${formatWk}</text>
+              `;
+        }).join('')}
+          </svg>
+        </div>`;
+      } else {
+        html += `<div class="stat-card" style="text-align:center;color:var(--ink3);font-size:13px;padding:20px">Sin datos de volumen semanal.</div>`;
+      }
+
+      // Frequency heatmap
+      const freq = {};
+      Object.values(filteredLogs).forEach(entries => entries.forEach(e => {
+        freq[e.d] = (freq[e.d] || 0) + 1;
+      }));
+
+      let heatmapDays = 28;
+      let cellSize = "36px";
+      let cellGap = "8px";
+      let heatmapTitle = "ÚLTIMOS 28 DÍAS";
+
+      if (statsPeriod === '3m') {
+        heatmapDays = 90;
+        cellSize = "12px";
+        cellGap = "2px";
+        heatmapTitle = "ÚLTIMOS 90 DÍAS";
+      } else if (statsPeriod === '6m') {
+        heatmapDays = 180;
+        cellSize = "8px";
+        cellGap = "1px";
+        heatmapTitle = "ÚLTIMOS 180 DÍAS";
+      } else if (statsPeriod === 'all') {
+        heatmapDays = 365;
+        cellSize = "8px";
+        cellGap = "1px";
+        heatmapTitle = "ÚLTIMO AÑO";
+      }
+
+      html += `<div class="stitle" style="margin-bottom:8px"> FRECUENCIA (${heatmapTitle})</div> `;
+      html += `<div class="stat-card"> <div class="freq-grid" style="gap:${cellGap}">`;
       const dayLabels = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
-      dayLabels.forEach(d => { html += `<div class="freq-cell-label">${d}</div>` });
+      dayLabels.forEach(d => { html += `<div class="freq-cell-label" style="height:${cellSize};display:flex;align-items:center;justify-content:center">${d}</div>` });
       const todayObj = new Date();
       let todayDay = todayObj.getDay() - 1; if (todayDay < 0) todayDay = 6;
       const daysToNextSunday = 6 - todayDay;
-      for (let i = 27; i >= 0; i--) {
+      for (let i = heatmapDays - 1; i >= 0; i--) {
         const offset = i - daysToNextSunday;
         if (offset < 0) {
-          html += `<div class="freq-cell" style="background:transparent"></div>`;
+          html += `<div class="freq-cell" style="background:transparent;width:${cellSize};height:${cellSize};margin:auto"></div>`;
         } else {
-          const d = new Date(Date.now() - offset * 86400000).toISOString().slice(0, 10);
+          const dObj = new Date(Date.now() - offset * 86400000);
+          dObj.setMinutes(dObj.getMinutes() - dObj.getTimezoneOffset());
+          const d = dObj.toISOString().slice(0, 10);
           const sets = freq[d] || 0;
           const intensity = sets === 0 ? 'var(--surface)' : sets < 5 ? 'rgba(255,94,58,.25)' : sets < 10 ? 'rgba(255,94,58,.5)' : 'rgba(255,94,58,.85)';
           const isToday = offset === 0 ? 'border:1px solid var(--ink4)' : '';
-          html += `<div class="freq-cell" style="background:${intensity};${isToday}" title="${d}: ${sets} series"></div>`;
+          html += `<div class="freq-cell" style="background:${intensity};${isToday};width:${cellSize};height:${cellSize};margin:auto" title="${d}: ${sets} series"></div>`;
         }
       }
       html += `</div></div> `;
 
-      // Weekly volume by muscle (Pie Chart)
-      html += `<div class="stitle" style="margin-top:14px;margin-bottom:8px"> DISTRIBUCIÓN MUSCULAR(7 DÍAS)</div> `;
+      html += `<div style="display:flex;align-items:center;justify-content:flex-end;gap:4px;margin-top:6px;font-size:9px;color:var(--ink4)">
+  <span>Menos</span>
+  <span style="width:10px;height:10px;border-radius:2px;background:var(--surface);display:inline-block"></span>
+  <span style="width:10px;height:10px;border-radius:2px;background:rgba(255,94,58,.25);display:inline-block"></span>
+  <span style="width:10px;height:10px;border-radius:2px;background:rgba(255,94,58,.5);display:inline-block"></span>
+  <span style="width:10px;height:10px;border-radius:2px;background:rgba(255,94,58,.85);display:inline-block"></span>
+  <span>Más</span>
+</div>`;
+
+      // --- METRICA 2: FRECUENCIA POR MÚSCULO ---
+      html += `<div class="stitle" style="margin-top:14px;margin-bottom:8px">FRECUENCIA POR MÚSCULO</div>`;
+      const freqByMuscleObj = {};
+      Object.entries(filteredLogs).forEach(([exId, entries]) => {
+        const ex = EX.find(x => x.id === exId);
+        if (!ex) return;
+        const muscle = ex.muscle;
+        if (!freqByMuscleObj[muscle]) freqByMuscleObj[muscle] = new Set();
+        entries.forEach(e => freqByMuscleObj[muscle].add(e.d));
+      });
+
+      const freqMuscleArr = Object.entries(freqByMuscleObj)
+        .map(([mId, daysSet]) => ({
+          mId,
+          count: daysSet.size,
+          mName: MUSCLES.find(m => m.id === mId)?.name || mId
+        }))
+        .filter(m => m.count > 0)
+        .sort((a, b) => b.count - a.count);
+
+      if (freqMuscleArr.length > 0) {
+        const maxFreqM = freqMuscleArr[0].count;
+        const fmWW = 340;
+        const itemH = 26;
+        const fmPad = { t: 10, r: 10, b: 10, l: 80 };
+        const fmH = fmPad.t + fmPad.b + freqMuscleArr.length * itemH;
+        const fmCw = fmWW - fmPad.l - fmPad.r;
+
+        const colorsByMuscle = { hombros: 'var(--blue)', pecho: 'var(--accent)', espalda: 'var(--green)', biceps: 'var(--yellow)', triceps: 'var(--purple)', antebrazos: 'var(--pink)', core: 'var(--accent2)', piernas: '#38BDF8', gluteos: '#F43F5E' };
+
+        html += `<div class="stat-card">
+          <svg viewBox="0 0 ${fmWW} ${fmH}" class="chart-canvas" style="width:100%;height:auto;overflow:visible">
+            ${freqMuscleArr.map((fm, i) => {
+          const yBase = fmPad.t + i * itemH;
+          const barW = (fm.count / Math.max(1, maxFreqM)) * fmCw;
+          const color = colorsByMuscle[fm.mId] || 'var(--accent)';
+          return `
+                <text x="${fmPad.l - 8}" y="${yBase + 15}" text-anchor="end" class="chart-label" style="font-size:11px;font-weight:600">${fm.mName}</text>
+                <rect x="${fmPad.l}" y="${yBase + 4}" width="${barW}" height="14" fill="${color}" rx="4" ry="4" opacity="0.8"/>
+                <text x="${fmPad.l + barW + 6}" y="${yBase + 15}" class="chart-label" fill="var(--ink)" style="font-size:11px;font-weight:600">${fm.count}</text>
+              `;
+        }).join('')}
+          </svg>
+        </div>`;
+      } else {
+        html += `<div class="stat-card" style="text-align:center;color:var(--ink3);font-size:13px;padding:20px">Sin datos de frecuencia por músculo.</div>`;
+      }
+
+      // Volume by muscle (Pie Chart) - uses filtered data
+      const vol = {};
+      Object.entries(filteredLogs).forEach(([exId, entries]) => {
+        const ex = EX.find(x => x.id === exId);
+        if (!ex) return;
+        const muscle = ex.muscle;
+        if (entries.length) vol[muscle] = (vol[muscle] || 0) + entries.length;
+      });
+      html += `<div class="stitle" style="margin-top:14px;margin-bottom:8px"> DISTRIBUCIÓN MUSCULAR (${periodLabel})</div> `;
       html += `<div class="stat-card" style="display:flex;align-items:center;gap:15px"> `;
       if (Object.keys(vol).length) {
         const colors = { hombros: 'var(--blue)', pecho: 'var(--accent)', espalda: 'var(--green)', biceps: 'var(--yellow)', triceps: 'var(--purple)', antebrazos: 'var(--pink)', core: 'var(--accent2)', piernas: '#38BDF8', gluteos: '#F43F5E' };
@@ -5404,7 +5458,6 @@
         let currentPct = 0;
         let legendHtml = `<div style="flex:1;display:flex;flex-direction:column;gap:6px"> `;
 
-        // Ordenar de mayor a menor volumen
         const sortedVol = Object.entries(vol).sort((a, b) => b[1] - a[1]);
 
         sortedVol.forEach(([mId, v]) => {
@@ -5417,43 +5470,54 @@
         });
         legendHtml += `</div> `;
 
-        // Dibuja el gráfico circular usando CSS conic-gradient
-        html += `<div style="width:110px;height:110px;border-radius:50%;background:conic-gradient(${conicString.join(', ')});flex-shrink:0;box-shadow:inset 0 0 20px rgba(0,0,0,0.1)"></div> `;
+        html += `<div style="width:120px;height:120px;border-radius:50%;background:conic-gradient(${conicString.join(', ')});position:relative;flex-shrink:0">
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;border-radius:50%;background:var(--card)"></div>
+        </div> `;
         html += legendHtml;
       } else {
-        html += `<div style="text-align:center;width:100%;color:var(--ink3);font-size:13px;padding:10px 0"> Sin datos esta semana. ¡Empezá a entrenar!</div> `;
+        html += `<div style="text-align:center;width:100%;color:var(--ink3);font-size:13px;padding:10px 0"> Sin datos en este período. ¡Empezá a entrenar!</div> `;
       }
       html += `</div> `;
 
       // PRs
-      html += `<div class="stitle" style="margin-top:14px;margin-bottom:8px">🏆 RECORDS PERSONALES</div> `;
-      if (Object.keys(prs).length) {
-        const sorted = Object.entries(prs).sort((a, b) => b[1].w - a[1].w);
-        sorted.forEach(([id, pr]) => {
-          html += `<div class="pr-list-item" onclick="viewExHist('${id}')" style="cursor:pointer">
+      html += `<div class="stitle" style="margin-top:14px;margin-bottom:8px">RECORDS PERSONALES</div>`;
+      html += `<input type="text" placeholder="Buscar ejercicio..." 
+  style="width:100%;padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rxs);color:var(--ink);font-family:'Montserrat',sans-serif;font-size:13px;margin-bottom:10px;outline:none"
+  oninput="filterPRs(this.value)">`;
+      html += `<div id="prListContainer">`;
+
+      window.currentPRs = Object.entries(prs).map(([id, pr]) => ({ id, ...pr }));
+
+      if (window.currentPRs.length) {
+        const sorted = window.currentPRs.sort((a, b) => b.w - a.w);
+        sorted.forEach((pr) => {
+          html += `<div class="pr-list-item" onclick="viewExHist('${pr.id}')" style="cursor:pointer">
         <span class="pr-list-name">${pr.name}</span>
-        <span class="pr-list-val">${pr.w}kg × ${pr.r}</span>
+        <span class="pr-list-val">${pr.w > 0 ? pr.w + 'kg × ' + pr.r : pr.r + ' reps'}</span>
         <span class="pr-list-date">${pr.d}</span>
       </div> `;
         });
       } else {
-        html += `<div class="stat-card" style="text-align:center;color:var(--ink3);font-size:13px;padding:20px"> Todavía no tenés PRs.Registrá tus series para ver tus records acá.</div> `;
+        html += `<div class="stat-card" style="text-align:center;color:var(--ink3);font-size:13px;padding:20px"> Todavía no tenés PRs. Registrá tus series para ver tus records acá.</div> `;
       }
+      html += `</div>`;
 
       // Exercise history links
-      html += `<div class="stitle" style="margin-top:14px;margin-bottom:8px">📈 PROGRESO POR EJERCICIO</div> `;
-      const exercisesWithData = Object.keys(logs).filter(id => logs[id].length > 0).sort((a, b) => {
+      html += `<div class="stitle" style="margin-top:14px;margin-bottom:8px">PROGRESO POR EJERCICIO</div> `;
+      const exercisesWithData = Object.keys(filteredLogs).filter(id => filteredLogs[id].length > 0).sort((a, b) => {
         const ea = EX.find(x => x.id === a), eb = EX.find(x => x.id === b);
         return (ea ? ea.name : '').localeCompare(eb ? eb.name : '', 'es');
       });
       if (exercisesWithData.length) {
         exercisesWithData.forEach(id => {
           const ex = EX.find(x => x.id === id);
-          const entries = logs[id];
+          const entries = filteredLogs[id];
           const maxW = Math.max(...entries.map(e => e.w));
+          const maxWEntry = entries.reduce((best, e) => (e.w > best.w || (e.w === best.w && e.r > best.r)) ? e : best, entries[0]);
+          const maxR = maxWEntry ? maxWEntry.r : 0;
           html += `<button class="ex-hist-btn" onclick="viewExHist('${id}')">
         <span style="font-size:14px;font-weight:600;flex:1">${ex ? ex.name : id}</span>
-        <span class="pr-badge">PR: ${maxW}kg</span>
+        <span class="pr-badge">PR: ${maxW > 0 ? maxW + 'kg' : maxR + ' reps'}</span>
         <span style="color:var(--ink3);font-size:18px">›</span>
       </button> `;
         });
@@ -5461,7 +5525,36 @@
         html += `<div style="text-align:center;padding:20px;color:var(--ink3);font-size:13px"> Registrá series para ver gráficos de progreso.</div> `;
       }
 
+      html += `<div class="stitle" style="margin-top:14px;margin-bottom:8px">HERRAMIENTAS</div>`;
+      html += `<button class="ex-hist-btn" onclick="goPage('onerm')" style="justify-content:center;gap:8px;background:var(--accent);border-color:var(--accent);color:#000">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+  <span style="font-size:14px;font-weight:600">Calculadora de 1RM</span>
+</button>`;
+
       document.getElementById('statsContent').innerHTML = html;
+    }
+
+    function filterPRs(q) {
+      const term = q.toLowerCase().trim();
+      const container = document.getElementById('prListContainer');
+      if (!container || !window.currentPRs) return;
+
+      const filtered = window.currentPRs.filter(pr => pr.name.toLowerCase().includes(term));
+      const sorted = filtered.sort((a, b) => b.w - a.w);
+
+      let html = '';
+      if (sorted.length) {
+        sorted.forEach(pr => {
+          html += `<div class="pr-list-item" onclick="viewExHist('${pr.id}')" style="cursor:pointer">
+        <span class="pr-list-name">${pr.name}</span>
+        <span class="pr-list-val">${pr.w > 0 ? pr.w + 'kg × ' + pr.r : pr.r + ' reps'}</span>
+        <span class="pr-list-date">${pr.d}</span>
+      </div> `;
+        });
+      } else {
+        html += `<div class="stat-card" style="text-align:center;color:var(--ink3);font-size:13px;padding:20px"> No se encontraron records para "${q}".</div> `;
+      }
+      container.innerHTML = html;
     }
 
     // ═══ EXERCISE HISTORY + CHART ═══
@@ -5497,7 +5590,7 @@
 
       // SVG Chart
       if (maxPerSession.length === 1) {
-        html += `<div class="stat-card" style="text-align:center;padding:30px 20px"><div style="font-size:32px;margin-bottom:12px">📈</div><div style="font-size:14px;color:var(--ink2)">Seguí registrando series en distintas fechas para ver tu gráfico de progreso acá.</div></div> `;
+        html += `<div class="stat-card" style="text-align:center;padding:30px 20px"><div style="margin-bottom:12px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:32px;height:32px;color:var(--ink3)"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg></div><div style="font-size:14px;color:var(--ink2)">Seguí registrando series en distintas fechas para ver tu gráfico de progreso acá.</div></div> `;
       } else if (maxPerSession.length >= 2) {
         const W = 340, H = 140, pad = { t: 10, r: 10, b: 25, l: 35 };
         const cw = W - pad.l - pad.r, ch = H - pad.t - pad.b;
@@ -5525,8 +5618,8 @@
       ${points.map((p, i) => {
           const isPR = prDates.includes(p.s.d);
           const niceDate = p.s.d.split('-').reverse().join('/');
-          return `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${isPR ? 6 : 5}" fill="${isPR ? 'var(--yellow)' : 'var(--accent)'}" ${isPR ? 'stroke="var(--yellow)" stroke-width="2"' : ''} style="cursor:pointer" onclick="toast('${niceDate}: ${p.s.w}kg ${isPR ? '🏆' : ''}')" />
-               <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="15" fill="transparent" style="cursor:pointer" onclick="toast('${niceDate}: ${p.s.w}kg ${isPR ? '🏆' : ''}')" />`;
+          return `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${isPR ? 6 : 5}" fill="${isPR ? 'var(--yellow)' : 'var(--accent)'}" ${isPR ? 'stroke="var(--yellow)" stroke-width="2"' : ''} style="cursor:pointer" onclick="toast('${niceDate}: ${p.s.w}kg ${isPR ? '· PR!' : ''}')" />
+               <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="15" fill="transparent" style="cursor:pointer" onclick="toast('${niceDate}: ${p.s.w}kg ${isPR ? '· PR!' : ''}')" />`;
         }).join('')}
       ${points.length <= 10 ? points.map((p, i) => `<text x="${p.x.toFixed(1)}" y="${H - pad.b + 12}" text-anchor="middle" class="chart-label">${p.s.d.slice(5)}</text>`).join('') : `
         <text x="${points[0].x.toFixed(1)}" y="${H - pad.b + 12}" text-anchor="start" class="chart-label">${points[0].s.d.slice(5)}</text>
@@ -5540,7 +5633,7 @@
 
       // Current PR
       html += `<div class="stat-card" style="text-align:center">
-    <div style="font-size:12px;color:var(--ink3);margin-bottom:4px">🏆 RECORD PERSONAL</div>
+    <div style="font-size:12px;color:var(--ink3);margin-bottom:4px">RECORD PERSONAL</div>
     <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--accent)">${currentPR}kg</div>
   </div> `;
 
@@ -5553,7 +5646,7 @@
         html += `<div class="stat-card" style="padding:12px${isPR ? ';border-color:var(--yellow)' : ''}">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
         <span style="font-size:12px;color:var(--ink3)">${date}</span>
-        ${isPR ? '<span class="pr-badge">🏆 Nuevo PR</span>' : ''}
+        ${isPR ? '<span class="pr-badge">Nuevo PR</span>' : ''}
       </div>
       <div style="font-size:13px;color:var(--ink2);line-height:1.8">${sets.map((s, i) => `S${i + 1}: <strong>${s.w}kg</strong> × ${s.r}`).join('<br>')}</div>
     </div> `;
@@ -5657,14 +5750,84 @@
       for (let p of plates) {
         while (perSide >= p) { needed.push(p); perSide -= p; }
       }
+
       document.getElementById('plateTotal').textContent = `Total: ${weight} kg`;
-      document.getElementById('plateText').textContent = needed.length ? needed.join(' + ') : 'Solo barra';
-      let html = '';
-      needed.forEach(p => {
-        const cls = p === 20 ? 'p-20' : p === 10 ? 'p-10' : p === 5 ? 'p-5' : p === 2.5 ? 'p-2_5' : 'p-1_25';
-        html += `<div class="plate-item ${cls}"></div> `;
+      document.getElementById('plateText').textContent = needed.length
+        ? `Por lado: ${needed.join(' + ')} kg`
+        : 'Solo barra (20 kg)';
+
+      // Plate visual config
+      const plateConfig = {
+        20: { color: '#FF5E3A', h: 56, w: 12, label: '20' },
+        10: { color: '#22C55E', h: 42, w: 10, label: '10' },
+        5: { color: '#3B82F6', h: 32, w: 9, label: '5' },
+        2.5: { color: '#EAB308', h: 24, w: 7, label: '2.5' },
+        1.25: { color: '#888', h: 18, w: 5, label: '1.25' }
+      };
+
+      const svgW = 320;
+      const svgH = 80;
+      const centerY = svgH / 2;
+      const barH = 6;
+      const collarW = 6;
+      const gap = 1;
+
+      // Calculate total width of plates on one side
+      let sideWidth = needed.reduce((sum, p) => sum + plateConfig[p].w + gap, 0) + collarW;
+      const barStart = (svgW / 2) - sideWidth - 20;
+      const barEnd = (svgW / 2) + sideWidth + 20;
+
+      let svg = `<svg viewBox="0 0 ${svgW} ${svgH}" style="width:100%;height:auto;max-height:90px">`;
+
+      // Bar (horizontal line)
+      svg += `<rect x="${barStart}" y="${centerY - barH / 2}" width="${barEnd - barStart}" height="${barH}" rx="2" fill="var(--ink4, #666)"/>`;
+
+      // Left side plates (from center outward = reversed order)
+      let xLeft = svgW / 2 - 8; // Start just left of center
+      // Collar left
+      svg += `<rect x="${xLeft - collarW}" y="${centerY - 8}" width="${collarW}" height="16" rx="1" fill="var(--ink4, #555)"/>`;
+      xLeft -= collarW + gap;
+
+      [...needed].reverse().forEach(p => {
+        const cfg = plateConfig[p];
+        xLeft -= cfg.w;
+        svg += `<rect x="${xLeft}" y="${centerY - cfg.h / 2}" width="${cfg.w}" height="${cfg.h}" rx="2" fill="${cfg.color}"/>`;
+        if (cfg.h >= 30) {
+          svg += `<text x="${xLeft + cfg.w / 2}" y="${centerY + 3}" text-anchor="middle" fill="#000" font-size="7" font-weight="700" font-family="Montserrat,sans-serif">${cfg.label}</text>`;
+        }
+        xLeft -= gap;
       });
-      document.getElementById('plateRender').innerHTML = html;
+
+      // Right side plates (mirror - same order as left)
+      let xRight = svgW / 2 + 8;
+      // Collar right
+      svg += `<rect x="${xRight}" y="${centerY - 8}" width="${collarW}" height="16" rx="1" fill="var(--ink4, #555)"/>`;
+      xRight += collarW + gap;
+
+      [...needed].reverse().forEach(p => {
+        const cfg = plateConfig[p];
+        svg += `<rect x="${xRight}" y="${centerY - cfg.h / 2}" width="${cfg.w}" height="${cfg.h}" rx="2" fill="${cfg.color}"/>`;
+        if (cfg.h >= 30) {
+          svg += `<text x="${xRight + cfg.w / 2}" y="${centerY + 3}" text-anchor="middle" fill="#000" font-size="7" font-weight="700" font-family="Montserrat,sans-serif">${cfg.label}</text>`;
+        }
+        xRight += cfg.w + gap;
+      });
+
+      // Bar end caps (sleeves)
+      svg += `<rect x="${barStart}" y="${centerY - 4}" width="8" height="8" rx="2" fill="var(--ink4, #555)"/>`;
+      svg += `<rect x="${barEnd - 8}" y="${centerY - 4}" width="8" height="8" rx="2" fill="var(--ink4, #555)"/>`;
+
+      svg += '</svg>';
+
+      // Color legend
+      let legend = '<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:10px">';
+      needed.length && [...new Set(needed)].forEach(p => {
+        const cfg = plateConfig[p];
+        legend += `<span style="display:inline-flex;align-items:center;gap:3px;font-size:10px;color:var(--ink3)"><span style="width:10px;height:10px;border-radius:2px;background:${cfg.color};display:inline-block"></span>${cfg.label}kg</span>`;
+      });
+      legend += '</div>';
+
+      document.getElementById('plateRender').innerHTML = needed.length ? svg + legend : '<div style="font-size:14px;color:var(--ink3);padding:10px">Solo la barra olímpica (20 kg)</div>';
       document.getElementById('plateModal').classList.add('show');
       vib();
     }
