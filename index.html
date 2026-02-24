@@ -1787,6 +1787,42 @@
       font-size: 24px
     }
 
+    .stats-section-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    .stats-section-toggle .stitle {
+      margin: 0;
+    }
+
+    .stats-section-chevron {
+      width: 16px;
+      height: 16px;
+      color: var(--ink3);
+      transition: transform .2s;
+    }
+
+    .stats-section-chevron.open {
+      transform: rotate(180deg);
+    }
+
+    .stats-section-body {
+      overflow: hidden;
+      transition: max-height .3s ease, opacity .2s ease;
+      max-height: 0;
+      opacity: 0;
+    }
+
+    .stats-section-body.open {
+      max-height: 2000px;
+      opacity: 1;
+    }
+
     .pr-badge {
       font-size: 11px;
       font-weight: 700;
@@ -2552,87 +2588,14 @@
           <div class="hc-name">Directorio de Ejercicios</div>
           <div class="hc-sub">Instrucciones, tips y ciencia por músculo</div>
         </div>
-        <div class="home-card" onclick="goPage('methods')">
-          <div class="hc-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-            </svg></div>
-          <div class="hc-name">Métodos</div>
-          <div class="hc-sub">Técnicas de intensidad</div>
-        </div>
-        <div class="home-card" onclick="goPage('routines')">
-          <div class="hc-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
-              <line x1="16" x2="16" y1="2" y2="6" />
-              <line x1="8" x2="8" y1="2" y2="6" />
-              <line x1="3" x2="21" y1="10" y2="10" />
-              <path d="M8 14h.01" />
-              <path d="M12 14h.01" />
-              <path d="M16 14h.01" />
-              <path d="M8 18h.01" />
-              <path d="M12 18h.01" />
-              <path d="M16 18h.01" />
-            </svg></div>
-          <div class="hc-name">Rutinas</div>
-          <div class="hc-sub">Splits y programas</div>
-        </div>
-        <div class="home-card" onclick="goPage('timer')">
-          <div class="hc-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="13" r="8" />
-              <path d="M12 9v4l2 2" />
-              <path d="M5 3 2 6" />
-              <path d="m22 6-3-3" />
-              <path d="M6.38 18.7 4 21" />
-              <path d="M17.64 18.67 20 21" />
-            </svg></div>
-          <div class="hc-name">Timer</div>
-          <div class="hc-sub">Descanso entre series</div>
-        </div>
-        <div class="home-card" onclick="goPage('learn')">
+        <div class="home-card" onclick="goPage('learn')" style="grid-column:1/-1">
           <div class="hc-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="var(--pink)" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round">
               <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
               <path d="M6 12v5c3 3 9 3 12 0v-5" />
             </svg></div>
           <div class="hc-name">Aprender</div>
-          <div class="hc-sub">Conceptos clave</div>
-        </div>
-        <div class="home-card" onclick="goPage('warmup')">
-          <div class="hc-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path
-                d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
-            </svg></div>
-          <div class="hc-name">Calentamiento</div>
-          <div class="hc-sub">Antes de entrenar</div>
-        </div>
-        <div class="home-card" onclick="goPage('supplements')">
-          <div class="hc-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z" />
-              <path d="m8.5 8.5 7 7" />
-            </svg></div>
-          <div class="hc-name">Suplementos</div>
-          <div class="hc-sub">Qué sirve de verdad</div>
-        </div>
-        <div class="home-card" onclick="goPage('creators')">
-          <div class="hc-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <rect width="20" height="14" x="2" y="5" rx="2" />
-              <path d="M8 9.5 16 12l-8 2.5V9.5z" />
-            </svg></div>
-          <div class="hc-name">Creadores</div>
-          <div class="hc-sub">A quién seguir</div>
-        </div>
-        <div class="home-card" onclick="goPage('glossary')">
-          <div class="hc-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-            </svg></div>
-          <div class="hc-name">Glosario</div>
-          <div class="hc-sub">Términos explicados</div>
+          <div class="hc-sub">Conceptos, métodos, suplementos y más</div>
         </div>
       </div>
     </div>
@@ -2712,7 +2675,7 @@
 
     <!-- ═══ METHODS ═══ -->
     <div class="page" id="page-methods">
-      <div class="back-row"><button class="back-btn" onclick="goPage('home')">← Home</button>
+      <div class="back-row"><button class="back-btn" onclick="goPage('learn')">← Aprender</button>
         <div class="back-title">MÉTODOS</div>
       </div>
       <div style="padding:0 20px 10px">
@@ -2724,7 +2687,7 @@
 
     <!-- ═══ ROUTINES ═══ -->
     <div class="page" id="page-routines">
-      <div class="back-row"><button class="back-btn" onclick="goPage('home')">← Home</button>
+      <div class="back-row"><button class="back-btn" onclick="goPage('tracker')">← Entrenamiento</button>
         <div class="back-title">RUTINAS</div>
       </div>
       <div style="padding:0 20px 10px">
@@ -2817,15 +2780,38 @@
         <div class="back-title">APRENDER</div>
       </div>
       <div style="padding:0 20px 10px">
-        <p style="font-size:13px;color:var(--ink3);line-height:1.6">Los conceptos más importantes para que tu
+        <p style="font-size:13px;color:var(--ink3);line-height:1.6">Todo lo que necesitás saber para entrenar bien. Sin
+          humo, con ciencia.</p>
+      </div>
+      <div style="padding:0 20px 20px" id="learnHub"></div>
+    </div>
+
+    <!-- ═══ LEARN CONCEPTS ═══ -->
+    <div class="page" id="page-learnconcepts">
+      <div class="back-row"><button class="back-btn" onclick="goPage('learn')">← Aprender</button>
+        <div class="back-title">CONCEPTOS CLAVE</div>
+      </div>
+      <div style="padding:0 20px 10px">
+        <p style="font-size:13px;color:var(--ink3);line-height:1.6">Los principios más importantes para que tu
           entrenamiento funcione de verdad.</p>
       </div>
-      <div style="padding:0 20px 20px" id="learnList"></div>
+      <div style="padding:0 20px 20px" id="learnConceptsList"></div>
+    </div>
+
+    <!-- ═══ FAQ ═══ -->
+    <div class="page" id="page-faq">
+      <div class="back-row"><button class="back-btn" onclick="goPage('learn')">← Aprender</button>
+        <div class="back-title">PREGUNTAS FRECUENTES</div>
+      </div>
+      <div style="padding:0 20px 10px">
+        <p style="font-size:13px;color:var(--ink3);line-height:1.6">Las preguntas que todo el mundo se hace cuando empieza. Respuestas cortas, basadas en evidencia.</p>
+      </div>
+      <div style="padding:0 20px 20px" id="faqList"></div>
     </div>
 
     <!-- ═══ WARMUP ═══ -->
     <div class="page" id="page-warmup">
-      <div class="back-row"><button class="back-btn" onclick="goPage('home')">← Home</button>
+      <div class="back-row"><button class="back-btn" onclick="goPage('tracker')">← Entrenamiento</button>
         <div class="back-title">CALENTAMIENTO</div>
       </div>
       <div style="padding:0 20px 10px">
@@ -2837,7 +2823,7 @@
 
     <!-- ═══ SUPPLEMENTS ═══ -->
     <div class="page" id="page-supplements">
-      <div class="back-row"><button class="back-btn" onclick="goPage('home')">← Home</button>
+      <div class="back-row"><button class="back-btn" onclick="goPage('learn')">← Aprender</button>
         <div class="back-title">SUPLEMENTOS</div>
       </div>
       <div style="padding:0 20px 10px">
@@ -2853,7 +2839,7 @@
 
     <!-- ═══ CREATORS ═══ -->
     <div class="page" id="page-creators">
-      <div class="back-row"><button class="back-btn" onclick="goPage('home')">← Home</button>
+      <div class="back-row"><button class="back-btn" onclick="goPage('learn')">← Aprender</button>
         <div class="back-title">CREADORES</div>
       </div>
       <div style="padding:0 20px 10px">
@@ -2865,7 +2851,7 @@
 
     <!-- ═══ GLOSSARY ═══ -->
     <div class="page" id="page-glossary">
-      <div class="back-row"><button class="back-btn" onclick="goPage('home')">← Home</button>
+      <div class="back-row"><button class="back-btn" onclick="goPage('learn')">← Aprender</button>
         <div class="back-title">GLOSARIO</div>
       </div>
       <div style="padding:0 20px 10px">
@@ -2941,6 +2927,16 @@
           style="background:var(--surface);border:none;width:30px;height:30px;border-radius:50%;color:var(--ink2);font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer"
           onclick="toggleMoreMenu()">✕</button>
       </div>
+      <div style="height:1px;background:var(--border);margin:8px 0"></div>
+      <button class="more-item" onclick="toggleMoreMenu();goPage('timer')"><span
+          style="width:20px;height:20px;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            style="width:16px;height:16px">
+            <circle cx="12" cy="13" r="8" />
+            <path d="M12 9v4l2 2" />
+            <path d="M5 3 2 6" />
+            <path d="m22 6-3-3" />
+          </svg></span>Timer de Descanso</button>
       <div style="height:1px;background:var(--border);margin:8px 0"></div>
       <button class="more-item" onclick="toggleMoreMenu();exportData()"><span
           style="width:20px;height:20px;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24"
@@ -3092,7 +3088,16 @@
       'rom': { title: 'Rango de Movimiento (ROM)', text: 'Qué tanto movés una articulación durante un ejercicio. Rango completo = más estiramiento, más activación, más crecimiento. Nunca sacrifiques rango por usar más peso.' },
       'deload': { title: 'Deload (Semana de Descarga)', text: 'Semana con menos peso/volumen (50-60% de lo normal) para que el cuerpo se recupere. Hacéla cada 4-8 semanas o cuando te sentís estancado, cansado o con dolores. No es perder el tiempo — es invertir en recuperación.' },
       'tempo': { title: 'Tempo', text: 'La velocidad de cada fase del movimiento, escrito como 4 números (ej: 3-1-2-0). Primero la bajada, después la pausa abajo, después la subida, y la pausa arriba. Controlar el tempo aumenta el tiempo bajo tensión.' },
-      'mfv': { title: 'MFV (Máximo Volumen Recuperable)', text: 'La cantidad máxima de series que un músculo puede hacer por semana y aún recuperarse. Pasarte del MFV = acumular fatiga sin beneficio. Cada persona tiene un MFV diferente — empezá bajo y subí gradualmente.' }
+      'mfv': { title: 'MFV (Máximo Volumen Recuperable)', text: 'La cantidad máxima de series que un músculo puede hacer por semana y aún recuperarse. Pasarte del MFV = acumular fatiga sin beneficio. Cada persona tiene un MFV diferente — empezá bajo y subí gradualmente.' },
+      'superavit': { title: 'Superávit Calórico', text: 'Comer más calorías de las que gastás. Necesario para ganar músculo (bulk). Un superávit moderado de 200-300 kcal minimiza la ganancia de grasa mientras permite construir músculo.' },
+      'deficit': { title: 'Déficit Calórico', text: 'Comer menos calorías de las que gastás. Necesario para perder grasa (cut). Un déficit de 300-500 kcal preserva músculo mientras perdés grasa. Déficits más agresivos arriesgan pérdida muscular.' },
+      'bulk': { title: 'Bulk (Fase de Volumen)', text: 'Período donde comés en superávit calórico para maximizar ganancia muscular. Lean bulk (superávit leve) es más lento pero ganás menos grasa. Dirty bulk (comer de todo) es más rápido pero ganás más grasa.' },
+      'cut': { title: 'Cut (Fase de Definición)', text: 'Período donde comés en déficit calórico para perder grasa manteniendo el músculo. Requiere proteína alta (2g/kg), entrenamiento pesado, y paciencia. No hagas déficits extremos.' },
+      'recomp': { title: 'Recomposición Corporal', text: 'Ganar músculo y perder grasa al mismo tiempo. Posible en principiantes, personas con sobrepeso, o al volver después de un descanso. Es más lento que bulk/cut pero funciona sin fases.' },
+      'pump': { title: 'Pump (Congestión)', text: 'La sensación de hinchazón y dureza en el músculo durante/después de entrenar. Se produce por acumulación de sangre y fluidos. Se siente genial pero NO es indicador directo de crecimiento — es solo un efecto temporal.' },
+      'doms': { title: 'DOMS (Agujetas)', text: 'Dolor muscular que aparece 24-72 horas después de entrenar. Es normal en principiantes o cuando hacés algo nuevo. NO es indicador de buen entrenamiento — con el tiempo disminuye aunque sigas progresando.' },
+      'periodizacion': { title: 'Periodización', text: 'Organizar el entrenamiento en bloques con diferentes objetivos (fuerza, hipertrofia, deload). Permite progresión a largo plazo evitando estancamiento y sobreentrenamiento. La forma más simple: 3-4 semanas de progresión + 1 semana de deload.' },
+      'mind_muscle': { title: 'Conexión Mente-Músculo', text: 'Concentrarte en sentir el músculo que estás trabajando durante cada repetición. Estudios muestran que mejora la activación muscular, especialmente en ejercicios de aislamiento. Pensá en el músculo, no en mover el peso.' }
     };
 
     // ═══ MUSCLES ═══
@@ -4072,37 +4077,37 @@
     // ═══ CREATORS ═══
     const CREATORS = [
       {
-        name: 'Jeff Nippard', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31"/><path d="M14 9.3V1.99"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/><line x1="5.52" x2="18.48" y1="16" y2="16"/></svg>', spec: 'Ciencia del entrenamiento',
+        name: 'Jeff Nippard', yt: 'https://www.youtube.com/@JeffNippard', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31"/><path d="M14 9.3V1.99"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/><line x1="5.52" x2="18.48" y1="16" y2="16"/></svg>', spec: 'Ciencia del entrenamiento',
         desc: 'Combina investigación científica con experiencia práctica. Sus videos explican la ciencia detrás de cada ejercicio y técnica con animaciones y referencias a estudios.',
         best: 'Ideal para entender el POR QUÉ detrás de cada decisión de entrenamiento.'
       },
       {
-        name: 'Dr. Mike Israetel (Renaissance Periodization)', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>', spec: 'Hipertrofia y volumen',
+        name: 'Dr. Mike Israetel (Renaissance Periodization)', yt: 'https://www.youtube.com/@RenaissancePeriodization', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>', spec: 'Hipertrofia y volumen',
         desc: 'Doctorado en fisiología del deporte. Su contenido sobre volumen de entrenamiento, periodización y recuperación es de lo mejor que existe. Estilo directo y sin rodeos.',
         best: 'El mejor para aprender sobre cuántas series hacer, cómo organizar el volumen, y cuándo hacer deload.'
       },
       {
-        name: 'Jeff Cavaliere (Athlean-X)', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>', spec: 'Prevención de lesiones',
+        name: 'Jeff Cavaliere (Athlean-X)', yt: 'https://www.youtube.com/@atabornerican', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>', spec: 'Prevención de lesiones',
         desc: 'Fisioterapeuta que trabajó con atletas profesionales de la MLB. Enfocado en entrenar de forma segura y eficiente, corrigiendo errores comunes que causan lesiones.',
         best: 'Mirá sus videos si tenés algún dolor o querés aprender a proteger las articulaciones.'
       },
       {
-        name: 'John Meadows (Mountain Dog)', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>', spec: 'Técnicas de intensidad',
+        name: 'John Meadows (Mountain Dog)', yt: 'https://www.youtube.com/@mountaindog1', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>', spec: 'Técnicas de intensidad',
         desc: 'Culturista IFBB y creador de Mountain Dog Training. Especialista en técnicas avanzadas de intensidad y variaciones creativas de ejercicios. Lamentablemente falleció en 2021, pero su contenido sigue siendo oro.',
         best: 'Para intermedios/avanzados que buscan técnicas de intensidad y variaciones que el 99% no conoce.'
       },
       {
-        name: 'Jeremy Ethier', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 1 0 2.829 2.828z"/><path d="m3.928 16.088 14.536-14.536"/><path d="M7.643 6.25l2.121 2.122"/><path d="m14.007 12.614 2.122 2.121"/></svg>', spec: 'Principiantes y técnica',
+        name: 'Jeremy Ethier', yt: 'https://www.youtube.com/@JeremyEthier', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 1 0 2.829 2.828z"/><path d="m3.928 16.088 14.536-14.536"/><path d="M7.643 6.25l2.121 2.122"/><path d="m14.007 12.614 2.122 2.121"/></svg>', spec: 'Principiantes y técnica',
         desc: 'Kinesiólogo que hace videos extremadamente claros y bien producidos. Descompone la ciencia en pasos accionables y simples.',
         best: 'Si estás empezando, arrancá por acá. Sus videos de "cómo hacer X correctamente" son excelentes.'
       },
       {
-        name: 'Squat University (Dr. Aaron Horschig)', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="14" x="8" y="5" rx="4"/><path d="M12 2v3"/><path d="M12 19v3"/></svg>', spec: 'Movilidad y biomecánica',
+        name: 'Squat University (Dr. Aaron Horschig)', yt: 'https://www.youtube.com/@SquatUniversity', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="14" x="8" y="5" rx="4"/><path d="M12 2v3"/><path d="M12 19v3"/></svg>', spec: 'Movilidad y biomecánica',
         desc: 'Doctor en terapia física especializado en movimiento y movilidad. Contenido excepcional sobre sentadilla, movilidad de tobillo/cadera, y prevención de lesiones.',
         best: 'Si sentís rigidez, tenés problemas de movilidad, o querés mejorar tu técnica de sentadilla.'
       },
       {
-        name: 'Eugene Teo', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c-2-2.67-4-4-6-4a4 4 0 1 0 0 8c2 0 4-1.33 6-4Zm0 0c2-2.67 4-4 6-4a4 4 0 1 1 0 8c-2 0-4-1.33-6-4Z"/></svg>', spec: 'Conexión mente-músculo',
+        name: 'Eugene Teo', yt: 'https://www.youtube.com/@EugeneTeo', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12c-2-2.67-4-4-6-4a4 4 0 1 0 0 8c2 0 4-1.33 6-4Zm0 0c2-2.67 4-4 6-4a4 4 0 1 1 0 8c-2 0-4-1.33-6-4Z"/></svg>', spec: 'Conexión mente-músculo',
         desc: 'Entrenador australiano enfocado en la técnica perfecta y la conexión mente-músculo. Sus videos de "cómo sentir X músculo" son únicos en YouTube.',
         best: 'Para intermedios que quieren mejorar la calidad de cada repetición y sentir cada músculo trabajar.'
       }
@@ -4205,7 +4210,148 @@
     <strong>La zona ideal para hipertrofia: RPE 7-9 (RIR 1-3)</strong><br>
     Compuestos pesados: RPE 7-8 (RIR 2-3) → priorizá la técnica<br>
     Aislamiento: RPE 8-10 (RIR 0-2) → podés ir más cerca del fallo
-    </div>`}
+    </div>`},
+      {
+        id: 'nutrition', name: 'Nutrición Básica para Ganar Músculo', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 10v12H7V10l1.5-5.5A2 2 0 0 1 10.43 3h3.14a2 2 0 0 1 1.93 1.5L17 10Z"/><line x1="7" x2="17" y1="10" y2="10"/></svg>',
+        desc: 'Sin nutrición adecuada, el mejor entrenamiento del mundo no sirve.',
+        content: `<p>Entrenar rompe las fibras musculares. La nutrición las reconstruye más grandes. Sin suficiente proteína y calorías, estás girando en el vacío.</p>
+    <div class="learn-highlight">
+    <strong>Los 3 pilares:</strong><br>
+    → <strong>Proteína:</strong> 1.6-2.2g por kg de peso corporal por día<br>
+    → <strong>Calorías:</strong> superávit leve de 200-300 kcal para ganar músculo (bulk), o déficit moderado de 300-500 kcal para perder grasa (cut)<br>
+    → <strong>Distribución:</strong> 3-5 comidas con proteína repartida en el día
+    </div>
+    <p style="margin-top:10px"><strong>Ejemplo práctico (persona de 75kg):</strong></p>
+    <div class="learn-highlight">
+    Proteína diaria: 120-165g<br>
+    Eso son ~30-40g por comida en 4 comidas<br>
+    1 pechuga de pollo = ~30g | 1 scoop whey = ~25g | 2 huevos = ~12g | 100g de carne = ~25g
+    </div>
+    <p style="margin-top:10px"><strong>¿Y los carbohidratos y grasas?</strong> Los carbos son tu combustible para entrenar fuerte (arroz, avena, papa, frutas). Las grasas son esenciales para hormonas (aceite de oliva, palta, frutos secos). No elimines ninguno — ajustá las cantidades según tu objetivo.</p>
+    <p><strong>Lo más importante:</strong> la consistencia. Una dieta perfecta que seguís 3 días pierde contra una dieta "buena" que seguís 6 meses.</p>`},
+      {
+        id: 'sleep', name: 'Sueño y Recuperación', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>',
+        desc: 'Crecés mientras dormís, no mientras entrenás.',
+        content: `<p>El entrenamiento es el estímulo. La comida es el material. El sueño es cuando tu cuerpo construye. Sin sueño de calidad, todo lo demás funciona a media máquina.</p>
+    <div class="learn-highlight">
+    <strong>¿Qué pasa cuando dormís bien (7-9 horas)?</strong><br>
+    → Pico de hormona de crecimiento (GH) — repara y construye tejido muscular<br>
+    → Testosterona se restaura a niveles óptimos<br>
+    → El sistema nervioso se recupera — al día siguiente rendís mejor<br>
+    → Mejor sensibilidad a la insulina — los nutrientes van a donde deben
+    </div>
+    <div class="learn-highlight" style="margin-top:10px;border-color:rgba(255,94,58,.3)">
+    <strong>¿Qué pasa con poco sueño (<6 horas)?</strong><br>
+    → Testosterona baja hasta un 15% (equivalente a envejecer 10 años)<br>
+    → Cortisol elevado — destruye músculo y acumula grasa<br>
+    → Rendimiento en el gym cae un 10-30%<br>
+    → Más hambre y más antojos de comida basura (leptina/grelina desreguladas)
+    </div>
+    <p style="margin-top:10px"><strong>Tips para dormir mejor:</strong></p>
+    <div class="learn-highlight">
+    → Horario consistente (acostarte y levantarte a la misma hora)<br>
+    → Oscuridad total (cortinas blackout o antifaz)<br>
+    → Sin pantallas 30-60 min antes de dormir<br>
+    → Temperatura fresca (18-20°C ideal)<br>
+    → Cafeína cortada después de las 14hs<br>
+    → Magnesio glicinato antes de dormir puede ayudar
+    </div>
+    <p style="margin-top:10px"><strong>Dato clave:</strong> una noche mala no arruina nada. Lo que importa es el patrón semanal. 5 de 7 noches durmiendo bien ya es un éxito.</p>`},
+      {
+        id: 'beginner-mistakes', name: 'Errores Clásicos de Principiante', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>',
+        desc: 'Los errores que el 90% comete en sus primeros meses.',
+        content: `<p>Todos los cometimos. La diferencia es cuánto tardás en corregirlos.</p>
+    <div class="learn-highlight">
+    <strong>1. Saltarse el calentamiento</strong><br>
+    "No tengo tiempo" → tenés tiempo para 3 meses de recuperación de un hombro lesionado? 5-10 minutos de calentamiento son el seguro más barato del gym.
+    </div>
+    <div class="learn-highlight" style="margin-top:8px">
+    <strong>2. Demasiado peso, poca técnica</strong><br>
+    El ego lifting es la epidemia del gym. Nadie en el mundo se impresiona por tu peso si tu forma es horrible. Bajá el peso, hacé el movimiento bien, y en 6 meses vas a mover más que ahora CON buena técnica.
+    </div>
+    <div class="learn-highlight" style="margin-top:8px">
+    <strong>3. Ignorar las piernas</strong><br>
+    Entrenar piernas libera más hormonas anabólicas que cualquier otro grupo. Salteártelas es literalmente frenar tu progreso en TODO el cuerpo.
+    </div>
+    <div class="learn-highlight" style="margin-top:8px">
+    <strong>4. Cambiar de rutina cada semana</strong><br>
+    La sobrecarga progresiva requiere consistencia. Si cambiás de ejercicios cada semana, nunca podés medir si estás progresando. Elegí una rutina y dale al menos 8-12 semanas.
+    </div>
+    <div class="learn-highlight" style="margin-top:8px">
+    <strong>5. Copiar al grande del gym</strong><br>
+    El tipo que hace 20 series de pecho con técnicas avanzadas lleva 10 años entrenando. Vos necesitás lo básico bien hecho, no lo avanzado mal hecho. Compuestos pesados + progresión = todo lo que necesitás el primer año.
+    </div>
+    <div class="learn-highlight" style="margin-top:8px">
+    <strong>6. No comer suficiente proteína</strong><br>
+    El error #1 fuera del gym. Si no llegás a 1.6g/kg, no importa qué tan bien entrenes. Medí tu proteína por una semana para tomar conciencia.
+    </div>
+    <div class="learn-highlight" style="margin-top:8px">
+    <strong>7. Esperar resultados en 2 semanas</strong><br>
+    Resultados reales visibles: 3-6 meses. El primer mes es adaptación neural (tu cerebro aprende a reclutar los músculos). La paciencia es la técnica de intensidad más poderosa que existe.
+    </div>`},
+      {
+        id: 'when-to-increase', name: '¿Cuándo Subir de Peso?', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="19" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>',
+        desc: 'La regla de oro para progresar sin lesionarte.',
+        content: `<p>La pregunta más común del gym: "¿ya puedo subir de peso?" La respuesta es simple pero requiere disciplina:</p>
+    <div class="learn-highlight">
+    <strong>La regla 2x2:</strong><br>
+    Subí de peso cuando puedas completar <strong>2 reps más</strong> de lo programado en las <strong>últimas 2 sesiones</strong> consecutivas.
+    </div>
+    <p style="margin-top:10px"><strong>Ejemplo práctico:</strong></p>
+    <div class="learn-highlight">
+    Tu programa dice: Press de banca 3×8-12 con 60kg<br><br>
+    Sesión 1: 60kg × 12, 12, 11 → bien, pero no las 3 en 12<br>
+    Sesión 2: 60kg × 12, 12, 12 → las 3 en el tope del rango<br>
+    Sesión 3: 60kg × 12, 12, 12 → segunda vez consecutiva<br>
+    <strong>→ Sesión 4: subí a 62.5kg y volvé a empezar desde 3×8</strong>
+    </div>
+    <p style="margin-top:10px"><strong>¿Cuánto subir?</strong></p>
+    <div class="learn-highlight">
+    → Tren superior (press, remos, curls): +2.5kg por salto<br>
+    → Tren inferior (sentadilla, peso muerto): +5kg por salto<br>
+    → Aislamiento chico (laterales, face pulls): +1-2kg o +2 reps<br>
+    → Bodyweight (dominadas, flexiones): +1-2 reps por sesión
+    </div>
+    <p style="margin-top:10px"><strong>Errores comunes:</strong> subir demasiado rápido (la técnica se rompe), subir cuando no alcanzaste el rango en 2 sesiones seguidas (ego), o nunca subir por miedo (te estancás). La progresión no tiene que ser lineal — a veces una semana subís y la siguiente mantenés. Lo importante es la tendencia a largo plazo.</p>`},
+      {
+        id: 'hormones', name: 'Hormonas: Lo que Funciona de Verdad', icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>',
+        desc: 'El 90% de lo que ves en redes es humo. Acá va lo que dice la ciencia.',
+        content: `<div class="learn-highlight" style="border-color:rgba(255,94,58,.4);background:rgba(255,94,58,.06)">
+    <strong>AVISO IMPORTANTE:</strong> Esta sección NO promueve el uso de sustancias. La información es puramente educativa sobre cómo optimizar tus hormonas NATURALMENTE. Si sospechás un problema hormonal, consultá a un endocrinólogo, no a Instagram.
+    </div>
+    <p style="margin-top:12px">La testosterona, la hormona de crecimiento y la insulina son las principales hormonas anabólicas. El 90% de los "boosters de testosterona" que se venden son puro marketing sin evidencia. Acá va lo que SÍ funciona:</p>
+    <div class="learn-highlight" style="margin-top:10px">
+    <strong>Lo que tiene EVIDENCIA FUERTE:</strong><br><br>
+    <strong>1. Dormir 7-9 horas</strong> — Una semana durmiendo 5h baja tu testosterona hasta un 15%. Es el factor #1 y el más ignorado. No hay suplemento que compense mal sueño.<br><br>
+    <strong>2. Entrenar pesado con compuestos</strong> — Sentadilla, peso muerto, press. El entrenamiento de fuerza con alta intensidad es el estímulo más potente para la producción hormonal.<br><br>
+    <strong>3. No tener déficit calórico extremo</strong> — Dietas de menos de 1200 kcal destruyen tus hormonas. Un déficit moderado (300-500 kcal) preserva la testosterona. Déficits agresivos la desploman.<br><br>
+    <strong>4. Manejar el estrés</strong> — El cortisol (hormona del estrés) es directamente antagonista de la testosterona. Estrés crónico = cortisol alto = testosterona baja. Meditación, caminatas, hobby — lo que te funcione.<br><br>
+    <strong>5. Vitamina D</strong> — SI estás deficiente (la mayoría lo está), corregirlo puede mejorar tus niveles de testosterona. Hacéte un análisis de sangre. 1000-4000 UI/día si estás bajo.<br><br>
+    <strong>6. Zinc y Magnesio</strong> — Solo si estás deficiente. No tienen efecto si ya tenés niveles normales. El zinc se encuentra en carne roja y mariscos. El magnesio en frutos secos y verduras de hoja.
+    </div>
+    <div class="learn-highlight" style="margin-top:10px;border-color:rgba(255,94,58,.3)">
+    <strong>Lo que NO funciona (a pesar del marketing):</strong><br><br>
+    → Tribulus terrestris — 0 evidencia en humanos<br>
+    → Fenogreco — mejoras mínimas e inconsistentes<br>
+    → D-ácido aspártico — efecto temporal e insignificante<br>
+    → Ashwagandha — puede reducir cortisol, pero el efecto en testosterona es modesto y variable<br>
+    → "Testosterone boosters" genéricos — si funcionaran, serían regulados como medicamentos
+    </div>
+    <p style="margin-top:10px"><strong>La realidad:</strong> si dormís bien, comés bien, entrenás fuerte y manejás el estrés, tus hormonas van a estar donde tienen que estar. Si después de todo eso seguís con síntomas (fatiga extrema, libido baja, pérdida de masa muscular), hacéte un análisis hormonal completo con un endocrinólogo.</p>`}
+    ];
+
+    // ═══ FAQ ═══
+    const FAQ = [
+      { q: '¿Cuánta proteína necesito por día?', a: 'Entre 1.6 y 2.2 gramos por kilo de peso corporal. Si pesás 75kg, son 120-165g de proteína al día repartidos en 3-5 comidas. Priorizá comida real (carne, pollo, huevos, lácteos, legumbres) y completá con whey si no llegás.' },
+      { q: '¿Puedo entrenar todos los días?', a: 'Podés, pero no deberías entrenar el MISMO músculo todos los días. Cada músculo necesita 48-72 horas de recuperación. Entrenar 4-6 días por semana con una buena rutina (PPL, Upper/Lower) permite entrenar cada músculo 2 veces por semana con descanso suficiente.' },
+      { q: '¿El cardio mata las ganancias?', a: 'No, si lo hacés bien. Cardio moderado (caminar, bici suave) 2-3 veces por semana mejora la recuperación y la salud cardiovascular sin afectar la ganancia muscular. Lo que SÍ interfiere es correr maratones + intentar ganar músculo al mismo tiempo. Separá el cardio del entrenamiento de fuerza por al menos 6 horas si podés.' },
+      { q: '¿Cuánto tiempo debería durar mi entrenamiento?', a: '45-75 minutos es el rango ideal para la mayoría. Más de 90 minutos suele indicar que descansás demasiado entre series o hacés demasiado volumen. La calidad importa más que la duración.' },
+      { q: '¿Es necesario llegar al fallo muscular?', a: 'No en cada serie. Entrenar a RPE 7-9 (1-3 reps antes del fallo) es suficiente para hipertrofia en la mayoría de los ejercicios. Llegar al fallo es útil en la última serie de ejercicios de aislamiento, pero en compuestos pesados aumenta el riesgo de lesión y la fatiga sin beneficio extra.' },
+      { q: '¿Sirve entrenar en ayunas?', a: 'No hay diferencia significativa para ganancia muscular o pérdida de grasa. Lo que importa es el total de calorías y proteína del día. Si te sentís bien entrenando en ayunas, dale. Si rendís mejor con algo en el estómago, comé. No hay magia.' },
+      { q: '¿Cuántas series por músculo por semana necesito?', a: 'Para hipertrofia: 10-20 series directas por músculo por semana. Empezá en 10-12 y subí gradualmente. Si dejás de progresar, agregá 1-2 series por semana. Si estás siempre cansado, restá. El volumen óptimo es individual.' },
+      { q: '¿Cuánto tiempo hasta ver resultados?', a: 'Primeras 4 semanas: adaptación neural (te sentís más fuerte sin cambios visibles). 2-3 meses: cambios visibles con buena luz y bomba. 6+ meses: cambios que los demás notan. La transformación real lleva 1-2 años de consistencia.' },
+      { q: '¿Necesito suplementos para ganar músculo?', a: 'No. Los suplementos son el 5% del resultado. El 95% es entrenamiento consistente, nutrición adecuada y buen sueño. Dicho eso, creatina (5g/día) y whey protein (si no llegás con comida) tienen evidencia sólida y son baratos.' },
+      { q: '¿Es mejor hacer más reps con menos peso o menos reps con más peso?', a: 'Ambos funcionan para hipertrofia si entrenás cerca del fallo. El rango de 6-12 reps es el más práctico: suficiente tensión mecánica + volumen sin fatiga excesiva. Pero rangos de 5-30 reps pueden generar hipertrofia si la intensidad es adecuada.' }
     ];
 
     // ═══ APP STATE ═══
@@ -4240,7 +4386,7 @@
       document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
       document.querySelectorAll('.nav-tab').forEach(x => x.classList.remove('active'));
       const pe = document.getElementById('page-' + p); if (pe) pe.classList.add('active');
-      const navMap = { home: 'navHome', exercises: '', muscle: '', detail: '', methods: 'navMore', routines: 'navMore', timer: 'navMore', glossary: 'navMore', supplements: 'navMore', creators: 'navMore', warmup: 'navMore', learn: 'navMore', tracker: 'navTracker', workout: 'navTracker', stats: 'navHome', exhist: 'navHome', onerm: 'navHome' };
+      const navMap = { home: 'navHome', exercises: '', muscle: '', detail: '', methods: 'navHome', routines: 'navHome', timer: 'navMore', glossary: 'navHome', supplements: 'navHome', creators: 'navHome', warmup: 'navTracker', learn: 'navHome', learnconcepts: 'navHome', faq: 'navHome', tracker: 'navTracker', workout: 'navTracker', stats: 'navHome', exhist: 'navHome', onerm: 'navHome' };
       const ne = document.getElementById(navMap[p]); if (ne) ne.classList.add('active');
 
       // FIX: Limpiar la barra de búsqueda siempre que cambiás de página
@@ -4257,6 +4403,8 @@
       if (p === 'creators') renderCreators();
       if (p === 'warmup') renderWarmup();
       if (p === 'learn') renderLearn();
+      if (p === 'learnconcepts') renderLearnConcepts();
+      if (p === 'faq') renderFaq();
       if (p === 'tracker') renderTrackerDash();
       if (p === 'workout') renderWorkout();
       if (p === 'stats') renderStats();
@@ -4370,10 +4518,22 @@
       }).join('');
     }
 
+    function viewSplitInfo(splitId) {
+      goPage('routines');
+      setTimeout(() => {
+        const el = document.getElementById('split-' + splitId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          const det = el.querySelector('.split-detail');
+          if (det && !det.classList.contains('open')) det.classList.add('open');
+        }
+      }, 100);
+    }
+
     function renderSplits() {
       const sorted = [...SPLITS].sort((a, b) => { const na = parseInt(a.freq), nb = parseInt(b.freq); return na - nb });
       document.getElementById('splitsList').innerHTML = sorted.map(s => `
-        <div class="split-card" onclick="this.querySelector('.split-detail').classList.toggle('open')">
+        <div class="split-card" id="split-${s.id}" onclick="this.querySelector('.split-detail').classList.toggle('open')">
       <div class="split-top"><span class="split-icon">${s.icon}</span><span class="split-name">${s.name}</span><span class="split-freq">${s.freq}</span></div>
       <div class="split-desc">${s.desc}</div>
       <div class="split-detail">${s.days.map(d => `
@@ -4417,6 +4577,7 @@
       <div class="creator-top"><span class="creator-icon">${c.icon}</span><span class="creator-name">${c.name}</span><span class="creator-spec">${c.spec}</span></div>
       <div class="creator-desc">${c.desc}</div>
       <div class="creator-best">${c.best}</div>
+      ${c.yt ? `<a href="${c.yt}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:6px 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rxs);color:var(--accent);font-size:12px;font-weight:600;text-decoration:none;font-family:'Montserrat',sans-serif"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M8 9.5 16 12l-8 2.5V9.5z"/></svg>Ver en YouTube</a>` : ''}
     </div>
         `).join('');
     }
@@ -4443,13 +4604,77 @@
     }
 
     function renderLearn() {
-      document.getElementById('learnList').innerHTML = LEARN.map(l => `
-      <div class="learn-card" onclick="this.querySelector('.learn-detail').classList.toggle('open')">
-      <div class="learn-top"><span class="learn-icon">${l.icon}</span><span class="learn-name">${l.name}</span><span class="learn-arrow">›</span></div>
-      <div class="learn-desc">${l.desc}</div>
-      <div class="learn-detail">${l.content}</div>
-    </div>
-        `).join('');
+      const categories = [
+        {
+          name: 'Preguntas Frecuentes',
+          sub: '¿Cuánta proteína? ¿Cardio mata ganancias? y más',
+          page: 'faq',
+          color: 'var(--yellow)',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>'
+        },
+        {
+          name: 'Conceptos Clave',
+          sub: 'Sobrecarga, volumen, frecuencia, nutrición, sueño',
+          page: 'learnconcepts',
+          color: 'var(--pink)',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>'
+        },
+        {
+          name: 'Métodos de Intensidad',
+          sub: 'Drop sets, rest-pause, superseries y más',
+          page: 'methods',
+          color: 'var(--green)',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>'
+        },
+        {
+          name: 'Suplementos',
+          sub: 'Qué sirve de verdad según la ciencia',
+          page: 'supplements',
+          color: 'var(--green)',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>'
+        },
+        {
+          name: 'Creadores Recomendados',
+          sub: 'Los mejores canales de YouTube',
+          page: 'creators',
+          color: 'var(--accent)',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><path d="M8 9.5 16 12l-8 2.5V9.5z"/></svg>'
+        },
+        {
+          name: 'Glosario',
+          sub: 'Todos los términos explicados simple',
+          page: 'glossary',
+          color: 'var(--purple)',
+          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>'
+        }
+      ];
+
+      document.getElementById('learnHub').innerHTML = categories.map(c => `
+        <div class="home-card" onclick="goPage('${c.page}')" style="margin-bottom:8px">
+          <div class="hc-emoji"><div style="width:24px;height:24px;color:${c.color}">${c.icon}</div></div>
+          <div class="hc-name">${c.name}</div>
+          <div class="hc-sub">${c.sub}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderLearnConcepts() {
+      document.getElementById('learnConceptsList').innerHTML = LEARN.map(l => `
+        <div class="learn-card" onclick="this.querySelector('.learn-detail').classList.toggle('open')">
+          <div class="learn-top"><span class="learn-icon">${l.icon}</span><span class="learn-name">${l.name}</span><span class="learn-arrow">›</span></div>
+          <div class="learn-desc">${l.desc}</div>
+          <div class="learn-detail">${l.content}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderFaq() {
+      document.getElementById('faqList').innerHTML = FAQ.map((f, i) => `
+        <div class="learn-card" onclick="this.querySelector('.learn-detail').classList.toggle('open')">
+          <div class="learn-top"><span class="learn-icon" style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent)">${i + 1}</span><span class="learn-name">${f.q}</span><span class="learn-arrow">›</span></div>
+          <div class="learn-detail" style="font-size:13px;line-height:1.7;color:var(--ink2)">${f.a}</div>
+        </div>
+      `).join('');
     }
 
     // ═══ GLOSSARY TOOLTIP ═══
@@ -4652,12 +4877,14 @@
         sortedSplits.forEach(s => {
           const sel = selectedSplit === s.id ? 'selected' : '';
           const isCustom = s.id.startsWith('custom_');
-          const delBtn = isCustom ? `<button style="background:none;border:none;color:var(--ink4);padding:5px;cursor:pointer;margin-left:auto;display:flex;align-items:center" onclick="event.stopPropagation();deleteCustomRoutine('${s.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>` : '';
+          const actionBtn = isCustom
+            ? `<button style="background:none;border:none;color:var(--ink4);padding:5px;cursor:pointer;margin-left:auto;display:flex;align-items:center" onclick="event.stopPropagation();deleteCustomRoutine('${s.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>`
+            : `<button style="background:none;border:none;color:var(--ink4);padding:5px;cursor:pointer;margin-left:auto;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px" onclick="event.stopPropagation();viewSplitInfo('${s.id}')">info</button>`;
 
           html += `<div class="dash-split-pick ${sel}" onclick="pickSplit('${s.id}')">
         <span class="split-icon">${s.icon}</span>
         <div class="dash-split-info"><div class="dash-split-name">${s.name}</div><div class="dash-split-freq">${s.freq}</div></div>
-        ${delBtn}
+        ${actionBtn}
       </div>`;
         });
 
@@ -4677,6 +4904,9 @@
         }
         html += `<div style="text-align:center;margin:10px 0 4px;font-size:11px;color:var(--ink4)">— o —</div>`;
         html += `<button class="dash-start" style="background:var(--surface);color:var(--ink2);box-shadow:none;border:1px solid var(--border);font-size:17px" onclick="startFreeWorkout()">ENTRENO LIBRE</button>`;
+        html += `<div style="margin-top:14px">
+          <button class="dash-start" style="background:var(--surface);color:var(--ink2);box-shadow:none;border:1px solid var(--border);font-size:17px" onclick="goPage('warmup')">CALENTAMIENTOS</button>
+        </div>`;
       }
 
       // Recent history
@@ -5200,6 +5430,23 @@
       return streak;
     }
 
+    const statsOpen = { volumen: true, frecuencia: true, freqMusculo: true, distribucion: true, prs: true, progreso: true, herramientas: true };
+    function toggleStatsSection(key) {
+      statsOpen[key] = !statsOpen[key];
+      const body = document.getElementById('ss-' + key);
+      const chev = document.getElementById('sc-' + key);
+      if (body) { body.classList.toggle('open', statsOpen[key]); }
+      if (chev) { chev.classList.toggle('open', statsOpen[key]); }
+    }
+    function statsSectionHeader(key, title) {
+      const openCls = statsOpen[key] ? 'open' : '';
+      return `<div class="stats-section-toggle" onclick="toggleStatsSection('${key}')" style="margin-top:14px;margin-bottom:8px">
+        <div class="stitle" style="margin:0">${title}</div>
+        <svg class="stats-section-chevron ${openCls}" id="sc-${key}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </div><div class="stats-section-body ${openCls}" id="ss-${key}">`;
+    }
+    const STATS_SECTION_CLOSE = '</div>';
+
     function renderStats() {
       const streak = getStreak();
       const logs = getAllLogs();
@@ -5243,8 +5490,10 @@
 
       // Streak (always uses full data, not filtered)
       html += `<div class="stat-streak">
-    <div class="stat-streak-fire">${streak >= 1 ? IC_FLAME_LG : ''}</div>
-    <div class="stat-streak-num">${streak}</div>
+    <div style="position:relative;display:inline-block">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:96px;height:96px;opacity:0.35"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14 0-5.5 3-7 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.5-2.26 1.4-3.13"/></svg>
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-40%);font-family:'Bebas Neue',sans-serif;font-size:${streak >= 100 ? '22px' : streak >= 10 ? '28px' : '32px'};color:var(--accent);letter-spacing:2px;font-variant-numeric:tabular-nums">${streak}</div>
+    </div>
     <div class="stat-streak-lbl">${streak === 1 ? 'día consecutivo' : 'días consecutivos'}</div>
   </div> `;
 
@@ -5299,7 +5548,7 @@
       const weeksArray = Object.values(volByWeek).sort((a, b) => b.w - a.w); // De más antiguo a más nuevo
       const displayWeeks = weeksArray.slice(-8); // Hasta últimas 8 semanas
 
-      html += `<div class="stitle" style="margin-top:14px;margin-bottom:8px">VOLUMEN SEMANAL</div>`;
+      html += statsSectionHeader('volumen', 'VOLUMEN SEMANAL');
       if (displayWeeks.length > 0) {
         const WW = 340, WH = 150, wPad = { t: 25, r: 10, b: 25, l: 30 };
         const wCw = WW - wPad.l - wPad.r, wCh = WH - wPad.t - wPad.b;
@@ -5320,7 +5569,7 @@
           const isCurrent = wk.w === 0;
           const color = isCurrent ? 'var(--accent)' : 'var(--surface)';
           const strokeHtml = !isCurrent ? 'stroke="var(--border)" stroke-width="1"' : '';
-          const formatWk = wk.w === 0 ? 'Esta' : `${wk.dateObj.getDate()}/${wk.dateObj.getMonth() + 1}`;
+          const formatWk = `${wk.dateObj.getDate()}/${wk.dateObj.getMonth() + 1}`;
           return `
                 <rect x="${xBase - barWidth / 2}" y="${yBase}" width="${barWidth}" height="${barH}" fill="${color}" ${strokeHtml} rx="3" ry="3"/>
                 <text x="${xBase}" y="${yBase - 6}" text-anchor="middle" class="chart-label" fill="var(--ink)">${wk.count}</text>
@@ -5334,6 +5583,7 @@
       }
 
       // Frequency heatmap
+      html += STATS_SECTION_CLOSE;
       const freq = {};
       Object.values(filteredLogs).forEach(entries => entries.forEach(e => {
         freq[e.d] = (freq[e.d] || 0) + 1;
@@ -5346,41 +5596,42 @@
 
       if (statsPeriod === '3m') {
         heatmapDays = 90;
-        cellSize = "12px";
-        cellGap = "2px";
+        cellSize = "14px";
+        cellGap = "3px";
         heatmapTitle = "ÚLTIMOS 90 DÍAS";
       } else if (statsPeriod === '6m') {
         heatmapDays = 180;
-        cellSize = "8px";
-        cellGap = "1px";
+        cellSize = "10px";
+        cellGap = "2px";
         heatmapTitle = "ÚLTIMOS 180 DÍAS";
       } else if (statsPeriod === 'all') {
         heatmapDays = 365;
-        cellSize = "8px";
-        cellGap = "1px";
+        cellSize = "10px";
+        cellGap = "2px";
         heatmapTitle = "ÚLTIMO AÑO";
       }
 
-      html += `<div class="stitle" style="margin-bottom:8px"> FRECUENCIA (${heatmapTitle})</div> `;
-      html += `<div class="stat-card"> <div class="freq-grid" style="gap:${cellGap}">`;
+      html += statsSectionHeader('frecuencia', `FRECUENCIA (${heatmapTitle})`);
+      const gridStyle = `gap:${cellGap}`;
+      html += `<div class="stat-card"> <div class="freq-grid" style="${gridStyle}">`;
       const dayLabels = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
-      dayLabels.forEach(d => { html += `<div class="freq-cell-label" style="height:${cellSize};display:flex;align-items:center;justify-content:center">${d}</div>` });
-      const todayObj = new Date();
-      let todayDay = todayObj.getDay() - 1; if (todayDay < 0) todayDay = 6;
-      const daysToNextSunday = 6 - todayDay;
-      for (let i = heatmapDays - 1; i >= 0; i--) {
-        const offset = i - daysToNextSunday;
-        if (offset < 0) {
-          html += `<div class="freq-cell" style="background:transparent;width:${cellSize};height:${cellSize};margin:auto"></div>`;
-        } else {
-          const dObj = new Date(Date.now() - offset * 86400000);
-          dObj.setMinutes(dObj.getMinutes() - dObj.getTimezoneOffset());
-          const d = dObj.toISOString().slice(0, 10);
-          const sets = freq[d] || 0;
-          const intensity = sets === 0 ? 'var(--surface)' : sets < 5 ? 'rgba(255,94,58,.25)' : sets < 10 ? 'rgba(255,94,58,.5)' : 'rgba(255,94,58,.85)';
-          const isToday = offset === 0 ? 'border:1px solid var(--ink4)' : '';
-          html += `<div class="freq-cell" style="background:${intensity};${isToday};width:${cellSize};height:${cellSize};margin:auto" title="${d}: ${sets} series"></div>`;
-        }
+      dayLabels.forEach(d => { html += `<div class="freq-cell-label" style="display:flex;align-items:center;justify-content:center;font-size:${heatmapDays > 28 ? '7px' : '8px'}">${d}</div>` });
+      const hmStartDate = new Date();
+      hmStartDate.setDate(hmStartDate.getDate() - heatmapDays + 1);
+      let startDow = hmStartDate.getDay() - 1;
+      if (startDow < 0) startDow = 6;
+      for (let p = 0; p < startDow; p++) {
+        html += `<div class="freq-cell" style="background:transparent"></div>`;
+      }
+      for (let i = 0; i < heatmapDays; i++) {
+        const dObj = new Date(hmStartDate);
+        dObj.setDate(hmStartDate.getDate() + i);
+        dObj.setMinutes(dObj.getMinutes() - dObj.getTimezoneOffset());
+        const d = dObj.toISOString().slice(0, 10);
+        const sets = freq[d] || 0;
+        const intensity = sets === 0 ? 'var(--surface)' : sets < 5 ? 'rgba(255,94,58,.25)' : sets < 10 ? 'rgba(255,94,58,.5)' : 'rgba(255,94,58,.85)';
+        const isToday = i === heatmapDays - 1 ? 'border:1px solid var(--ink4)' : '';
+        html += `<div class="freq-cell" style="background:${intensity};${isToday}" title="${d}: ${sets} series"></div>`;
       }
       html += `</div></div> `;
 
@@ -5394,7 +5645,8 @@
 </div>`;
 
       // --- METRICA 2: FRECUENCIA POR MÚSCULO ---
-      html += `<div class="stitle" style="margin-top:14px;margin-bottom:8px">FRECUENCIA POR MÚSCULO</div>`;
+      html += STATS_SECTION_CLOSE;
+      html += statsSectionHeader('freqMusculo', 'FRECUENCIA POR MÚSCULO');
       const freqByMuscleObj = {};
       Object.entries(filteredLogs).forEach(([exId, entries]) => {
         const ex = EX.find(x => x.id === exId);
@@ -5442,6 +5694,7 @@
       }
 
       // Volume by muscle (Pie Chart) - uses filtered data
+      html += STATS_SECTION_CLOSE;
       const vol = {};
       Object.entries(filteredLogs).forEach(([exId, entries]) => {
         const ex = EX.find(x => x.id === exId);
@@ -5449,7 +5702,7 @@
         const muscle = ex.muscle;
         if (entries.length) vol[muscle] = (vol[muscle] || 0) + entries.length;
       });
-      html += `<div class="stitle" style="margin-top:14px;margin-bottom:8px"> DISTRIBUCIÓN MUSCULAR (${periodLabel})</div> `;
+      html += statsSectionHeader('distribucion', `DISTRIBUCIÓN MUSCULAR (${periodLabel})`);
       html += `<div class="stat-card" style="display:flex;align-items:center;gap:15px"> `;
       if (Object.keys(vol).length) {
         const colors = { hombros: 'var(--blue)', pecho: 'var(--accent)', espalda: 'var(--green)', biceps: 'var(--yellow)', triceps: 'var(--purple)', antebrazos: 'var(--pink)', core: 'var(--accent2)', piernas: '#38BDF8', gluteos: '#F43F5E' };
@@ -5480,7 +5733,8 @@
       html += `</div> `;
 
       // PRs
-      html += `<div class="stitle" style="margin-top:14px;margin-bottom:8px">RECORDS PERSONALES</div>`;
+      html += STATS_SECTION_CLOSE;
+      html += statsSectionHeader('prs', 'RECORDS PERSONALES');
       html += `<input type="text" placeholder="Buscar ejercicio..." 
   style="width:100%;padding:10px 12px;background:var(--surface);border:1px solid var(--border);border-radius:var(--rxs);color:var(--ink);font-family:'Montserrat',sans-serif;font-size:13px;margin-bottom:10px;outline:none"
   oninput="filterPRs(this.value)">`;
@@ -5503,7 +5757,8 @@
       html += `</div>`;
 
       // Exercise history links
-      html += `<div class="stitle" style="margin-top:14px;margin-bottom:8px">PROGRESO POR EJERCICIO</div> `;
+      html += STATS_SECTION_CLOSE;
+      html += statsSectionHeader('progreso', 'PROGRESO POR EJERCICIO');
       const exercisesWithData = Object.keys(filteredLogs).filter(id => filteredLogs[id].length > 0).sort((a, b) => {
         const ea = EX.find(x => x.id === a), eb = EX.find(x => x.id === b);
         return (ea ? ea.name : '').localeCompare(eb ? eb.name : '', 'es');
@@ -5516,7 +5771,7 @@
           const maxWEntry = entries.reduce((best, e) => (e.w > best.w || (e.w === best.w && e.r > best.r)) ? e : best, entries[0]);
           const maxR = maxWEntry ? maxWEntry.r : 0;
           html += `<button class="ex-hist-btn" onclick="viewExHist('${id}')">
-        <span style="font-size:14px;font-weight:600;flex:1">${ex ? ex.name : id}</span>
+        <span style="font-size:13px;font-weight:600;flex:1;text-align:left">${ex ? ex.name : id}</span>
         <span class="pr-badge">PR: ${maxW > 0 ? maxW + 'kg' : maxR + ' reps'}</span>
         <span style="color:var(--ink3);font-size:18px">›</span>
       </button> `;
@@ -5525,11 +5780,13 @@
         html += `<div style="text-align:center;padding:20px;color:var(--ink3);font-size:13px"> Registrá series para ver gráficos de progreso.</div> `;
       }
 
-      html += `<div class="stitle" style="margin-top:14px;margin-bottom:8px">HERRAMIENTAS</div>`;
+      html += STATS_SECTION_CLOSE;
+      html += statsSectionHeader('herramientas', 'HERRAMIENTAS');
       html += `<button class="ex-hist-btn" onclick="goPage('onerm')" style="justify-content:center;gap:8px;background:var(--accent);border-color:var(--accent);color:#000">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
   <span style="font-size:14px;font-weight:600">Calculadora de 1RM</span>
 </button>`;
+      html += STATS_SECTION_CLOSE;
 
       document.getElementById('statsContent').innerHTML = html;
     }
