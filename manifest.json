@@ -3,8 +3,8 @@
   "short_name": "GymBrain",
   "start_url": "./GymBrain.html",
   "display": "standalone",
-  "background_color": "#F1F2EE",
-  "theme_color": "#2544D9",
+  "background_color": "#0C0E12",
+  "theme_color": "#0C0E12",
   "lang": "es-AR",
   "icons": [
     {
