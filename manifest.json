@@ -1,22 +1,17 @@
 {
   "name": "GymBrain",
   "short_name": "GymBrain",
-  "start_url": "./",
+  "start_url": "./GymBrain.html",
   "display": "standalone",
-  "background_color": "#0A0A0A",
-  "theme_color": "#0A0A0A",
+  "background_color": "#F1F2EE",
+  "theme_color": "#2544D9",
+  "lang": "es-AR",
   "icons": [
     {
-      "src": "./favicon.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "./favicon.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
     }
   ]
 }
