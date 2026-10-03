@@ -904,6 +904,22 @@ body::before { opacity: .22; }
 .mmap.is3d .m3d-stage { display: block; }
 .mmap.is3d .mm-stage { display: none; }
 .dot.s { background: var(--xp); opacity: .8; }
+
+/* 3D en Hoy y Progreso */
+.m3d-host.is3d > .m3d-fb { display: none; }
+.m3d-host.is3d > .m3d-stage { display: block; }
+.m3d-only { display: none !important; }
+.m3d-host.is3d .m3d-only { display: flex !important; }
+.hc-map { position: relative; height: 186px; padding: 0; overflow: hidden; }
+.hc-map .m3d-fb { display: flex; justify-content: center; height: 100%; padding: 6px 0; }
+.hc-map .m3d-stage { height: 100%; }
+.hc-map .m3d-stage::after { bottom: 2px; height: 14px; }
+.m3d-lab { position: absolute; left: 6px; right: 6px; bottom: 6px; padding: 4px 6px; border-radius: 7px; background: rgba(12,11,10,.82); font: 700 8.5px/1.3 var(--fm); letter-spacing: .04em; color: var(--xp); text-align: center; opacity: 0; transform: translateY(4px); transition: all .2s; pointer-events: none; }
+.m3d-lab.on { opacity: 1; transform: none; }
+.bodyheat { display: block; padding: 6px 8px 10px; }
+.bodyheat .m3d-fb { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.bodyheat .m3d-stage { height: 360px; }
+.bodyheat .mm-bar { padding: 0 6px; }
 </style>
 </head>
 <body>
@@ -2636,8 +2652,8 @@ function exPhotoAnim(e) {
 function muscleMapCard(e, opts) {
   opts = opts || {}; const h = e ? exHeat(e) : (opts.heat || {}); const side = opts.side || (e ? exSide(e) : heatSide(h));
   const uid = 'mm' + Math.random().toString(36).slice(2, 7);
-  let html = '<div class="mmap" id="' + uid + '" data-side="' + side + '" data-ang="' + (side === 'back' ? 180 : 0) + '"><div class="mm-stage"><div class="mm-flip"><div class="mm-face front" style="opacity:' + (side === 'back' ? 0 : 1) + ';pointer-events:' + (side === 'back' ? 'none' : 'auto') + '">' + anatSvg('front', h, { tap: true }) + '</div><div class="mm-face back" style="opacity:' + (side === 'back' ? 1 : 0) + ';pointer-events:' + (side === 'back' ? 'auto' : 'none') + '">' + anatSvg('back', h, { tap: true }) + '</div></div></div>';
-  if (e) { html += '<div class="m3d-stage"></div>'; setTimeout(() => m3dMount(uid, e.id), 0); }
+  let html = '<div class="mmap m3d-host" id="' + uid + '" data-side="' + side + '" data-ang="' + (side === 'back' ? 180 : 0) + '"><div class="mm-stage"><div class="mm-flip"><div class="mm-face front" style="opacity:' + (side === 'back' ? 0 : 1) + ';pointer-events:' + (side === 'back' ? 'none' : 'auto') + '">' + anatSvg('front', h, { tap: true }) + '</div><div class="mm-face back" style="opacity:' + (side === 'back' ? 1 : 0) + ';pointer-events:' + (side === 'back' ? 'auto' : 'none') + '">' + anatSvg('back', h, { tap: true }) + '</div></div></div>';
+  if (e) { html += '<div class="m3d-stage"></div>'; m3dHost(uid, { heat: exHeat3d(e), side, tip: (k, w, n) => n + (w >= .9 ? ' · principal' : w >= .4 ? ' · secundario' : '') }); }
   html += '<div class="mm-bar"><span class="mm-tap">' + (opts.hint || 'Tocá un músculo para ver su nombre') + '</span><button class="btn sm" onclick="mmFlip(\'' + uid + '\')">' + I.cycle + ' Girar</button></div>';
   if (e) {
     const tp = (e.tp || []).map(t => TGT_NAME[t]).filter(Boolean), ts = (e.ts || []).map(t => TGT_NAME[t]).filter(Boolean);
@@ -2758,33 +2774,40 @@ function m3dLoad() {
   return M3D.p;
 }
 // Se llama después de pintar el HTML de muscleMapCard: monta el 3D encima del mapa 2D
-function m3dMount(uid, id) {
-  if (!m3dOk()) return; M3D.st = Math.max(M3D.st, 1);
-  m3dLoad().then(() => { const el = document.getElementById(uid); if (el && document.body.contains(el)) m3dAttach(el, id); }).catch(() => {});
+// Lugares que pueden mostrar el 3D (ficha de ejercicio, Hoy, Progreso). Hay un solo visor y se muda a la pantalla visible.
+// cfg: { heat: {músculo: 0-1}, side: 'front'|'back', tip(clave, w) → texto al tocar, auto: giro lento al entrar }
+const M3D_HOSTS = {};
+function m3dHost(id, cfg) { Object.keys(M3D_HOSTS).forEach(k => { if (!document.getElementById(k)) delete M3D_HOSTS[k]; }); M3D_HOSTS[id] = cfg; setTimeout(m3dRefresh, 0); }
+function m3dPick() { const ok = h => M3D_HOSTS[h.id]; return [...document.querySelectorAll('#sheet.on .m3d-host')].find(ok) || [...document.querySelectorAll('.page.on .m3d-host')].find(ok) || null; }
+function m3dRefresh() {
+  if (!m3dOk() || !m3dPick()) return; M3D.st = Math.max(M3D.st, 1);
+  m3dLoad().then(() => { const h = m3dPick(); if (h && h !== M3D.el) m3dAttach(h); }).catch(() => {});
 }
-function m3dAttach(el, id) {
-  const e = ex(id); const h = exHeat3d(e); const { ren, mats } = M3D; const stage = el.querySelector('.m3d-stage');
+function m3dAttach(el) {
+  const cfg = M3D_HOSTS[el.id]; const h = cfg.heat || {}; const { ren, mats } = M3D; const stage = el.querySelector('.m3d-stage');
   if (M3D.el && M3D.el !== el) M3D.el.classList.remove('is3d');
-  stage.appendChild(ren.domElement); el.classList.add('is3d'); M3D.el = el; M3D.e = e; M3D.tapped = null;
+  stage.appendChild(ren.domElement); el.classList.add('is3d'); M3D.el = el; M3D.cfg = cfg; M3D.tapped = null;
   M3D.meshes.forEach(m => { const w = m.userData.mk ? h[m.userData.mk] || 0 : 0; m.userData.w = w; m.userData.mat = m.userData.kind === 'b' ? mats.bone : m.userData.kind === 'c' ? mats.conn : w >= .9 ? mats.hot : w >= .4 ? mats.warm : w > 0 ? mats.soft : mats.base; m.material = m.userData.mat; });
-  const r = stage.getBoundingClientRect(); ren.setSize(Math.max(1, r.width), Math.max(1, r.height)); M3D.cam.aspect = r.width / Math.max(1, r.height); M3D.cam.updateProjectionMatrix();
-  // Entrada: gira un poco hasta quedar de frente (o de espalda si el ejercicio es de atrás)
-  const end = el.dataset.side === 'back' ? Math.PI : 0; M3D.yaw = end - .9; M3D.vy = 0; M3D.goal = end; m3dKick();
+  m3dSize();
+  // Entrada: gira hasta quedar de frente (o de espalda); en Hoy sigue girando lento unos segundos
+  const end = cfg.side === 'back' ? Math.PI : 0; M3D.yaw = end - .9; M3D.vy = 0; M3D.goal = cfg.auto ? null : end; M3D.auto = cfg.auto ? performance.now() + 7000 : 0; m3dKick();
   if (!stage._m3d) { stage._m3d = 1; m3dBind(stage); }
 }
+function m3dSize() { const el = M3D.el; if (!el || !M3D.ren) return; const r = el.querySelector('.m3d-stage').getBoundingClientRect(); if (!r.width || !r.height) return; M3D.ren.setSize(r.width, r.height); M3D.cam.aspect = r.width / r.height; M3D.cam.updateProjectionMatrix(); }
 function m3dFrame() {
   M3D.raf = 0; const el = M3D.el; if (!el || !document.body.contains(el)) { M3D.last = 0; return; }
   const now = performance.now(); const k = Math.min(4, M3D.last ? (now - M3D.last) / 16.7 : 1); M3D.last = now; // pasos medidos en tiempo, no en cuadros
-  if (M3D.goal != null) { const d = M3D.goal - M3D.yaw; M3D.yaw += d * (1 - Math.pow(.88, k)); if (Math.abs(d) < .002) { M3D.yaw = M3D.goal; M3D.goal = null; } }
+  if (M3D.auto && !M3D.drag) { if (now < M3D.auto) M3D.yaw += .012 * k; else { M3D.auto = 0; M3D.goal = Math.round(M3D.yaw / (2 * Math.PI)) * 2 * Math.PI + (M3D.cfg.side === 'back' ? Math.PI : 0); } }
+  else if (M3D.goal != null) { const d = M3D.goal - M3D.yaw; M3D.yaw += d * (1 - Math.pow(.88, k)); if (Math.abs(d) < .002) { M3D.yaw = M3D.goal; M3D.goal = null; } }
   else if (!M3D.drag && Math.abs(M3D.vy) > .0005) { M3D.yaw += M3D.vy * k; M3D.vy *= Math.pow(.93, k); }
   M3D.pivot.rotation.y = M3D.yaw; M3D.ren.render(M3D.sc, M3D.cam);
-  if (M3D.drag || M3D.goal != null || Math.abs(M3D.vy) > .0005) m3dKick(); else M3D.last = 0;
+  if (M3D.drag || M3D.auto || M3D.goal != null || Math.abs(M3D.vy) > .0005) m3dKick(); else M3D.last = 0;
 }
 function m3dKick() { if (!M3D.raf) M3D.raf = requestAnimationFrame(m3dFrame); }
-function m3dFlip() { const b = Math.round((M3D.goal != null ? M3D.goal : M3D.yaw) / Math.PI) * Math.PI; M3D.vy = 0; M3D.goal = b + Math.PI; m3dKick(); vib(10); }
+function m3dFlip() { M3D.auto = 0; const b = Math.round((M3D.goal != null ? M3D.goal : M3D.yaw) / Math.PI) * Math.PI; M3D.vy = 0; M3D.goal = b + Math.PI; m3dKick(); vib(10); }
 function m3dBind(stage) {
   let s = null;
-  stage.addEventListener('pointerdown', ev => { s = { x: ev.clientX, y: ev.clientY, yaw: M3D.yaw, lx: ev.clientX, lt: performance.now(), moved: false }; M3D.goal = null; M3D.vy = 0; });
+  stage.addEventListener('pointerdown', ev => { s = { x: ev.clientX, y: ev.clientY, yaw: M3D.yaw, lx: ev.clientX, lt: performance.now(), moved: false }; M3D.goal = null; M3D.vy = 0; M3D.auto = 0; });
   stage.addEventListener('pointermove', ev => { if (!s) return; const dx = ev.clientX - s.x;
     if (!s.moved) { if (Math.abs(dx) < 6) return; if (Math.abs(ev.clientY - s.y) > Math.abs(dx)) { s = null; return; } s.moved = true; M3D.drag = true; }
     const t = performance.now(); M3D.vy = (ev.clientX - s.lx) * .011 * Math.min(1, 16 / Math.max(1, t - s.lt)); s.lx = ev.clientX; s.lt = t;
@@ -2795,13 +2818,20 @@ function m3dBind(stage) {
 function m3dTap(stage, ev) {
   const r = stage.getBoundingClientRect(); const v = new M3D.T.Vector2(((ev.clientX - r.left) / r.width) * 2 - 1, -((ev.clientY - r.top) / r.height) * 2 + 1);
   M3D.ray.setFromCamera(v, M3D.cam); const hit = M3D.ray.intersectObjects(M3D.meshes, false).find(x => x.object.userData.kind === 'm');
-  const lab = M3D.el.querySelector('.mm-tap'); if (M3D.tapped) M3D.tapped.material = M3D.tapped.userData.mat;
-  if (!hit) { M3D.tapped = null; m3dKick(); return; }
-  const m = hit.object; const w = m.userData.w; M3D.tapped = m; m.material = M3D.mats.tap;
-  if (lab) { lab.textContent = (M3D_NAME[m.userData.mk] || m.userData.mk) + (w >= .9 ? ' · principal' : w >= .4 ? ' · secundario' : ''); lab.classList.add('on'); }
+  const lab = M3D.el.querySelector('.mm-tap, .m3d-lab'); if (M3D.tapped) M3D.tapped.material = M3D.tapped.userData.mat;
+  if (!hit) { M3D.tapped = null; if (lab && lab.classList.contains('m3d-lab')) lab.classList.remove('on'); m3dKick(); return; }
+  const m = hit.object; M3D.tapped = m; m.material = M3D.mats.tap;
+  if (lab) { const n = M3D_NAME[m.userData.mk] || m.userData.mk; lab.textContent = M3D.cfg.tip ? M3D.cfg.tip(m.userData.mk, m.userData.w, n) : n; lab.classList.add('on'); }
   vib(8); m3dKick();
 }
-addEventListener('resize', () => { const el = M3D.el; if (!el || !document.body.contains(el) || !M3D.ren) return; const r = el.querySelector('.m3d-stage').getBoundingClientRect(); M3D.ren.setSize(r.width, r.height); M3D.cam.aspect = r.width / r.height; M3D.cam.updateProjectionMatrix(); m3dKick(); });
+addEventListener('resize', () => { if (M3D.el && document.body.contains(M3D.el)) { m3dSize(); m3dKick(); } });
+// Intensidad 3D de una sesión (máximo entre sus ejercicios) y volumen semanal por músculo del modelo
+function dayHeat3d(d) { const h = {}; d.ex.forEach(x => { const hh = exHeat3d(ex(x.id)); Object.keys(hh).forEach(k => { if (hh[k] > (h[k] || 0)) h[k] = hh[k]; }); }); return h; }
+function weekly3d(days) {
+  const since = addDays(today(), -days); const tot = {};
+  SESSIONS.filter(s => s.date >= since).forEach(s => s.ex.forEach(x => { const e = ex(x.id); if (!e) return; const h = exHeat3d(e); Object.keys(h).forEach(k => { const w = h[k] >= .9 ? 1 : h[k] >= .4 ? .5 : 0; if (w) tot[k] = (tot[k] || 0) + x.sets.length * w; }); }));
+  Object.keys(tot).forEach(k => tot[k] = tot[k] / (days / 7)); return tot;
+}
 // Figura chica (sin interacción)
 function muscleFig(e, sz) { const h = exHeat(e); return '<div class="mfig" style="height:' + (sz || 56) + 'px">' + anatSvg(exSide(e), h) + '</div>'; }
 
@@ -3488,6 +3518,7 @@ function render() {
   const fn = { hoy: renderHoy, entreno: renderEntreno, resumen: renderResumen, plan: renderPlan, programa: renderPrograma, editor: renderEditor, ejercicios: renderEjercicios, ejercicio: renderEjercicio, progreso: renderProgreso, historial: renderHistorial, aprender: renderAprender, articulo: renderArticulo, faq: renderFaq, glosario: renderGlosario, supps: renderSupps, creadores: renderCreadores, calentamiento: renderCalentamiento, metodos: renderMetodos, estado: renderEstado }[p];
   if (fn) fn();
   if (p === 'entreno') tickRest();
+  setTimeout(m3dRefresh, 0);
 }
 function topbar(title, sub, right) {
   return '<div class="topbar"><div><button class="back" onclick="back()">' + I.back + ' Volver</button>' + (title ? '<h1 style="font-size:26px;margin-top:2px">' + esc(title) + '</h1>' : '') + (sub ? '<div class="sub">' + sub + '</div>' : '') + '</div>' + (right || '') + '</div>';
@@ -3495,7 +3526,7 @@ function topbar(title, sub, right) {
 
 // ═══ SHEET ═══
 function openSheet(html) { $('sheet').innerHTML = '<div class="grab"></div>' + html; $('sheet').scrollTop = 0; $('sheetbg').classList.add('on'); $('sheet').classList.add('on'); document.body.classList.add('sheet-on'); armNav(); }
-function closeSheet() { $('sheetbg').classList.remove('on'); $('sheet').classList.remove('on'); document.body.classList.remove('sheet-on'); }
+function closeSheet() { $('sheetbg').classList.remove('on'); $('sheet').classList.remove('on'); document.body.classList.remove('sheet-on'); setTimeout(m3dRefresh, 320); }
 function exSheet(id, opts) {
   const e = ex(id); opts = opts || {};
   const b = bestOf(id); const h = hist(id);
@@ -3603,7 +3634,8 @@ function renderHoy() {
     } else {
       html += '<div class="hc-eb">' + esc(p.name.toUpperCase()) + '</div><div class="hc-focus">' + esc(d.focus || '') + '</div>';
     }
-    html += '</div><div class="hc-mu"><div class="hc-map">' + anatSvg('front', heat) + anatSvg('back', heat) + '</div><div class="hc-ml"><div class="lab-m">HOY SE ROMPE</div>' + Object.keys(heat).sort((x, y) => heat[y] - heat[x]).slice(0, 4).map(k => '<div class="hc-m"><div><span>' + esc(MASK_SHORT[k] || MASK_NAME[k] || k) + '</span><small>' + Math.round(heat[k] * 100) + '%</small></div><i><b style="width:' + Math.round(heat[k] * 100) + '%"></b></i></div>').join('') + '</div></div>';
+    html += '</div><div class="hc-mu"><div class="hc-map m3d-host" id="hoy3d"><div class="m3d-fb">' + anatSvg('front', heat) + anatSvg('back', heat) + '</div><div class="m3d-stage"></div><div class="m3d-lab"></div></div><div class="hc-ml"><div class="lab-m">HOY SE ROMPE</div>' + Object.keys(heat).sort((x, y) => heat[y] - heat[x]).slice(0, 4).map(k => '<div class="hc-m"><div><span>' + esc(MASK_SHORT[k] || MASK_NAME[k] || k) + '</span><small>' + Math.round(heat[k] * 100) + '%</small></div><i><b style="width:' + Math.round(heat[k] * 100) + '%"></b></i></div>').join('') + '</div></div>';
+    m3dHost('hoy3d', { heat: dayHeat3d(d), side: heatSide(heat), auto: true, tip: (k, w, n) => n + (w >= .9 ? ' · principal' : w >= .4 ? ' · secundario' : '') });
     html += '<div class="hc-coach"><div class="lg">' + LOGO + '</div><div>' + esc(say('hoy', { s: d.name }, d.id)) + '</div></div></div>';
     html += '<div class="sec"><h2>' + esc(d.name) + '</h2><span class="lab-m">' + d.ex.length + ' EJ · ~' + esc((p.dur || '50-60 min').toUpperCase()) + '</span></div><div class="hlist">';
     rows.forEach((r, i) => { const up = r.sug.type === 'up' && r.sug.prevW != null && usesW(r.e); html += '<div class="hrow"><span class="hr-n">' + String(i + 1).padStart(2, '0') + '</span><div class="grow"><div class="hr-t">' + esc(r.e.name) + '</div><div class="hr-s ' + r.sg.cls + '">' + (r.sg.cls === 'first' ? 'PRIMERA VEZ · ' + r.n + ' SERIES' : (r.n + ' × ' + r.sg.txt).toUpperCase()) + '</div></div>' + (up ? '<span class="hr-up">▲ ' + fmtW(r.sug.w - r.sug.prevW) + '</span>' : '<span class="eqg hr-eq">' + EQ_GLYPH[r.e.eq] + '</span>') + '</div>'; });
@@ -3926,8 +3958,10 @@ function maskWeekly(days) {
 const VOL_ORDER = ['pectoralis', 'lats', 'upper_back', 'deltoids', 'deltoids_back', 'biceps', 'triceps', 'quadriceps', 'hamstrings', 'glutes', 'calves_back', 'rectus_abdominis'];
 function bodyHeat() {
   const wk = maskWeekly(28); const heat = {}; Object.keys(wk).forEach(k => heat[k] = Math.min(1, wk[k] / 14));
-  let html = '<div class="bodyheat"><div class="mfig">' + anatSvg('front', heat) + '</div><div class="mfig">' + anatSvg('back', heat) + '</div></div>';
-  html += '<div class="vol-legend"><span><i style="background:var(--card3)"></i>0</span><span><i style="background:var(--acc);opacity:.45"></i>5</span><span><i style="background:var(--acc)"></i>14+ series/sem</span></div>';
+  const w3 = weekly3d(28); const h3 = {}; Object.keys(w3).forEach(k => h3[k] = w3[k] >= 10 ? 1 : w3[k] >= 5 ? .5 : w3[k] > 0 ? .2 : 0);
+  m3dHost('prog3d', { heat: h3, side: 'front', tip: (k, w, n) => n + ' · ' + fmtW(Math.round((w3[k] || 0) * 2) / 2) + ' series/sem' });
+  let html = '<div class="bodyheat m3d-host" id="prog3d"><div class="m3d-fb"><div class="mfig">' + anatSvg('front', heat) + '</div><div class="mfig">' + anatSvg('back', heat) + '</div></div><div class="m3d-stage"></div><div class="mm-bar m3d-only"><span class="mm-tap">Tocá un músculo para ver sus series</span><button class="btn sm" onclick="m3dFlip()">' + I.cycle + ' Girar</button></div></div>';
+  html += '<div class="vol-legend"><span><i style="background:#7A5236"></i>1-4</span><span><i style="background:#C9811F"></i>5-9</span><span><i style="background:var(--acc)"></i>10+ series/sem</span></div>';
   html += '<div class="vol">' + VOL_ORDER.map(k => { const v = wk[k] || 0; const st = v < 4 ? ['bajo', 'r'] : v < 10 ? ['base', 'a'] : v <= 20 ? ['óptimo', 'g'] : ['alto', 'b']; return '<div class="vrow"><div class="vn">' + MASK_SHORT[k] + '</div><div class="vbar"><i style="width:' + Math.min(100, v / 22 * 100) + '%" class="' + st[1] + '"></i><b style="left:' + (10 / 22 * 100) + '%"></b><b style="left:' + (20 / 22 * 100) + '%"></b></div><div class="vv">' + fmtW(Math.round(v * 2) / 2) + '</div><span class="pill ' + st[1] + '">' + st[0] + '</span></div>'; }).join('') + '</div>';
   html += '<div class="small muted2" style="margin-top:8px">Series semanales efectivas (promedio de 4 semanas; los músculos secundarios cuentan media serie). Para crecer, la evidencia apunta a 10-20 por músculo; si estás empezando, 6-10 ya rinden.</div>';
   return html;
@@ -4079,7 +4113,7 @@ function finishOnboarding(pid) {
 }
 
 // ═══ INIT ═══
-const APP_VERSION = 'V23';
+const APP_VERSION = 'V23.1';
 function splash() {
   if (sessionStorage.getItem('gb2_splash')) return; sessionStorage.setItem('gb2_splash', '1');
   const d = document.createElement('div'); d.className = 'splash'; d.innerHTML = '<div class="lg">' + LOGO + '</div><div class="t">GYMBRAIN</div><div class="s">BY CHADBITS</div>'; document.body.appendChild(d); setTimeout(() => d.remove(), 1800);
