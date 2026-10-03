@@ -13,6 +13,7 @@
 <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExMCIgZmlsbD0iIzBBMEYxQyIvPjxyZWN0IHg9IjE4IiB5PSIxOCIgd2lkdGg9IjQ3NiIgaGVpZ2h0PSI0NzYiIHJ4PSI5NCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2cpIiBzdHJva2Utd2lkdGg9IjUiIG9wYWNpdHk9Ii41NSIvPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iIzRERjNENCIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzEyQTE4OCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxnIGZpbGw9InVybCgjZykiPjxwYXRoIGQ9Ik0yNTYgOTZjLTM4IDAtNjggMjAtNzYgNDgtMjggNi00NCAyOC0zOCA1MiA0IDE3IDE4IDI4IDM0IDMydjEyaDE2MHYtMTJjMTYtNCAzMC0xNSAzNC0zMiA2LTI0LTEwLTQ2LTM4LTUyLTgtMjgtMzgtNDgtNzYtNDh6Ii8+PGcgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMEEwRjFDIiBzdHJva2Utd2lkdGg9IjExIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjxwYXRoIGQ9Ik0yNTYgMTA0djEzNiIvPjxwYXRoIGQ9Ik0yNTYgMTUwYy0xNiAwLTI2IDEwLTI2IDIyTTI1NiAxODhjMTYgMCAyNiAxMCAyNiAyMk0yNTYgMTUwYzE2IDAgMjYgMTAgMjYgMjJNMjU2IDE4OGMtMTYgMC0yNiAxMC0yNiAyMiIvPjwvZz48cmVjdCB4PSIxNTIiIHk9IjI5MiIgd2lkdGg9IjM2IiBoZWlnaHQ9IjEyOCIgcng9IjE4Ii8+PHJlY3QgeD0iMzI0IiB5PSIyOTIiIHdpZHRoPSIzNiIgaGVpZ2h0PSIxMjgiIHJ4PSIxOCIvPjxyZWN0IHg9IjEwMiIgeT0iMzIwIiB3aWR0aD0iMzAiIGhlaWdodD0iNzIiIHJ4PSIxNSIvPjxyZWN0IHg9IjM4MCIgeT0iMzIwIiB3aWR0aD0iMzAiIGhlaWdodD0iNzIiIHJ4PSIxNSIvPjxyZWN0IHg9IjE4MCIgeT0iMzM4IiB3aWR0aD0iMTUyIiBoZWlnaHQ9IjM2IiByeD0iMTgiLz48cmVjdCB4PSIxMzIiIHk9IjM0OCIgd2lkdGg9IjIyIiBoZWlnaHQ9IjE2IiByeD0iOCIvPjxyZWN0IHg9IjM1OCIgeT0iMzQ4IiB3aWR0aD0iMjIiIGhlaWdodD0iMTYiIHJ4PSI4Ii8+PC9nPjwvc3ZnPg==">
 <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png">
 <link rel="manifest" href="./manifest.json">
+<script type="importmap">{ "imports": { "three": "./vendor/three/three.module.min.js" } }</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
@@ -894,6 +895,15 @@ body::before { opacity: .22; }
 .mmap { background: radial-gradient(ellipse at 50% 30%, #221E1A, #0C0B0A 72%); border-radius: 22px; }
 .bodyheat { background: radial-gradient(ellipse at 50% 35%, #1C1916, #0E0C0B 70%); }
 .thumb { border-radius: 12px; }
+
+/* ── Mapa muscular 3D ── */
+.m3d-stage { display: none; position: relative; height: 380px; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+.m3d-stage canvas { display: block; width: 100% !important; height: 100% !important; animation: m3dIn .6s ease both; }
+.m3d-stage::after { content: ''; position: absolute; left: 28%; right: 28%; bottom: 4px; height: 22px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,84,32,.22), transparent); pointer-events: none; }
+@keyframes m3dIn { from { opacity: 0; } to { opacity: 1; } }
+.mmap.is3d .m3d-stage { display: block; }
+.mmap.is3d .mm-stage { display: none; }
+.dot.s { background: var(--xp); opacity: .8; }
 </style>
 </head>
 <body>
@@ -2627,6 +2637,7 @@ function muscleMapCard(e, opts) {
   opts = opts || {}; const h = e ? exHeat(e) : (opts.heat || {}); const side = opts.side || (e ? exSide(e) : heatSide(h));
   const uid = 'mm' + Math.random().toString(36).slice(2, 7);
   let html = '<div class="mmap" id="' + uid + '" data-side="' + side + '" data-ang="' + (side === 'back' ? 180 : 0) + '"><div class="mm-stage"><div class="mm-flip"><div class="mm-face front" style="opacity:' + (side === 'back' ? 0 : 1) + ';pointer-events:' + (side === 'back' ? 'none' : 'auto') + '">' + anatSvg('front', h, { tap: true }) + '</div><div class="mm-face back" style="opacity:' + (side === 'back' ? 1 : 0) + ';pointer-events:' + (side === 'back' ? 'auto' : 'none') + '">' + anatSvg('back', h, { tap: true }) + '</div></div></div>';
+  if (e) { html += '<div class="m3d-stage"></div>'; setTimeout(() => m3dMount(uid, e.id), 0); }
   html += '<div class="mm-bar"><span class="mm-tap">' + (opts.hint || 'Tocá un músculo para ver su nombre') + '</span><button class="btn sm" onclick="mmFlip(\'' + uid + '\')">' + I.cycle + ' Girar</button></div>';
   if (e) {
     const tp = (e.tp || []).map(t => TGT_NAME[t]).filter(Boolean), ts = (e.ts || []).map(t => TGT_NAME[t]).filter(Boolean);
@@ -2652,7 +2663,7 @@ function mmSetAngle(el, deg, anim) {
   el._raf = requestAnimationFrame(step);
 }
 function mmAng(el) { return el.dataset.ang != null ? +el.dataset.ang : (el.dataset.side === 'back' ? 180 : 0); }
-function mmFlip(uid) { const el = document.getElementById(uid); if (!el) return; const a = Math.round(mmAng(el) / 180) * 180 + 180; el.dataset.side = ((a % 360) + 360) % 360 === 180 ? 'back' : 'front'; mmSetAngle(el, a, true); vib(10); }
+function mmFlip(uid) { const el = document.getElementById(uid); if (!el) return; if (el.classList.contains('is3d') && M3D.el === el) { m3dFlip(); return; } const a = Math.round(mmAng(el) / 180) * 180 + 180; el.dataset.side = ((a % 360) + 360) % 360 === 180 ? 'back' : 'front'; mmSetAngle(el, a, true); vib(10); }
 // Arrastre horizontal para girar el cuerpo
 (function () {
   let st = null;
@@ -2663,6 +2674,134 @@ function mmFlip(uid) { const el = document.getElementById(uid); if (!el) return;
     st = null; };
   document.addEventListener('pointerup', end); document.addEventListener('pointercancel', () => { if (st) { mmSetAngle(st.mm, st.base, true); st = null; } });
 })();
+// ═══ MAPA MUSCULAR 3D ═══
+// Modelo real (atlas Z-Anatomy / BodyParts3D, CC BY-SA 4.0) con Three.js. Se carga recién cuando hace falta;
+// si el equipo no tiene WebGL o falla la carga, queda el mapa 2D de siempre.
+// Objetivos de la app (TGT) → músculos del modelo [clave, peso]
+const TGT3D = {
+  pectoral_sup: [['pectoralis_major_clavicular', 1], ['pectoralis_major_sternocostal', .5]],
+  pectoral: [['pectoralis_major_clavicular', 1], ['pectoralis_major_sternocostal', 1], ['pectoralis_major_abdominal', 1], ['pectoralis_minor', .6]],
+  pectoral_inf: [['pectoralis_major_abdominal', 1], ['pectoralis_major_sternocostal', .7]],
+  deltoides_ant: [['deltoid_anterior', 1]], deltoides_lat: [['deltoid_lateral', 1]], deltoides_post: [['deltoid_posterior', 1]],
+  manguito: [['infraspinatus', 1], ['teres_minor', 1], ['supraspinatus', 1], ['subscapularis', 1]],
+  trapecio_sup: [['trapezius_upper', 1], ['levator_scapulae', .6]],
+  romboides: [['rhomboid_major', 1], ['rhomboid_minor', 1], ['trapezius_middle', 1], ['trapezius_lower', .7]],
+  dorsal: [['latissimus_dorsi', 1], ['teres_major', .6]], redondo: [['teres_major', 1]],
+  lumbares: [['iliocostalis_lumborum', 1], ['iliocostalis_thoracis', 1], ['longissimus_thoracis', 1], ['spinalis_thoracis', 1], ['multifidus_lumborum', 1], ['quadratus_lumborum', .6]],
+  biceps: [['biceps_brachii_long', 1], ['biceps_brachii_short', 1]], braquial: [['brachialis', 1]], braquiorradial: [['brachioradialis_muscle', 1]],
+  triceps_largo: [['triceps_long', 1]], triceps: [['triceps_long', 1], ['triceps_lateral', 1], ['triceps_medial', 1]],
+  antebrazo_flex: ['flexor_carpi_radialis', 'palmaris_longus_muscle', 'humeral_head_of_flexor_carpi_ulnaris', 'ulnar_head_of_flexor_carpi_ulnaris', 'humero_ulnar_head_of_flexor_digitorum_superficialis', 'radial_head_of_flexor_digitorum_superficialis', 'flexor_digitorum_profundus', 'flexor_pollicis_longus'].map(k => [k, 1]),
+  antebrazo_ext: ['extensor_digitorum', 'ulnar_head_of_extensor_carpi_ulnaris', 'humeral_head_of_extensor_carpi_ulnaris', 'extensor_carpi_radialis_longus', 'extensor_carpi_radialis_brevis', 'extensor_digiti_minimi'].map(k => [k, 1]),
+  recto_abd: [['rectus_abdominis', 1]], oblicuos: [['external_oblique', 1], ['internal_oblique', 1]], transverso: [['transversus_abdominis', 1], ['internal_oblique', .5]],
+  flexores_cadera: [['iliacus', 1], ['psoas_major', 1], ['tensor_fasciae_latae', .6], ['rectus_femoris', .6]],
+  cuadriceps: [['rectus_femoris', 1], ['vastus_lateralis', 1], ['vastus_medialis', 1], ['vastus_intermedius', 1]], recto_femoral: [['rectus_femoris', 1]],
+  isquios: [['biceps_femoris_long', 1], ['biceps_femoris_short', 1], ['semitendinosus', 1], ['semimembranosus', 1]],
+  gluteo_mayor: [['gluteus_maximus', 1]], gluteo_medio: [['gluteus_medius', 1], ['gluteus_minimus', 1], ['tensor_fasciae_latae', .6]],
+  aductores: [['adductor_magnus', 1], ['adductor_longus', 1], ['adductor_brevis', 1], ['gracilis', 1], ['pectineus', 1]],
+  gemelos: [['gastrocnemius_lateral', 1], ['gastrocnemius_medial', 1]], soleo: [['soleus', 1]], tibial: [['tibialis_anterior', 1]], corazon: []
+};
+// Grupo muscular → objetivos (para ejercicios sin objetivos específicos)
+const GROUP3D = { pecho: ['pectoral'], espalda: ['dorsal', 'romboides', 'lumbares'], hombros: ['deltoides_ant', 'deltoides_lat', 'deltoides_post'], biceps: ['biceps', 'braquial'], triceps: ['triceps'], antebrazos: ['antebrazo_flex', 'antebrazo_ext', 'braquiorradial'], core: ['recto_abd', 'oblicuos'], cuadriceps: ['cuadriceps'], isquios: ['isquios'], gluteos: ['gluteo_mayor', 'gluteo_medio'], gemelos: ['gemelos', 'soleo'], cardio: ['cuadriceps', 'isquios', 'gemelos'] };
+const M3D_NAME = {
+  deltoid_anterior: 'Deltoides anterior', deltoid_lateral: 'Deltoides lateral', deltoid_posterior: 'Deltoides posterior', supraspinatus: 'Supraespinoso', infraspinatus: 'Infraespinoso', subscapularis: 'Subescapular', teres_minor: 'Redondo menor', teres_major: 'Redondo mayor',
+  rectus_femoris: 'Recto femoral', vastus_lateralis: 'Vasto lateral', vastus_medialis: 'Vasto medial', vastus_intermedius: 'Vasto intermedio',
+  biceps_femoris_long: 'Bíceps femoral (cabeza larga)', biceps_femoris_short: 'Bíceps femoral (cabeza corta)', semitendinosus: 'Semitendinoso', semimembranosus: 'Semimembranoso', sartorius: 'Sartorio',
+  adductor_magnus: 'Aductor mayor', adductor_longus: 'Aductor largo', adductor_brevis: 'Aductor corto', gracilis: 'Grácil', pectineus: 'Pectíneo',
+  pectoralis_major_clavicular: 'Pectoral mayor (porción clavicular)', pectoralis_major_sternocostal: 'Pectoral mayor (porción esternal)', pectoralis_major_abdominal: 'Pectoral mayor (porción inferior)', pectoralis_minor: 'Pectoral menor', serratus_anterior: 'Serrato anterior',
+  trapezius_upper: 'Trapecio superior', trapezius_middle: 'Trapecio medio', trapezius_lower: 'Trapecio inferior', latissimus_dorsi: 'Dorsal ancho', rhomboid_major: 'Romboides mayor', rhomboid_minor: 'Romboides menor', levator_scapulae: 'Elevador de la escápula', serratus_posterior_inferior: 'Serrato posterior inferior', serratus_posterior_superior: 'Serrato posterior superior',
+  iliocostalis_lumborum: 'Iliocostal lumbar', iliocostalis_thoracis: 'Iliocostal torácico', longissimus_thoracis: 'Dorsal largo', spinalis_thoracis: 'Espinoso torácico', multifidus_lumborum: 'Multífido', rectus_abdominis: 'Recto abdominal', transversus_abdominis: 'Transverso abdominal', external_oblique: 'Oblicuo externo', internal_oblique: 'Oblicuo interno', quadratus_lumborum: 'Cuadrado lumbar',
+  sternocleidomastoid: 'Esternocleidomastoideo', scalenus_medius: 'Escaleno medio', scalenus_anterior: 'Escaleno anterior', scalenus_posterior: 'Escaleno posterior', splenius_capitis: 'Esplenio de la cabeza', splenius_colli: 'Esplenio del cuello',
+  biceps_brachii_long: 'Bíceps (cabeza larga)', biceps_brachii_short: 'Bíceps (cabeza corta)', brachialis: 'Braquial', coracobrachialis: 'Coracobraquial', triceps_long: 'Tríceps (cabeza larga)', triceps_lateral: 'Tríceps (cabeza lateral)', triceps_medial: 'Tríceps (cabeza medial)',
+  brachioradialis_muscle: 'Braquiorradial', flexor_carpi_radialis: 'Flexor radial del carpo', palmaris_longus_muscle: 'Palmar largo', humeral_head_of_flexor_carpi_ulnaris: 'Flexor cubital del carpo', ulnar_head_of_flexor_carpi_ulnaris: 'Flexor cubital del carpo', humero_ulnar_head_of_flexor_digitorum_superficialis: 'Flexor superficial de los dedos', radial_head_of_flexor_digitorum_superficialis: 'Flexor superficial de los dedos', flexor_digitorum_profundus: 'Flexor profundo de los dedos', flexor_pollicis_longus: 'Flexor largo del pulgar', pronator_quadratus: 'Pronador cuadrado', superficial_head_of_pronator_teres: 'Pronador redondo', deep_head_of_pronator_teres: 'Pronador redondo', supinator: 'Supinador',
+  extensor_digitorum: 'Extensor de los dedos', ulnar_head_of_extensor_carpi_ulnaris: 'Extensor cubital del carpo', humeral_head_of_extensor_carpi_ulnaris: 'Extensor cubital del carpo', extensor_carpi_radialis_longus: 'Extensor radial largo del carpo', extensor_carpi_radialis_brevis: 'Extensor radial corto del carpo', anconeus_muscle: 'Ancóneo', extensor_digiti_minimi: 'Extensor del meñique', abductor_pollicis_longus: 'Abductor largo del pulgar', extensor_indicis: 'Extensor del índice', extensor_pollicis_brevis: 'Extensor corto del pulgar', extensor_pollicis_longus: 'Extensor largo del pulgar',
+  gluteus_maximus: 'Glúteo mayor', gluteus_medius: 'Glúteo medio', gluteus_minimus: 'Glúteo menor', iliacus: 'Ilíaco', psoas_major: 'Psoas mayor', tensor_fasciae_latae: 'Tensor de la fascia lata',
+  piriformis: 'Piriforme', quadratus_femoris: 'Cuadrado femoral', obturator_internus: 'Obturador interno', obturator_externus: 'Obturador externo', gemellus_inferior: 'Gemelo inferior (cadera)', gemellus_superior: 'Gemelo superior (cadera)',
+  gastrocnemius_lateral: 'Gemelo externo', gastrocnemius_medial: 'Gemelo interno', soleus: 'Sóleo', plantaris: 'Plantar delgado', tibialis_anterior: 'Tibial anterior', tibialis_posterior: 'Tibial posterior', fibularis_longus: 'Peroneo largo', fibularis_brevis: 'Peroneo corto', fibularis_tertius: 'Peroneo tercero', extensor_digitorum_longus: 'Extensor largo de los dedos', extensor_hallucis_longus: 'Extensor largo del hallux', flexor_digitorum_longus: 'Flexor largo de los dedos', flexor_hallucis_longus: 'Flexor largo del hallux', popliteus: 'Poplíteo'
+};
+// Intensidad por músculo del modelo (0-1): principal 1, secundario 0,45
+function exHeat3d(e) {
+  const h = {}; const add = (t, f) => (TGT3D[t] || []).forEach(([k, w]) => { if (w * f > (h[k] || 0)) h[k] = w * f; });
+  if (e.tp && e.tp.length) { e.tp.forEach(t => add(t, 1)); (e.ts || []).forEach(t => add(t, .45)); }
+  else { (GROUP3D[e.m] || []).forEach(t => add(t, 1)); (e.m2 || []).forEach(g => (GROUP3D[g] || []).forEach(t => add(t, .45))); }
+  return h;
+}
+const M3D = { st: 0, p: null, el: null, yaw: 0, vy: 0, goal: null, raf: 0 };
+function m3dOk() { if (M3D.st < 0) return false; try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch (e) { return false; } }
+function m3dLoad() {
+  if (M3D.p) return M3D.p;
+  M3D.p = (async () => {
+    const [T, { GLTFLoader }, { MeshoptDecoder }, { RoomEnvironment }] = await Promise.all([import('three'), import('./vendor/three/jsm/loaders/GLTFLoader.js'), import('./vendor/three/jsm/libs/meshopt_decoder.module.js'), import('./vendor/three/jsm/environments/RoomEnvironment.js')]);
+    const ren = new T.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+    ren.setPixelRatio(Math.min(2, window.devicePixelRatio || 1)); ren.toneMapping = T.ACESFilmicToneMapping; ren.toneMappingExposure = 1.05; ren.outputColorSpace = T.SRGBColorSpace; ren.setClearColor(0x000000, 0);
+    const sc = new T.Scene(); const pm = new T.PMREMGenerator(ren); sc.environment = pm.fromScene(new RoomEnvironment(), .04).texture; sc.environmentIntensity = .35; pm.dispose();
+    sc.add(new T.HemisphereLight(0xfff1e6, 0x0c0b0a, .5));
+    const key = new T.DirectionalLight(0xfff4ea, 2.2); key.position.set(1.5, 3, 3); sc.add(key);
+    const rim = new T.DirectionalLight(0xff5420, 5); rim.position.set(-2.5, 1.5, -2.5); sc.add(rim);
+    const rim2 = new T.DirectionalLight(0xffb224, 2.2); rim2.position.set(2.5, .5, -2); sc.add(rim2);
+    const glossy = (o) => new T.MeshPhysicalMaterial(Object.assign({ roughness: .42, clearcoat: .6, clearcoatRoughness: .35 }, o));
+    const mats = {
+      base: glossy({ color: 0x4a3f38, sheen: .6, sheenColor: 0xffd2b0, sheenRoughness: .5 }),
+      hot: glossy({ color: 0xff5420, emissive: 0xff3a00, emissiveIntensity: .55, roughness: .35, clearcoat: .8, clearcoatRoughness: .25 }),
+      warm: glossy({ color: 0xc9811f, emissive: 0x5a2c00, emissiveIntensity: .45, roughness: .38, clearcoat: .7, clearcoatRoughness: .3 }),
+      soft: glossy({ color: 0x7a5236, emissive: 0x2a1000, emissiveIntensity: .3 }),
+      tap: glossy({ color: 0xffe2b0, emissive: 0xffb224, emissiveIntensity: .7, roughness: .3, clearcoat: 1 }),
+      bone: new T.MeshStandardMaterial({ color: 0x1a1714, roughness: .7 }), conn: new T.MeshStandardMaterial({ color: 0x2c2622, roughness: .55 })
+    };
+    const g = await new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).loadAsync('./models/musculos.glb');
+    const model = g.scene; const meshes = [];
+    model.traverse(o => { if (!o.isMesh) return; const ud = o.userData.key ? o.userData : (o.parent && o.parent.userData) || {}; o.userData.mk = ud.key || null; o.userData.side = ud.side || ''; o.userData.kind = ud.key ? 'm' : /bone/i.test(o.material.name) ? 'b' : 'c'; meshes.push(o); });
+    const box = new T.Box3().setFromObject(model); const size = box.getSize(new T.Vector3()); model.position.sub(box.getCenter(new T.Vector3()));
+    const pivot = new T.Group(); pivot.add(model); sc.add(pivot);
+    const cam = new T.PerspectiveCamera(24, 1, .05, 30); const dist = (size.y / 2) / Math.tan(12 * Math.PI / 180) * 1.1; cam.position.set(0, size.y * .04, dist); cam.lookAt(0, 0, 0);
+    Object.assign(M3D, { T, ren, sc, cam, mats, meshes, pivot, ray: new T.Raycaster(), st: 2 });
+  })().catch(err => { M3D.st = -1; console.warn('Mapa 3D no disponible:', err); throw err; });
+  return M3D.p;
+}
+// Se llama después de pintar el HTML de muscleMapCard: monta el 3D encima del mapa 2D
+function m3dMount(uid, id) {
+  if (!m3dOk()) return; M3D.st = Math.max(M3D.st, 1);
+  m3dLoad().then(() => { const el = document.getElementById(uid); if (el && document.body.contains(el)) m3dAttach(el, id); }).catch(() => {});
+}
+function m3dAttach(el, id) {
+  const e = ex(id); const h = exHeat3d(e); const { ren, mats } = M3D; const stage = el.querySelector('.m3d-stage');
+  if (M3D.el && M3D.el !== el) M3D.el.classList.remove('is3d');
+  stage.appendChild(ren.domElement); el.classList.add('is3d'); M3D.el = el; M3D.e = e; M3D.tapped = null;
+  M3D.meshes.forEach(m => { const w = m.userData.mk ? h[m.userData.mk] || 0 : 0; m.userData.w = w; m.userData.mat = m.userData.kind === 'b' ? mats.bone : m.userData.kind === 'c' ? mats.conn : w >= .9 ? mats.hot : w >= .4 ? mats.warm : w > 0 ? mats.soft : mats.base; m.material = m.userData.mat; });
+  const r = stage.getBoundingClientRect(); ren.setSize(Math.max(1, r.width), Math.max(1, r.height)); M3D.cam.aspect = r.width / Math.max(1, r.height); M3D.cam.updateProjectionMatrix();
+  // Entrada: gira un poco hasta quedar de frente (o de espalda si el ejercicio es de atrás)
+  const end = el.dataset.side === 'back' ? Math.PI : 0; M3D.yaw = end - .9; M3D.vy = 0; M3D.goal = end; m3dKick();
+  if (!stage._m3d) { stage._m3d = 1; m3dBind(stage); }
+}
+function m3dFrame() {
+  M3D.raf = 0; const el = M3D.el; if (!el || !document.body.contains(el)) { M3D.last = 0; return; }
+  const now = performance.now(); const k = Math.min(4, M3D.last ? (now - M3D.last) / 16.7 : 1); M3D.last = now; // pasos medidos en tiempo, no en cuadros
+  if (M3D.goal != null) { const d = M3D.goal - M3D.yaw; M3D.yaw += d * (1 - Math.pow(.88, k)); if (Math.abs(d) < .002) { M3D.yaw = M3D.goal; M3D.goal = null; } }
+  else if (!M3D.drag && Math.abs(M3D.vy) > .0005) { M3D.yaw += M3D.vy * k; M3D.vy *= Math.pow(.93, k); }
+  M3D.pivot.rotation.y = M3D.yaw; M3D.ren.render(M3D.sc, M3D.cam);
+  if (M3D.drag || M3D.goal != null || Math.abs(M3D.vy) > .0005) m3dKick(); else M3D.last = 0;
+}
+function m3dKick() { if (!M3D.raf) M3D.raf = requestAnimationFrame(m3dFrame); }
+function m3dFlip() { const b = Math.round((M3D.goal != null ? M3D.goal : M3D.yaw) / Math.PI) * Math.PI; M3D.vy = 0; M3D.goal = b + Math.PI; m3dKick(); vib(10); }
+function m3dBind(stage) {
+  let s = null;
+  stage.addEventListener('pointerdown', ev => { s = { x: ev.clientX, y: ev.clientY, yaw: M3D.yaw, lx: ev.clientX, lt: performance.now(), moved: false }; M3D.goal = null; M3D.vy = 0; });
+  stage.addEventListener('pointermove', ev => { if (!s) return; const dx = ev.clientX - s.x;
+    if (!s.moved) { if (Math.abs(dx) < 6) return; if (Math.abs(ev.clientY - s.y) > Math.abs(dx)) { s = null; return; } s.moved = true; M3D.drag = true; }
+    const t = performance.now(); M3D.vy = (ev.clientX - s.lx) * .011 * Math.min(1, 16 / Math.max(1, t - s.lt)); s.lx = ev.clientX; s.lt = t;
+    M3D.yaw = s.yaw + dx * .011; m3dKick(); });
+  const up = ev => { if (!s) return; M3D.drag = false; if (!s.moved) m3dTap(stage, ev); else m3dKick(); s = null; };
+  stage.addEventListener('pointerup', up); stage.addEventListener('pointercancel', () => { M3D.drag = false; s = null; m3dKick(); });
+}
+function m3dTap(stage, ev) {
+  const r = stage.getBoundingClientRect(); const v = new M3D.T.Vector2(((ev.clientX - r.left) / r.width) * 2 - 1, -((ev.clientY - r.top) / r.height) * 2 + 1);
+  M3D.ray.setFromCamera(v, M3D.cam); const hit = M3D.ray.intersectObjects(M3D.meshes, false).find(x => x.object.userData.kind === 'm');
+  const lab = M3D.el.querySelector('.mm-tap'); if (M3D.tapped) M3D.tapped.material = M3D.tapped.userData.mat;
+  if (!hit) { M3D.tapped = null; m3dKick(); return; }
+  const m = hit.object; const w = m.userData.w; M3D.tapped = m; m.material = M3D.mats.tap;
+  if (lab) { lab.textContent = (M3D_NAME[m.userData.mk] || m.userData.mk) + (w >= .9 ? ' · principal' : w >= .4 ? ' · secundario' : ''); lab.classList.add('on'); }
+  vib(8); m3dKick();
+}
+addEventListener('resize', () => { const el = M3D.el; if (!el || !document.body.contains(el) || !M3D.ren) return; const r = el.querySelector('.m3d-stage').getBoundingClientRect(); M3D.ren.setSize(r.width, r.height); M3D.cam.aspect = r.width / r.height; M3D.cam.updateProjectionMatrix(); m3dKick(); });
 // Figura chica (sin interacción)
 function muscleFig(e, sz) { const h = exHeat(e); return '<div class="mfig" style="height:' + (sz || 56) + 'px">' + anatSvg(exSide(e), h) + '</div>'; }
 
@@ -3891,7 +4030,7 @@ function settingsSheet() {
   const c = cycleInfo(S.program);
   if (c) html += '<label class="lbl">Ciclo del programa</label><div class="row between card" style="padding:10px 12px"><div class="small">Semana ' + c.week + ' · ' + (c.deload ? 'descarga' : 'bloque ' + c.block) + '</div><button class="btn sm" onclick="ask(\'¿Reiniciar el ciclo?\', \'Arrancás de nuevo en la semana 1, bloque 1.\', \'Reiniciar\', () => { S.starts[S.program] = today(); saveS(); go(\'hoy\'); })">Reiniciar ciclo</button></div>';
   html += '<div class="stack" style="margin-top:18px"><button class="btn w" onclick="calendarLink()">' + I.cal + ' Recordatorio en Google Calendar</button><button class="btn w" onclick="exportData()">Exportar copia de seguridad</button><button class="btn w" onclick="$(\'impf\').click()">Importar copia</button><input type="file" id="impf" accept=".json" class="hid" onchange="importData(this.files[0])">' + (old ? '<button class="btn w" onclick="migrateLegacy()">Importar historial de GymBrain V18 (' + old + ' series)</button>' : '') + '<button class="btn w d" onclick="resetAll()">Borrar todos los datos</button></div>';
-  html += '<p class="small muted2" style="margin-top:16px">GymBrain · ' + APP_VERSION + ' · Chadbits. Tus datos viven solo en este teléfono. Ilustración anatómica: js-rich-body-highlighter (MIT). Fotos de ejercicios: free-exercise-db (dominio público). Rangos de fuerza: orientativos, basados en tablas de estándares para hombres.</p>';
+  html += '<p class="small muted2" style="margin-top:16px">GymBrain · ' + APP_VERSION + ' · Chadbits. Tus datos viven solo en este teléfono. Ilustración anatómica: js-rich-body-highlighter (MIT). Modelo 3D de músculos: Z-Anatomy y BodyParts3D (Database Center for Life Science), vía Fit Mit With, CC BY-SA 4.0. Motor 3D: Three.js (MIT). Fotos de ejercicios: free-exercise-db (dominio público). Rangos de fuerza: orientativos, basados en tablas de estándares para hombres.</p>';
   openSheet(html);
 }
 function setTheme(t) { S.theme = t; saveS(); document.documentElement.setAttribute('data-theme', t); const m = document.querySelector('meta[name=theme-color]'); if (m) m.content = t === 'dark' ? '#0C0B0A' : '#EEF2F6'; }
@@ -3940,7 +4079,7 @@ function finishOnboarding(pid) {
 }
 
 // ═══ INIT ═══
-const APP_VERSION = 'V22';
+const APP_VERSION = 'V23';
 function splash() {
   if (sessionStorage.getItem('gb2_splash')) return; sessionStorage.setItem('gb2_splash', '1');
   const d = document.createElement('div'); d.className = 'splash'; d.innerHTML = '<div class="lg">' + LOGO + '</div><div class="t">GYMBRAIN</div><div class="s">BY CHADBITS</div>'; document.body.appendChild(d); setTimeout(() => d.remove(), 1800);

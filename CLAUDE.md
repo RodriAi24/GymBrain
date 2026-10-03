@@ -4,6 +4,7 @@ App de gimnasio personal de Rodrigo. PWA publicada en GitHub Pages desde este re
 
 ## Cómo está armada
 - Todo vive en `index.html`: CSS, JS vanilla y los datos (ejercicios, programas, logros). No hay framework ni build.
+- Excepción: el mapa muscular 3D. `models/musculos.glb` (CC BY-SA 4.0, ver `models/ATTRIBUTION.txt`) y Three.js en `vendor/three/` (MIT) se cargan solo al abrir un ejercicio. La conexión ejercicio → músculo 3D está en `TGT3D`/`GROUP3D` dentro de `index.html`. Si falla WebGL queda el mapa 2D. Si agregás archivos, sumalos a `EXTRA` en `sw.js` para que anden offline.
 - `index.html` pesa unos 750 KB porque trae embebidas en base64 las imágenes de anatomía (`BODY_B64`). **No leas ni reescribas esos bloques base64.** Buscá con grep la sección que necesitás y editá solo esa parte.
 - Los datos se guardan en `localStorage` con claves `gb2_*` (settings, sessions, active, swaps, custom, bw, ach, missions, skips, migrated). **Nunca cambies esas claves ni el formato de los datos sin migración:** se perdería el historial de entrenamientos.
 - `sw.js` es el service worker. **Cada vez que cambies `index.html`, subí la versión de `CACHE` en `sw.js`** (ej. `gymbrain-v21-1` → `gymbrain-v21-2`). Si no, el iPhone sigue mostrando la versión vieja.

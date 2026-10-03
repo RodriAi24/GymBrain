@@ -1,0 +1,32 @@
+GYMBRAIN — MODELO 3D DE MÚSCULOS: ORIGEN, LICENCIA Y CAMBIOS
+
+El archivo models/musculos.glb es material adaptado de atlas anatómicos abiertos
+y se distribuye bajo Creative Commons Atribución-CompartirIgual 4.0 Internacional
+(CC BY-SA 4.0): https://creativecommons.org/licenses/by-sa/4.0/
+Texto completo en models/LICENSE-CC-BY-SA-4.0.txt.
+Solo este modelo es CC BY-SA; el resto de GymBrain tiene su propia licencia.
+
+CRÉDITOS (con la redacción que piden los licenciantes)
+
+  "Fit Mit With — anatomy atlas" (versión mobile del atlas, CC BY-SA 4.0)
+  https://github.com/slfresh/fitmitwith-anatomy-atlas
+  Archivo de origen: models/full-body-male-mobile.glb
+
+  "Z-Anatomy - The libre 3D atlas of anatomy - CC-BY-SA 4.0"
+  https://github.com/Z-Anatomy/Models-of-human-anatomy
+
+  "BodyParts3D - The Database Center for Life Science - CC-BY-SA 2.1 Japan"
+  https://creativecommons.org/licenses/by-sa/2.1/jp/
+
+  "BodyParts3D, © The Database Center for Life Science licensed under
+  CC Attribution 4.0 International"
+  https://dbarchive.biosciencedbc.jp/en/bodyparts3d/download.html
+
+CAMBIOS HECHOS POR GYMBRAIN
+
+  - Comprimido con gltfpack 0.22 (-cc -kn -km -ke -vn 10): compresión meshopt
+    y cuantización de vértices. No se cambió la geometría ni los nombres.
+  - Renombrado a musculos.glb.
+  - Los materiales y colores se reemplazan en tiempo de ejecución (no en el archivo).
+
+La geometría no fue revisada por especialistas en anatomía.
