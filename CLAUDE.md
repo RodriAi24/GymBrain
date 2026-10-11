@@ -14,7 +14,7 @@ App de gimnasio personal de Rodrigo. PWA publicada en GitHub Pages desde este re
 
 ## Estética (lo más importante)
 - Premium y oscura. Nunca fondo blanco, nunca diseño plano o genérico.
-- Paleta actual: `--bg #0A0F1C`, `--card #131B2E`, `--acc #22D3B5`, `--xp #A78BFA`, `--pr #FF6B6B`, `--green #4ADE80`. Tipografías: Barlow, Barlow Condensed y JetBrains Mono.
+- Paleta actual ("Hierro"): `--bg #0C0B0A`, `--card #161412`, `--acc #FF5420` (naranja brasa), `--xp #FFB224` (ámbar). Tipografías: Anton (títulos y números), Archivo (texto) y JetBrains Mono (etiquetas).
 - Los detalles con "alma" son sagrados: el logo propio, la barra con los discos dibujados, el mapa muscular 3D que gira, las cinemáticas de subida de nivel y récord, el confeti y los XP flotantes. **No los borres ni los simplifiques.**
 - Nada de emojis como íconos principales. Usá los SVG propios (objeto `I`).
 - Los textos van en español rioplatense con voseo ("entrenaste", "dale"), con carácter y sin frases de app genérica.
