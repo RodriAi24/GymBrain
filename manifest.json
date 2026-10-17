@@ -2,8 +2,8 @@
   "name": "GymBrain",
   "short_name": "GymBrain",
   "display": "standalone",
-  "background_color": "#0A0F1C",
-  "theme_color": "#0A0F1C",
+  "background_color": "#0C0B0A",
+  "theme_color": "#0C0B0A",
   "lang": "es-AR",
   "icons": [
     {
