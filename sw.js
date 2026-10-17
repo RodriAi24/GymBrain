@@ -1,6 +1,6 @@
 // GymBrain · service worker
 // Subilo en la MISMA carpeta que el HTML de la app, junto a manifest.json e icon-180/192/512.png.
-const CACHE = 'gymbrain-v25-1';
+const CACHE = 'gymbrain-v26-1';
 const IMG_CACHE = 'gymbrain-photos-v1';
 const EXTRA = ['./', './manifest.json', './icon-180.png', './icon-192.png', './icon-512.png',
   // Mapa muscular 3D: así anda sin señal en el gym

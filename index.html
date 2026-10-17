@@ -990,6 +990,55 @@ body::before { opacity: .22; }
 .bg-bar .hb { height: 110px; } .bg-bar .hb-p { animation: plateIn .9s cubic-bezier(.2,.9,.25,1.15) both; }
 .bg-n { margin-top: 10px; display: flex; align-items: baseline; gap: 8px; }
 .bg-n span { font-size: 40px; color: var(--ink2); }
+
+/* Reordenar */
+.ord { display: inline-flex; gap: 2px; flex: none; margin: -8px -6px -8px auto; }
+.ordb { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: var(--ink3); border-radius: 12px; position: relative; flex: none; }
+.ordb::before { content: ''; position: absolute; inset: 8px 7px; border-radius: 9px; border: 1px solid var(--line); background: rgba(255,236,214,.03); transition: background .15s, border-color .15s; }
+.ordb svg { width: 16px; height: 16px; position: relative; }
+.ordb:active::before { background: var(--acc-soft); border-color: rgba(255,84,32,.5); }
+.ordb:active { color: var(--acc); }
+.ordb:disabled { opacity: .25; pointer-events: none; }
+.wex-eb { display: flex; align-items: center; gap: 8px; min-height: 28px; }
+.wex.cur .ordb { color: var(--ink2); }
+.wex-done .grow { min-width: 0; }
+.wex-done .grow .n { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wex-done .grow .s { margin-top: 2px; }
+.wex-done .ord { margin: -8px 0; }
+.wex.skip { opacity: .6; }
+.wex.skip .ord { margin-left: 4px; }
+.ord-moved { position: relative; z-index: 3; box-shadow: 0 18px 40px -16px rgba(0,0,0,.8), 0 0 0 1px rgba(255,84,32,.45) !important; }
+/* Toast con acción */
+.toast.act { pointer-events: auto; display: flex; align-items: center; gap: 14px; padding: 8px 8px 8px 16px; max-width: min(92vw, 420px); }
+.toast span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.toast-act { flex: none; min-height: 36px; padding: 0 12px; border-radius: 10px; background: rgba(20,6,0,.18); color: var(--on-acc); font: 700 13px var(--fb); text-decoration: underline; text-underline-offset: 3px; }
+body.wo-on .toast { bottom: calc(150px + var(--sab)); }
+/* Interruptor en el menú del entreno */
+.sw-row { justify-content: space-between; text-align: left; gap: 12px; }
+.sw-row span { display: flex; flex-direction: column; gap: 2px; }
+.sw-row small { font-size: 12px; font-weight: 500; color: var(--ink3); }
+.tgl { width: 46px; height: 28px; border-radius: 14px; background: var(--card3); position: relative; flex: none; transition: background .2s; }
+.tgl::after { content: ''; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: var(--ink2); transition: transform .2s, background .2s; }
+.tgl.on { background: var(--acc); }
+.tgl.on::after { transform: translateX(18px); background: var(--on-acc); }
+/* Editor de rutinas */
+.ed-list { margin-top: 6px; }
+.ed-row2 { padding: 8px 0 10px; border-bottom: 1px solid var(--line2); background: var(--card); }
+.ed-top { display: flex; align-items: center; gap: 8px; }
+.ed-n { font: 400 18px var(--fd); color: var(--ink4); width: 22px; flex: none; }
+.ed-top .n { flex: 1; min-width: 0; font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+.ed-top .ord { margin: -6px 0; }
+.ordb.x { margin: -6px -6px -6px 0; }
+.ed-in { display: flex; gap: 14px; margin: 4px 0 0 30px; }
+.ed-in label { display: flex; align-items: center; gap: 6px; font: 600 10px var(--fm); letter-spacing: .1em; text-transform: uppercase; color: var(--ink3); }
+.ed-in input { width: 48px; text-align: center; padding: 8px 2px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg2); font: 400 18px var(--fd); color: var(--ink); min-height: 40px; }
+.ed-in span { color: var(--ink3); }
+/* Programa: filas con flechas */
+.pr-row .n span.pr-sg { display: block; font: 400 15px var(--fd); color: var(--ink2); margin-top: 2px; }
+.pr-row .ord { margin: -8px -8px -8px 0; }
+.pr-row { background: var(--card); }
+.ord-note { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+.ord-note .lab-m { color: var(--xp); }
 </style>
 </head>
 <body>
@@ -3189,6 +3238,8 @@ const I = {
   chev:'<svg class="ic ic-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>',
   gear:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
   search:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>',
+  ordUp:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>',
+  ordDown:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>',
   up:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>',
   star:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9z"/></svg>',
   play:'<svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5v14l11-7z"/></svg>',
@@ -3236,6 +3287,13 @@ function loadGoals() {
   return g;
 }
 let GOALS = loadGoals();
+// ═══ ORDEN PERSONALIZADO ═══ gb2_order { v, o: { [programa]: { [día]: [posiciones originales en el orden elegido] } } }
+// No toca PROGRAMS: es un override que se aplica al armar la sesión. Clave nueva con versión.
+function orderOk(o) { return o && typeof o === 'object' && o.o && typeof o.o === 'object' && Object.values(o.o).every(p => p && typeof p === 'object' && Object.values(p).every(a => Array.isArray(a) && a.every(n => Number.isInteger(n) && n >= 0))); }
+function loadOrder() { let o = load('gb2_order', null); if (!orderOk(o)) { o = { v: 1, o: {} }; save('gb2_order', o); } if (!o.v) { o.v = 1; save('gb2_order', o); } return o; }
+let ORDER = loadOrder();
+const saveOrder = () => save('gb2_order', ORDER);
+const orderCount = () => Object.values(ORDER.o).reduce((a, p) => a + Object.keys(p).length, 0);
 const saveGoals = () => save('gb2_goals', GOALS);
 const saveS = () => save(K.s, S);
 const saveSessions = () => { save(K.ses, SESSIONS); HIST = null; };
@@ -3266,7 +3324,11 @@ const exMatches = (e, q) => [e.name, MNAME[e.m], EQNAME[e.eq], PATNAME[e.pat]].c
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
 const roundTo = (w, step) => { step = step || 2.5; return Math.round(w / step) * step; };
 const fmtTime = s => Math.floor(s / 60) + ':' + pad(s % 60);
-function toast(msg, ms = 2200) { const t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('on'), ms); }
+function toast(msg, ms = 2200, act) {
+  const t = $('toast'); t.textContent = ''; const sp = document.createElement('span'); sp.textContent = msg; t.appendChild(sp);
+  if (act) { const b = document.createElement('button'); b.className = 'toast-act'; b.textContent = act.label; b.onclick = () => { t.classList.remove('on'); clearTimeout(t._t); act.fn(); vib(8); }; t.appendChild(b); }
+  t.classList.toggle('act', !!act); t.classList.add('on'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('on'), ms);
+}
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 
 // Modo de un ejercicio: cómo se cuenta
@@ -3283,6 +3345,16 @@ function effDay(pid, did) {
   const sw = (SWAPS[pid] || {})[did] || {};
   return { ...d, ex: d.ex.map((x, i) => sw[i] ? { ...x, id: sw[i], orig: x.id, reps: ex(sw[i]).reps, rest: ex(sw[i]).rest } : x) };
 }
+// effDay con el orden personalizado aplicado. Cada ejercicio lleva pidx (su posición original, que usan las alternativas).
+function orderedDay(pid, did) {
+  const d = effDay(pid, did); if (!d) return d; const ex0 = d.ex.map((x, i) => ({ ...x, pidx: i }));
+  const o = ORDER.o[pid] && ORDER.o[pid][did]; if (!o) return { ...d, ex: ex0 };
+  const seen = new Set(), out = [];
+  o.forEach(i => { if (ex0[i] && !seen.has(i)) { seen.add(i); out.push(ex0[i]); } });
+  ex0.forEach((x, i) => { if (!seen.has(i)) out.push(x); }); // posiciones que el override no conoce van al final
+  return { ...d, ex: out, custom: true };
+}
+function setDayOrder(pid, did, arr) { if (arr) { ORDER.o[pid] = ORDER.o[pid] || {}; ORDER.o[pid][did] = arr; } else if (ORDER.o[pid]) { delete ORDER.o[pid][did]; if (!Object.keys(ORDER.o[pid]).length) delete ORDER.o[pid]; } saveOrder(); }
 // Full Body v2 (oct 2026): pasó de 3 sesiones a 4 y cambió el orden. Las alternativas fijadas se guardan por posición,
 // así que se mudan a la posición nueva de su ejercicio (o se descartan si ese ejercicio ya no está en el programa).
 const FB_V1 = { A: ['squat', 'bench', 'lat-pulldown', 'rdl', 'calf-raise', 'db-curl'], B: ['leg-press', 'db-ohp', 'machine-row', 'pec-deck', 'cable-crunch', 'overhead-ext'], C: ['reverse-lunge', 'incline-db', 'assisted-pullup', 'hip-thrust', 'face-pull', 'lat-raise', 'leg-curl'] };
@@ -3465,9 +3537,9 @@ function tonEq(t) { let r = null; TON_EQ.forEach(([k, v]) => { if (t >= k) r = v
 
 // ═══ ENTRENO ═══
 function startSession(pid, did) {
-  const d = effDay(pid, did); const p = prog(pid); if (!d) return;
+  const d = orderedDay(pid, did); const p = prog(pid); if (!d) return;
   ACTIVE = { id: uid(), prog: pid, day: did, dayName: d.name, progName: p.name, start: Date.now(), date: today(), restEnd: 0, restLen: 0, ex: [] };
-  d.ex.forEach((x, i) => ACTIVE.ex.push(Object.assign(mkWoEx(x, pid), { idx: i })));
+  d.ex.forEach(x => ACTIVE.ex.push(Object.assign(mkWoEx(x, pid), { idx: x.pidx })));
   if (!S.starts[pid]) { S.starts[pid] = today(); saveS(); }
   saveActive(); go('entreno', null, true);
   toast('Sesión iniciada. Buen entreno.');
@@ -3504,7 +3576,43 @@ function woAddSet(i) { const x = ACTIVE.ex[i]; const last = x.sets[x.sets.length
 function woRmSet(i) { const x = ACTIVE.ex[i]; if (x.sets.length <= 1) return; x.sets.pop(); saveActive(); renderEntreno(); }
 function woSkip(i) { const x = ACTIVE.ex[i]; x.skipped = !x.skipped; x.open = false; saveActive(); renderEntreno(); vib(15); toast(x.skipped ? 'Salteado: ' + ex(x.id).name : 'Volvió: ' + ex(x.id).name); }
 function woRemove(i) { ask('¿Sacar ' + ex(ACTIVE.ex[i].id).name + '?', 'Solo de la sesión de hoy. Tu programa no cambia.', 'Sacar', () => { ACTIVE.ex.splice(i, 1); saveActive(); renderEntreno(); }, true); }
-function woMove(i, dir) { const j = i + dir; if (j < 0 || j >= ACTIVE.ex.length) return; [ACTIVE.ex[i], ACTIVE.ex[j]] = [ACTIVE.ex[j], ACTIVE.ex[i]]; saveActive(); renderEntreno(); }
+// ═══ REORDENAR ═══ Las claves de animación viven en memoria (WeakMap): no se agrega nada a los datos guardados
+const KEYS = new WeakMap(); const kOf = o => { if (!KEYS.has(o)) KEYS.set(o, uid()); return KEYS.get(o); };
+// fn recibe (i, dir); pre son argumentos fijos que van antes (ej. el día del editor)
+const ordBtns = (fn, i, n, pre) => { const a = (pre ? pre + ',' : '') + i; return '<span class="ord"><button class="ordb" onclick="event.stopPropagation();' + fn + '(' + a + ',-1)"' + (i === 0 ? ' disabled' : '') + ' aria-label="Subir">' + I.ordUp + '</button><button class="ordb" onclick="event.stopPropagation();' + fn + '(' + a + ',1)"' + (i >= n - 1 ? ' disabled' : '') + ' aria-label="Bajar">' + I.ordDown + '</button></span>'; };
+// FLIP: mide, vuelve a dibujar, mantiene el ítem movido bajo el dedo (scroll) y anima a los demás desde donde estaban
+function flipRender(sel, movedK, draw) {
+  const all = () => [...document.querySelectorAll(sel + ' [data-k]')]; const before = {};
+  all().forEach(c => before[c.dataset.k] = c.getBoundingClientRect().top);
+  draw();
+  const m = document.querySelector(sel + ' [data-k="' + movedK + '"]');
+  if (m && before[movedK] != null) { const d = m.getBoundingClientRect().top - before[movedK]; if (Math.abs(d) > 1) window.scrollBy(0, d); }
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  all().forEach(c => { const b = before[c.dataset.k]; if (b == null) return; const dy = b - c.getBoundingClientRect().top; if (Math.abs(dy) < 1) return; c.style.transition = 'none'; c.style.transform = 'translateY(' + dy + 'px)'; c.classList.toggle('ord-moved', c.dataset.k === movedK); });
+  requestAnimationFrame(() => requestAnimationFrame(() => all().forEach(c => { if (!c.style.transform) return; c.style.transition = 'transform .18s cubic-bezier(.2,.7,.2,1)'; c.style.transform = ''; setTimeout(() => { c.style.transition = ''; c.classList.remove('ord-moved'); }, 240); })));
+}
+function woMove(i, dir) {
+  const j = i + dir; if (!ACTIVE || j < 0 || j >= ACTIVE.ex.length) return;
+  const prev = ACTIVE.ex.slice(); const moved = ACTIVE.ex[i]; const k = kOf(moved);
+  [ACTIVE.ex[i], ACTIVE.ex[j]] = [ACTIVE.ex[j], ACTIVE.ex[i]];
+  saveActive(); woKeepOrder(); flipRender('#pg-entreno', k, renderEntreno); vib(8);
+  toast('Movido: ' + ex(moved.id).name, 4000, { label: 'Deshacer', fn: () => {
+    if (!ACTIVE || prev.length !== ACTIVE.ex.length || !prev.every(x => ACTIVE.ex.includes(x))) { toast('Ya no se puede deshacer'); return; }
+    ACTIVE.ex = prev; saveActive(); woKeepOrder(); flipRender('#pg-entreno', k, renderEntreno); } });
+}
+// "Usar este orden la próxima vez": guarda las posiciones del programa en el orden actual (las sacadas hoy vuelven a su lugar)
+function woKeepOrder() {
+  if (!ACTIVE || !ACTIVE.keepOrder || ACTIVE.prog === 'libre' || !prog(ACTIVE.prog)) return;
+  const n = (prog(ACTIVE.prog).days.find(d => d.id === ACTIVE.day) || { ex: [] }).ex.length;
+  const arr = ACTIVE.ex.map(x => x.idx).filter(i => i != null && i < n);
+  for (let m = 0; m < n; m++) if (!arr.includes(m)) arr.splice(Math.min(m, arr.length), 0, m);
+  setDayOrder(ACTIVE.prog, ACTIVE.day, arr);
+}
+function woToggleKeep() {
+  ACTIVE.keepOrder = !ACTIVE.keepOrder; saveActive();
+  if (ACTIVE.keepOrder) { woKeepOrder(); toast('La próxima ' + ACTIVE.dayName + ' arranca en este orden'); } else { setDayOrder(ACTIVE.prog, ACTIVE.day, null); toast('Vuelve el orden del programa'); }
+  woMenu(); vib(8);
+}
 function woAddEx(id) { ACTIVE.ex.push(mkWoEx({ id })); saveActive(); closeSheet(); renderEntreno(); toast('Agregado: ' + ex(id).name); }
 function woInput(i, si, f, v) { ACTIVE.ex[i].sets[si][f] = v === '' ? '' : parseFloat(v); saveActive(); }
 function woCheck(i, si) {
@@ -3817,7 +3925,7 @@ function renderHoy() {
     html += '<div class="hcard"><div class="hc-top"><div class="hc-eb" style="color:var(--xp)">● EN CURSO · DESDE LAS ' + new Date(ACTIVE.start).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' }) + '</div><div class="hc-big"><div><b>' + done + '</b><span>/ ' + ACTIVE.ex.length + '</span></div><div class="hc-side">ejercicios<br>con series anotadas</div></div></div></div>';
     html += '<button class="hcta" onclick="go(\'entreno\',null,true)">' + I.play + ' Seguir entrenando</button>';
   } else if (nd) {
-    const d = effDay(S.program, nd.id);
+    const d = orderedDay(S.program, nd.id);
     const heat = {}; d.ex.forEach(x => { const hh = exHeat(ex(x.id)); Object.keys(hh).forEach(k => heat[k] = Math.max(heat[k] || 0, hh[k])); });
     const rows = d.ex.map(x => { const e = ex(x.id); const n = effSets(p.id, x); const sug = suggest(x.id, { sets: x.sets || n, reps: x.reps || e.reps, rest: x.rest || e.rest }); return { x, e, n, sug, sg: sugLine(sug) }; });
     const canBar = r => r.e.eq === 'barra' || (r.e.eq === 'maquina' && r.e.inc >= 10);
@@ -3876,13 +3984,14 @@ function renderEntreno() {
   let curSet = false; let pos = 0;
   ACTIVE.ex.forEach((x, i) => {
     const e = ex(x.id); const all = x.sets.length && x.sets.every(s => s.ok);
-    if (x.skipped) { html += '<div class="wex" style="opacity:.6"><div class="wex-done"><div class="n muted">' + esc(e.name) + ' · salteado</div><button class="btn sm" onclick="woSkip(' + i + ')">Deshacer</button></div></div>'; return; }
+    const N = ACTIVE.ex.length, K = kOf(x);
+    if (x.skipped) { html += '<div class="wex skip" data-k="' + K + '"><div class="wex-done"><div class="n muted">' + esc(e.name) + ' · salteado</div><button class="btn sm" onclick="woSkip(' + i + ')">Deshacer</button>' + ordBtns('woMove', i, N) + '</div></div>'; return; }
     if (all && !x.open) {
-      html += '<div class="wex done"><div class="wex-done"><div class="tick">' + I.check + '</div><div class="n">' + esc(e.name) + '</div><div class="s">' + x.sets.map(s => (usesW(e) ? fmtW(s.w) + '×' : '') + s.r).join(' · ') + '</div><button class="iconbtn" style="width:32px;height:32px" onclick="ACTIVE.ex[' + i + '].open=true;renderEntreno()">' + I.chev + '</button></div></div>'; return;
+      html += '<div class="wex done" data-k="' + K + '"><div class="wex-done"><div class="tick">' + I.check + '</div><div class="grow"><div class="n">' + esc(e.name) + '</div><div class="s">' + x.sets.map(s => (usesW(e) ? fmtW(s.w) + '×' : '') + s.r).join(' · ') + '</div></div>' + ordBtns('woMove', i, N) + '<button class="iconbtn" style="width:36px;height:36px" onclick="ACTIVE.ex[' + i + '].open=true;renderEntreno()" aria-label="Abrir">' + I.chev + '</button></div></div>'; return;
     }
     const isCur = !curSet && !all; if (isCur) curSet = true; pos = ACTIVE.ex.slice(0, i + 1).filter(y => !y.skipped).length;
     const sg = x.sug; const lo = x.presc.reps[0], hi = x.presc.reps[1];
-    html += '<div class="wex ' + (isCur ? 'cur' : '') + '"><div class="wex-eb">EJERCICIO ' + String(pos).padStart(2, '0') + ' / ' + String(total).padStart(2, '0') + (isCur ? ' · AHORA' : '') + '</div><div class="wex-top"><div onclick="exSheet(\'' + x.id + '\')" style="cursor:pointer">' + exThumb(e) + '</div><div class="name" onclick="exSheet(\'' + x.id + '\')">' + esc(e.name) + '<small><span class="eqg">' + EQ_GLYPH[e.eq] + '</span>' + x.presc.sets + ' series × ' + lo + '–' + hi + '&nbsp;' + unitOf(e) + (e.unil ? ' por lado' : '') + ' · ' + x.presc.rest + '&nbsp;s</small></div><div class="acts"><button onclick="exSheet(\'' + x.id + '\')" aria-label="Cómo se hace">' + I.info + '</button><button onclick="swapSheet(' + i + ')" aria-label="Cambiar">' + I.swap + '</button><button onclick="exMenu(' + i + ')" aria-label="Más">' + I.more + '</button></div></div>';
+    html += '<div class="wex ' + (isCur ? 'cur' : '') + '" data-k="' + K + '"><div class="wex-eb"><span>EJERCICIO ' + String(pos).padStart(2, '0') + ' / ' + String(total).padStart(2, '0') + (isCur ? ' · AHORA' : '') + '</span>' + ordBtns('woMove', i, N) + '</div><div class="wex-top"><div onclick="exSheet(\'' + x.id + '\')" style="cursor:pointer">' + exThumb(e) + '</div><div class="name" onclick="exSheet(\'' + x.id + '\')">' + esc(e.name) + '<small><span class="eqg">' + EQ_GLYPH[e.eq] + '</span>' + x.presc.sets + ' series × ' + lo + '–' + hi + '&nbsp;' + unitOf(e) + (e.unil ? ' por lado' : '') + ' · ' + x.presc.rest + '&nbsp;s</small></div><div class="acts"><button onclick="exSheet(\'' + x.id + '\')" aria-label="Cómo se hace">' + I.info + '</button><button onclick="swapSheet(' + i + ')" aria-label="Cambiar">' + I.swap + '</button><button onclick="exMenu(' + i + ')" aria-label="Más">' + I.more + '</button></div></div>';
     const cls = sg.type === 'first' ? 'first' : sg.type === 'deload' ? 'deload' : '';
     let big = '';
     if (sg.type === 'first') big = sg.txt;
@@ -3907,10 +4016,10 @@ function renderEntreno() {
 }
 function exMenu(i) {
   const x = ACTIVE.ex[i]; const e = ex(x.id);
-  openSheet('<h2>' + esc(e.name) + '</h2><div class="stack" style="margin-top:10px"><button class="btn w" onclick="closeSheet();woMove(' + i + ',-1)">Subir en el orden</button><button class="btn w" onclick="closeSheet();woMove(' + i + ',1)">Bajar en el orden</button><button class="btn w" onclick="closeSheet();woSkip(' + i + ')">Saltear hoy</button><button class="btn w d" onclick="closeSheet();woRemove(' + i + ')">Sacar de la sesión</button></div>');
+  openSheet('<h2>' + esc(e.name) + '</h2><div class="stack" style="margin-top:10px"><button class="btn w" onclick="closeSheet();woSkip(' + i + ')">Saltear hoy</button><button class="btn w d" onclick="closeSheet();woRemove(' + i + ')">Sacar de la sesión</button></div>');
 }
 function woMenu() {
-  openSheet('<h2>Sesión</h2><div class="stack" style="margin-top:10px"><button class="btn w" onclick="closeSheet();startRest(90,\'timer manual\')">Timer de 90 s</button><button class="btn w" onclick="closeSheet();startRest(180,\'timer manual\')">Timer de 3 min</button><button class="btn w" onclick="closeSheet();plateSheet()">Calculadora de discos</button><button class="btn w" onclick="closeSheet();go(\'calentamiento\')">Calentamiento</button><button class="btn w" onclick="closeSheet();go(\'hoy\')">Volver a Hoy (la sesión sigue)</button>' + (ACTIVE.prog !== 'libre' ? '<button class="btn w" onclick="closeSheet();skipDay(ACTIVE.prog, ACTIVE.day, true)">Saltear esta sesión</button>' : '') + '<button class="btn w d" onclick="closeSheet();cancelSession()">Descartar sesión</button></div>');
+  openSheet('<h2>Sesión</h2><div class="stack" style="margin-top:10px"><button class="btn w" onclick="closeSheet();startRest(90,\'timer manual\')">Timer de 90 s</button><button class="btn w" onclick="closeSheet();startRest(180,\'timer manual\')">Timer de 3 min</button><button class="btn w" onclick="closeSheet();plateSheet()">Calculadora de discos</button><button class="btn w" onclick="closeSheet();go(\'calentamiento\')">Calentamiento</button>' + (ACTIVE.prog !== 'libre' ? '<button class="btn w sw-row" onclick="woToggleKeep()" role="switch" aria-checked="' + !!ACTIVE.keepOrder + '"><span>Usar este orden la próxima vez<small>' + (ACTIVE.keepOrder ? 'Guardado para ' + esc(ACTIVE.dayName) + '. Se resetea en Ajustes.' : 'Apagado: la próxima vez vuelve el orden del programa.') + '</small></span><i class="tgl' + (ACTIVE.keepOrder ? ' on' : '') + '"></i></button>' : '') + '<button class="btn w" onclick="closeSheet();go(\'hoy\')">Volver a Hoy (la sesión sigue)</button>' + (ACTIVE.prog !== 'libre' ? '<button class="btn w" onclick="closeSheet();skipDay(ACTIVE.prog, ACTIVE.day, true)">Saltear esta sesión</button>' : '') + '<button class="btn w d" onclick="closeSheet();cancelSession()">Descartar sesión</button></div>');
 }
 function plateSheet() {
   openSheet('<h2>Discos por lado</h2><p class="muted small">Barra de 20 kg. Escribí el peso total.</p><input class="inp" type="number" inputmode="decimal" id="plw" placeholder="Peso total (kg)" style="margin-top:8px;font-size:20px" oninput="plateCalc()"><div id="plout" style="margin-top:10px"></div>');
@@ -3989,15 +4098,23 @@ function renderPrograma() {
   if (p.cycle) html += '<div class="card" style="margin-top:10px"><div class="row between"><h3>Ciclo de 9 semanas</h3>' + (on && c ? '<span class="pill b">Semana ' + c.week + (c.deload ? ' · Descarga' : ' · Bloque ' + c.block) + '</span>' : '') + '</div>' + cycleStrip(on ? p.id : null) + (on ? '' : '<div class="cycle">' + [1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => '<span class="' + (i > 4 && i < 9 ? 'b2' : i === 9 ? 'dl' : '') + '">' + (i === 9 ? 'D' : i) + '</span>').join('') + '</div>') + '<div class="small muted" style="margin-top:8px">Semanas 1-4: series base. Semanas 5-8: una serie más en cada accesorio. Semana 9: descarga (mitad de series, 10 % menos peso) y arranca un ciclo nuevo con más peso que el anterior.</div></div>';
   html += on ? '<div class="pill b" style="margin:12px 0 4px">Este es tu programa activo</div>' : '<button class="btn p w" style="margin:12px 0 6px" onclick="useProgram(\'' + p.id + '\')">Usar este programa</button>';
   p.days.forEach(d => {
-    const ed = effDay(p.id, d.id); const isNext = on && nd && nd.id === d.id;
-    html += '<div class="card" style="margin-top:10px"><div class="row between"><div><h3>' + esc(d.name) + (isNext ? ' <span class="pill b">te toca</span>' : '') + '</h3><div class="small muted">' + esc(d.focus || '') + '</div></div><button class="btn sm" onclick="startSession(\'' + p.id + '\',\'' + d.id + '\')">Empezar</button></div><div class="list" style="margin-top:6px">';
-    ed.ex.forEach((x, i) => { const e = ex(x.id); const n = on ? effSets(p.id, x) : x.sets; const sg = sugLine(suggest(x.id, { sets: x.sets, reps: x.reps || e.reps, rest: x.rest || e.rest })); html += '<div class="exrow" onclick="progExSheet(\'' + p.id + '\',\'' + d.id + '\',' + i + ')">' + exThumb(e) + '<div class="n"><b>' + esc(e.name) + (x.orig ? ' <span class="pill" style="font-size:10px">cambiado</span>' : '') + '</b><span>' + n + ' × ' + (x.reps || e.reps).join('–') + ' ' + unitOf(e) + ' · ' + (x.rest || e.rest) + ' s' + (x.acc ? ' · accesorio' : '') + '</span></div><div class="best" style="' + (sg.cls === 'up' ? 'color:var(--green)' : '') + '">' + (sg.cls === 'first' ? '' : sg.txt) + '</div></div>'; });
+    const ed = orderedDay(p.id, d.id); const isNext = on && nd && nd.id === d.id;
+    html += '<div class="card" style="margin-top:10px"><div class="row between"><div><h3>' + esc(d.name) + (isNext ? ' <span class="pill b">te toca</span>' : '') + '</h3><div class="small muted">' + esc(d.focus || '') + '</div></div><button class="btn sm" onclick="startSession(\'' + p.id + '\',\'' + d.id + '\')">Empezar</button></div>' + (ed.custom ? '<div class="ord-note"><span class="lab-m">ORDEN TUYO</span><button class="more" onclick="progOrdReset(\'' + p.id + '\',\'' + d.id + '\')">Volver al del programa</button></div>' : '') + '<div class="list" style="margin-top:6px">';
+    ed.ex.forEach((x, i) => { const e = ex(x.id); const n = on ? effSets(p.id, x) : x.sets; const sg = sugLine(suggest(x.id, { sets: x.sets, reps: x.reps || e.reps, rest: x.rest || e.rest })); html += '<div class="exrow pr-row" data-k="' + p.id + '-' + d.id + '-' + x.pidx + '" onclick="progExSheet(\'' + p.id + '\',\'' + d.id + '\',' + x.pidx + ')">' + exThumb(e) + '<div class="n"><b>' + esc(e.name) + (x.orig ? ' <span class="pill" style="font-size:10px">cambiado</span>' : '') + '</b><span>' + n + ' × ' + (x.reps || e.reps).join('–') + ' ' + unitOf(e) + ' · ' + (x.rest || e.rest) + ' s' + (x.acc ? ' · accesorio' : '') + '</span>' + (sg.cls === 'first' ? '' : '<span class="pr-sg" style="' + (sg.cls === 'up' ? 'color:var(--acc)' : '') + '">' + sg.txt + '</span>') + '</div>' + ordBtns('progOrd', i, ed.ex.length, "'" + p.id + "','" + d.id + "'") + '</div>'; });
     html += '</div></div>';
   });
   html += custom ? '<button class="btn w d" style="margin-top:14px" onclick="delCustom(\'' + p.id + '\')">Eliminar esta rutina</button>' : '<button class="btn w" style="margin-top:14px" onclick="copyToCustom(\'' + p.id + '\')">Copiar y personalizar</button>';
   el.innerHTML = html;
 }
 function useProgram(id) { S.program = id; if (!S.starts[id]) S.starts[id] = today(); saveS(); toast('Programa activo: ' + prog(id).name); go('hoy'); }
+function progOrd(pid, did, i, dir) {
+  const d = orderedDay(pid, did); const arr = d.ex.map(x => x.pidx); const j = i + dir; if (j < 0 || j >= arr.length) return;
+  const prev = ORDER.o[pid] && ORDER.o[pid][did] ? ORDER.o[pid][did].slice() : null; const k = pid + '-' + did + '-' + arr[i];
+  [arr[i], arr[j]] = [arr[j], arr[i]]; setDayOrder(pid, did, arr.every((v, n) => v === n) ? null : arr);
+  flipRender('#pg-programa', k, renderPrograma); vib(8);
+  toast('Orden guardado para ' + d.name, 4000, { label: 'Deshacer', fn: () => { setDayOrder(pid, did, prev); flipRender('#pg-programa', k, renderPrograma); } });
+}
+function progOrdReset(pid, did) { setDayOrder(pid, did, null); renderPrograma(); toast('Vuelve el orden del programa'); }
 function progExSheet(pid, did, idx) {
   const d = effDay(pid, did); const x = d.ex[idx]; const e = ex(x.id); const p = prog(pid); const origId = p.days.find(q => q.id === did).ex[idx].id;
   const cands = [...new Set(e.swaps.concat(EX.filter(o => o.id !== e.id && o.pat === e.pat && o.m === e.m).map(o => o.id)))].filter(id => id !== x.id).slice(0, 8);
@@ -4019,15 +4136,21 @@ function renderEditor() {
   html += '<label class="lbl">Nombre</label><input class="inp" value="' + esc(EDIT.name) + '" placeholder="Ej: Mi full body" oninput="EDIT.name=this.value">';
   html += '<label class="lbl">Frecuencia</label><input class="inp" value="' + esc(EDIT.freq) + '" oninput="EDIT.freq=this.value">';
   EDIT.days.forEach((d, di) => {
-    html += '<div class="card" style="margin-top:14px"><div class="row between"><input class="inp" style="font-weight:600;flex:1" value="' + esc(d.name) + '" oninput="EDIT.days[' + di + '].name=this.value"><button class="iconbtn" onclick="EDIT.days.splice(' + di + ',1);renderEditor()" aria-label="Eliminar día">' + I.x + '</button></div><div class="sets-h" style="grid-template-columns:1fr 44px 44px 44px 30px;margin-top:10px"><span>ejercicio</span><span>series</span><span>mín</span><span>máx</span><span></span></div>';
-    d.ex.forEach((x, xi) => { const e = ex(x.id); const r = x.reps || e.reps; html += '<div class="ed-row" style="display:grid;grid-template-columns:1fr 44px 44px 44px 30px;gap:6px"><div class="n" onclick="edMove(' + di + ',' + xi + ')">' + esc(e.name) + '</div><input type="number" inputmode="numeric" value="' + x.sets + '" onchange="EDIT.days[' + di + '].ex[' + xi + '].sets=parseInt(this.value)||3"><input type="number" inputmode="numeric" value="' + r[0] + '" onchange="edReps(' + di + ',' + xi + ',0,this.value)"><input type="number" inputmode="numeric" value="' + r[1] + '" onchange="edReps(' + di + ',' + xi + ',1,this.value)"><button class="x" onclick="EDIT.days[' + di + '].ex.splice(' + xi + ',1);renderEditor()">' + I.x + '</button></div>'; });
-    html += '<button class="btn sm w" style="margin-top:10px" onclick="edPicker(' + di + ')">' + I.plus + ' Agregar ejercicio</button></div>';
+    html += '<div class="card" style="margin-top:14px"><div class="row between"><input class="inp" style="font-weight:600;flex:1" value="' + esc(d.name) + '" oninput="EDIT.days[' + di + '].name=this.value"><button class="iconbtn" onclick="EDIT.days.splice(' + di + ',1);renderEditor()" aria-label="Eliminar día">' + I.x + '</button></div><div class="ed-list" id="edd' + di + '">';
+    d.ex.forEach((x, xi) => { const e = ex(x.id); const r = x.reps || e.reps; html += '<div class="ed-row2" data-k="' + kOf(x) + '"><div class="ed-top"><span class="ed-n">' + String(xi + 1).padStart(2, '0') + '</span><div class="n" onclick="edMove(' + di + ',' + xi + ')">' + esc(e.name) + '</div>' + ordBtns('edOrd', xi, d.ex.length, di) + '<button class="ordb x" onclick="EDIT.days[' + di + '].ex.splice(' + xi + ',1);renderEditor()" aria-label="Sacar">' + I.x + '</button></div><div class="ed-in"><label>Series<input type="number" inputmode="numeric" value="' + x.sets + '" onchange="EDIT.days[' + di + '].ex[' + xi + '].sets=parseInt(this.value)||3"></label><label>Reps<input type="number" inputmode="numeric" value="' + r[0] + '" onchange="edReps(' + di + ',' + xi + ',0,this.value)"><span>–</span><input type="number" inputmode="numeric" value="' + r[1] + '" onchange="edReps(' + di + ',' + xi + ',1,this.value)"></label></div></div>'; });
+    html += '</div><button class="btn sm w" style="margin-top:10px" onclick="edPicker(' + di + ')">' + I.plus + ' Agregar ejercicio</button></div>';
   });
   html += '<button class="btn w" style="margin-top:12px" onclick="EDIT.days.push({id:String.fromCharCode(65+EDIT.days.length),name:\'Sesión \'+String.fromCharCode(65+EDIT.days.length),focus:\'\',ex:[]});renderEditor()">' + I.plus + ' Agregar sesión</button>';
   html += '<button class="btn p w big" style="margin-top:14px" onclick="saveCustom()">Guardar rutina</button>';
   el.innerHTML = html;
 }
 function edReps(di, xi, k, v) { const x = EDIT.days[di].ex[xi]; x.reps = x.reps || ex(x.id).reps.slice(); x.reps[k] = parseInt(v) || x.reps[k]; }
+function edOrd(di, xi, dir) {
+  const a = EDIT.days[di].ex; const j = xi + dir; if (j < 0 || j >= a.length) return;
+  const prev = a.slice(); const k = kOf(a[xi]); [a[xi], a[j]] = [a[j], a[xi]];
+  flipRender('#pg-editor', k, renderEditor); vib(8);
+  toast('Movido: ' + ex(a[j].id).name, 4000, { label: 'Deshacer', fn: () => { if (EDIT && EDIT.days[di] && EDIT.days[di].ex.length === prev.length) { EDIT.days[di].ex = prev; flipRender('#pg-editor', k, renderEditor); } } });
+}
 function edMove(di, xi) { const d = EDIT.days[di]; openSheet('<h2>' + esc(ex(d.ex[xi].id).name) + '</h2><div class="stack" style="margin-top:10px"><button class="btn w" onclick="closeSheet();if(' + xi + '>0){const a=EDIT.days[' + di + '].ex;[a[' + xi + '-1],a[' + xi + ']]=[a[' + xi + '],a[' + xi + '-1]];renderEditor()}">Subir</button><button class="btn w" onclick="closeSheet();const a=EDIT.days[' + di + '].ex;if(' + xi + '<a.length-1){[a[' + xi + '+1],a[' + xi + ']]=[a[' + xi + '],a[' + xi + '+1]];renderEditor()}">Bajar</button><button class="btn w" onclick="closeSheet();exSheet(\'' + d.ex[xi].id + '\')">Cómo se hace</button></div>'); }
 function edPicker(di) {
   exPicker({ title: 'Agregar a ' + (EDIT.days[di].name || 'la sesión'), sub: 'Tocá todos los que quieras. Cuando termines, Listo.', multi: true, onPick: id => { const e = ex(id); EDIT.days[di].ex.push({ id, sets: 3, reps: e.reps.slice(), rest: e.rest }); renderEditor(); } });
@@ -4258,6 +4381,7 @@ function settingsSheet() {
   html += '<label class="lbl">Sonido al terminar el descanso</label><div class="seg"><button class="' + (S.sound ? 'on' : '') + '" onclick="S.sound=true;saveS();settingsSheet()">Sí</button><button class="' + (!S.sound ? 'on' : '') + '" onclick="S.sound=false;saveS();settingsSheet()">No</button></div>';
   const c = cycleInfo(S.program);
   if (c) html += '<label class="lbl">Ciclo del programa</label><div class="row between card" style="padding:10px 12px"><div class="small">Semana ' + c.week + ' · ' + (c.deload ? 'descarga' : 'bloque ' + c.block) + '</div><button class="btn sm" onclick="ask(\'¿Reiniciar el ciclo?\', \'Arrancás de nuevo en la semana 1, bloque 1.\', \'Reiniciar\', () => { S.starts[S.program] = today(); saveS(); go(\'hoy\'); })">Reiniciar ciclo</button></div>';
+  const oc = orderCount(); html += '<label class="lbl">Orden de ejercicios</label><div class="row between card" style="padding:10px 12px"><div class="small">' + (oc ? oc + (oc === 1 ? ' sesión con orden tuyo' : ' sesiones con orden tuyo') : 'Todas las sesiones usan el orden del programa') + '</div>' + (oc ? '<button class="btn sm" onclick="ordReset()">Restablecer</button>' : '') + '</div>';
   html += '<label class="lbl">Meta de press de banca</label><div class="card bg-set">' + GOALS.bench.map((g, i) => '<div class="bg-row"><span class="lab-m">META ' + (i + 1) + '</span><label class="bg-kg"><input class="inp" type="number" inputmode="decimal" step="2.5" value="' + g.kg + '" onchange="goalSet(' + i + ',\'kg\',this.value)" aria-label="Kilos de la meta ' + (i + 1) + '"><span>kg</span></label><input class="inp" type="date" value="' + g.date + '" onchange="goalSet(' + i + ',\'date\',this.value)" aria-label="Fecha de la meta ' + (i + 1) + '"></div>').join('') + '<div class="bg-row"><span class="lab-m">PESO</span><label class="bg-kg"><input class="inp" type="number" inputmode="decimal" step="0.5" value="' + (GOALS.bw || '') + '" onchange="goalBw(this.value)" aria-label="Peso corporal de referencia"><span>kg</span></label><span class="small muted">De referencia: se usa mientras no anotes pesajes.</span></div></div>';
   html += '<div class="stack" style="margin-top:18px"><button class="btn w" onclick="calendarLink()">' + I.cal + ' Recordatorio en Google Calendar</button><button class="btn w" onclick="exportData()">Exportar copia de seguridad</button><button class="btn w" onclick="$(\'impf\').click()">Importar copia</button><input type="file" id="impf" accept=".json" class="hid" onchange="importData(this.files[0])">' + (old ? '<button class="btn w" onclick="migrateLegacy()">Importar historial de GymBrain V18 (' + old + ' series)</button>' : '') + '<button class="btn w d" onclick="resetAll()">Borrar todos los datos</button></div>';
   html += '<p class="small muted2" style="margin-top:16px">GymBrain · ' + APP_VERSION + ' · Chadbits. Tus datos viven solo en este teléfono. Ilustración anatómica: js-rich-body-highlighter (MIT). Modelo 3D de músculos: Z-Anatomy y BodyParts3D (Database Center for Life Science), vía Fit Mit With, CC BY-SA 4.0. Motor 3D: Three.js (MIT). Fotos de ejercicios: free-exercise-db (dominio público). Rangos de fuerza: orientativos, basados en tablas de estándares para hombres.</p>';
@@ -4269,6 +4393,7 @@ function calendarLink() {
   const f = x => x.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
   window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(t) + '&dates=' + f(d) + '/' + f(e) + '&recur=RRULE:FREQ=WEEKLY;BYDAY=MO,WE,FR&details=' + encodeURIComponent('Abrí GymBrain y tocá Empezar.'), '_blank');
 }
+function ordReset() { ask('¿Volver al orden de los programas?', 'Se borra el orden que guardaste para cada sesión. Tu historial no cambia.', 'Restablecer', () => { ORDER = { v: 1, o: {} }; saveOrder(); if (ACTIVE) { ACTIVE.keepOrder = false; saveActive(); } settingsSheet(); render(); toast('Orden restablecido'); }); }
 function goalSet(i, k, v) {
   const g = GOALS.bench[i]; if (!g) return;
   if (k === 'kg') { const n = parseFloat(String(v).replace(',', '.')); if (!(n >= 20 && n <= 400)) { toast('Poné un peso entre 20 y 400 kg'); settingsSheet(); return; } g.kg = Math.round(n * 2) / 2; }
@@ -4277,12 +4402,12 @@ function goalSet(i, k, v) {
 }
 function goalBw(v) { const n = parseFloat(String(v).replace(',', '.')); if (!(n >= 30 && n <= 250)) { toast('Poné un peso entre 30 y 250 kg'); settingsSheet(); return; } GOALS.bw = Math.round(n * 10) / 10; saveGoals(); toast('Peso de referencia guardado'); render(); }
 function exportData() {
-  const data = { v: 3, exported: new Date().toISOString(), settings: S, sessions: SESSIONS, swaps: SWAPS, custom: CUSTOM, bw: BW, ach: load('gb2_ach', []), skips: SKIPS, missions: load('gb2_missions', {}), goals: GOALS };
+  const data = { v: 3, exported: new Date().toISOString(), settings: S, sessions: SESSIONS, swaps: SWAPS, custom: CUSTOM, bw: BW, ach: load('gb2_ach', []), skips: SKIPS, missions: load('gb2_missions', {}), goals: GOALS, order: ORDER };
   const blob = new Blob([JSON.stringify(data)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'gymbrain-backup-' + today() + '.json'; a.click(); toast('Copia descargada');
 }
 function importData(file) {
   if (!file) return; const r = new FileReader();
-  r.onload = () => { try { const d = JSON.parse(r.result); if (!d.sessions) throw 0; ask('¿Importar la copia?', 'Se reemplazan tus datos actuales por los de la copia (' + d.sessions.length + ' sesiones).', 'Importar', () => { S = { ...S, ...d.settings }; if (!S.starts) S.starts = {}; SESSIONS = d.sessions; SWAPS = d.swaps || {}; CUSTOM = d.custom || []; BW = d.bw || []; SKIPS = d.skips || []; saveS(); saveSessions(); save(K.sw, SWAPS); save(K.cu, CUSTOM); save(K.bw, BW); save('gb2_ach', d.ach || []); save('gb2_skips', SKIPS); save('gb2_missions', d.missions || {}); if (goalsOk(d.goals)) { GOALS = d.goals; if (!GOALS.v) GOALS.v = 1; saveGoals(); } go('hoy', null, true); toast('Copia importada'); }); } catch (e) { toast('Ese archivo no es una copia válida'); } };
+  r.onload = () => { try { const d = JSON.parse(r.result); if (!d.sessions) throw 0; ask('¿Importar la copia?', 'Se reemplazan tus datos actuales por los de la copia (' + d.sessions.length + ' sesiones).', 'Importar', () => { S = { ...S, ...d.settings }; if (!S.starts) S.starts = {}; SESSIONS = d.sessions; SWAPS = d.swaps || {}; CUSTOM = d.custom || []; BW = d.bw || []; SKIPS = d.skips || []; saveS(); saveSessions(); save(K.sw, SWAPS); save(K.cu, CUSTOM); save(K.bw, BW); save('gb2_ach', d.ach || []); save('gb2_skips', SKIPS); save('gb2_missions', d.missions || {}); if (goalsOk(d.goals)) { GOALS = d.goals; if (!GOALS.v) GOALS.v = 1; saveGoals(); } if (orderOk(d.order)) { ORDER = d.order; if (!ORDER.v) ORDER.v = 1; saveOrder(); } go('hoy', null, true); toast('Copia importada'); }); } catch (e) { toast('Ese archivo no es una copia válida'); } };
   r.readAsText(file);
 }
 function resetAll() { ask('¿Borrar todos los datos?', 'Sesiones, rutinas, logros y ajustes. No se puede deshacer. Si querés, exportá una copia antes.', 'Borrar todo', () => setTimeout(() => ask('Última confirmación', 'Se borra todo GymBrain de este teléfono.', 'Sí, borrar', resetAllNow, true), 50), true); }
@@ -4316,7 +4441,7 @@ function finishOnboarding(pid) {
 }
 
 // ═══ INIT ═══
-const APP_VERSION = 'V25';
+const APP_VERSION = 'V26';
 function splash() {
   if (sessionStorage.getItem('gb2_splash')) return; sessionStorage.setItem('gb2_splash', '1');
   const d = document.createElement('div'); d.className = 'splash'; d.innerHTML = '<div class="lg">' + LOGO + '</div><div class="t">GYMBRAIN</div><div class="s">BY CHADBITS</div>'; document.body.appendChild(d); setTimeout(() => d.remove(), 1800);
