@@ -954,6 +954,42 @@ body::before { opacity: .22; }
 .edge-ind { position: fixed; left: -36px; top: 50%; z-index: 500; width: 40px; height: 40px; border-radius: 50%; background: var(--card2); border: 1px solid var(--line); color: var(--ink2); display: flex; align-items: center; justify-content: center; opacity: 0; transform: translate(0,-50%); pointer-events: none; transition: background .15s, color .15s; }
 .edge-ind.go { background: var(--acc); color: var(--on-acc); border-color: var(--acc); }
 .edge-ind svg { width: 20px; height: 20px; }
+
+/* Meta de press de banca */
+.bg-card { margin-top: 12px; border-radius: 24px; background: var(--card); border: 1px solid var(--line); overflow: hidden; }
+.bg-top { padding: 18px 18px 12px; background: repeating-linear-gradient(-45deg, rgba(255,84,32,.05) 0 2px, transparent 2px 12px); }
+.bg-top .hc-big b { font-size: 64px; }
+.bg-src { margin-top: 8px; font: 500 10.5px/1.5 var(--fm); color: var(--ink3); letter-spacing: .02em; }
+.bg-empty { margin: 10px 0 4px; color: var(--ink2); font-size: 14px; line-height: 1.45; }
+.bg-empty b { display: block; font: 400 28px/1 var(--fd); text-transform: uppercase; color: var(--ink); margin-bottom: 6px; }
+.bg-goal { padding: 12px 18px; border-top: 1px solid var(--line2); }
+.bg-goal b { font: 400 22px var(--fd); letter-spacing: .01em; }
+.bg-goal.ok b { color: var(--acc); }
+.bg-goal.ok .lab-m { color: var(--acc); }
+.bg-bar0 { position: relative; height: 9px; border-radius: 2px; background: var(--body2); margin: 8px 0 6px; overflow: hidden; transform: skewX(-14deg); }
+.bg-bar0 i { display: block; height: 100%; background: linear-gradient(90deg, var(--xp), var(--acc)); transition: width .8s cubic-bezier(.3,.8,.2,1); }
+.bg-bar0::after { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 9px, var(--card) 9px 11px); }
+.bg-meta { font: 500 10.5px var(--fm); color: var(--ink2); }
+.bg-meta span:last-child { color: var(--ink3); }
+.bg-miles { padding: 12px 18px 14px; border-top: 1px solid var(--line2); }
+.bg-ml { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; margin-top: 8px; }
+.bg-ml i { height: 34px; display: flex; align-items: center; justify-content: center; font: 400 16px var(--fd); font-style: normal; transform: skewX(-14deg); border: 1px solid rgba(255,236,214,.12); color: var(--ink4); }
+.bg-ml i.on { background: var(--acc); border-color: var(--acc); color: var(--on-acc); box-shadow: 0 8px 18px -8px rgba(255,84,32,.7); }
+.bg-ml i.nx { border: 1.5px dashed rgba(255,178,36,.7); color: var(--xp); }
+.bg-msg { display: flex; gap: 10px; align-items: center; padding: 12px 18px 16px; border-top: 1px solid var(--line2); font-size: 13.5px; line-height: 1.45; color: var(--ink2); }
+.bg-msg .lg { width: 26px; height: 26px; flex: none; } .bg-msg .lg svg { width: 100%; height: 100%; }
+.bg-set { padding: 6px 12px; }
+.bg-row { display: grid; grid-template-columns: 54px 96px minmax(0,1fr); gap: 8px; align-items: center; padding: 6px 0; }
+.bg-kg { position: relative; display: block; }
+.bg-kg .inp { padding-right: 30px; }
+.bg-kg span { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font: 500 12px var(--fm); color: var(--ink3); pointer-events: none; }
+.bg-row input[type=date] { min-width: 0; width: 100%; }
+.bg-row + .bg-row { border-top: 1px solid var(--line2); }
+.bg-row .inp { padding: 9px 8px; font-size: 16px; min-height: 44px; }
+.bg-bar { width: 100%; max-width: 340px; margin-top: 26px; animation: pin .7s .15s both; }
+.bg-bar .hb { height: 110px; } .bg-bar .hb-p { animation: plateIn .9s cubic-bezier(.2,.9,.25,1.15) both; }
+.bg-n { margin-top: 10px; display: flex; align-items: baseline; gap: 8px; }
+.bg-n span { font-size: 40px; color: var(--ink2); }
 </style>
 </head>
 <body>
@@ -2545,6 +2581,12 @@ const ACHIEVEMENTS = [
   { id:'lvl10', cat:'hitos', ico:'trophy', name:'Nivel 10', desc:'Leyenda. No hay más niveles.', test: s => s.level >= 10, prog: s => [s.level, 10] },
   { id:'m5', cat:'hitos', ico:'check', name:'5 misiones', desc:'Cinco misiones semanales cumplidas.', test: s => s.missions >= 5, prog: s => [s.missions, 5] },
   { id:'m25', cat:'hitos', ico:'check', name:'25 misiones', desc:'Cazador de misiones.', test: s => s.missions >= 25, prog: s => [s.missions, 25] },
+  { id:'bg50', cat:'fuerza', ico:'mountain', bench:50, name:'Hito banca: 50 kg', desc:'1RM estimado de 50. Barra y un disco de 15 por lado: arrancó la cosa.', test: s => s.benchE1 >= 50, prog: s => [s.benchE1, 50] },
+  { id:'bg60', cat:'fuerza', ico:'mountain', bench:60, name:'Hito banca: 60 kg', desc:'1RM estimado de 60. Dos de 20: ya no sos el nuevo del banco.', test: s => s.benchE1 >= 60, prog: s => [s.benchE1, 60] },
+  { id:'bg70', cat:'fuerza', ico:'trophy', bench:70, name:'Hito banca: 70 kg', desc:'1RM estimado de 70. Un 25 por lado: la primera meta, cumplida.', test: s => s.benchE1 >= 70, prog: s => [s.benchE1, 70] },
+  { id:'bg80', cat:'fuerza', ico:'mountain', bench:80, name:'Hito banca: 80 kg', desc:'1RM estimado de 80. 25 y 5 por lado: el pecho ya se nota.', test: s => s.benchE1 >= 80, prog: s => [s.benchE1, 80] },
+  { id:'bg90', cat:'fuerza', ico:'mountain', bench:90, name:'Hito banca: 90 kg', desc:'1RM estimado de 90. 25 y 10 por lado: territorio serio.', test: s => s.benchE1 >= 90, prog: s => [s.benchE1, 90] },
+  { id:'bg100', cat:'fuerza', ico:'trophy', bench:100, name:'Hito banca: 100 kg', desc:'1RM estimado de 100. Tres cifras: lo que era para 2028, ya es tuyo.', test: s => s.benchE1 >= 100, prog: s => [s.benchE1, 100] },
   { id:'bw10', cat:'hitos', ico:'stats', name:'10 pesajes', desc:'Diez registros de peso corporal. Datos, no sensaciones.', test: s => s.bwLogs >= 10, prog: s => [s.bwLogs, 10] },
   { id:'early', cat:'especial', ico:'sun', name:'Madrugador', desc:'Una sesión terminada antes de las 8 de la mañana.', test: s => s.early >= 1 },
   { id:'night', cat:'especial', ico:'moon', name:'Nocturno', desc:'Una sesión empezada después de las 22.', test: s => s.night >= 1 },
@@ -2947,7 +2989,7 @@ const STANDARDS = {
   'barbell-row': { name: 'Remo con barra', tiers: [0.5, 0.75, 1.0, 1.25, 1.5] },
   pullup: { name: 'Dominadas', tiers: [1.0, 1.15, 1.35, 1.55, 1.75], bwLoad: true }
 };
-function bwNow() { if (BW.length) { const l = BW.slice().sort((a, b) => a.d < b.d ? -1 : 1)[BW.length - 1]; return { w: l.w, est: false }; } return { w: 75, est: true }; }
+function bwNow() { if (BW.length) { const l = BW.slice().sort((a, b) => a.d < b.d ? -1 : 1)[BW.length - 1]; return { w: l.w, est: false }; } const g = typeof GOALS !== 'undefined' && GOALS.bw; return g ? { w: g, est: true, ref: true } : { w: 75, est: true }; }
 function liftRanks() {
   const bw = bwNow().w; const out = [];
   Object.keys(STANDARDS).forEach(id => {
@@ -3036,6 +3078,11 @@ function playCine() {
   const c = CINE.shift(); if (!c) return;
   const el = document.createElement('div'); el.className = 'cine ' + (c.kind ? 'cine-' + c.kind : '');
   const col = c.color || 'var(--acc)';
+  if (c.kind === 'bench') {
+    const kg = +c.big; el.className = 'cine lvup';
+    el.innerHTML = '<div class="cine-bg"></div><div class="lv-glow"></div><div class="lv-box"><div class="lv-tag">▲ HITO DE BANCA ▲</div><div class="bg-bar">' + heroBar(kg, 20) + '</div><div class="lv-n bg-n">' + kg + '<span>KG</span></div><div class="lv-name">1RM estimado</div><div class="lv-sub">' + esc(c.label) + '</div><button class="hcta" onclick="this.closest(\'.cine\').remove();playCine()">Seguir</button></div>';
+    document.body.appendChild(el); vib([30, 40, 30]); if (c.confetti) confetti(); return;
+  }
   if (c.tag === 'SUBISTE DE NIVEL') {
     el.className = 'cine lvup';
     el.innerHTML = '<div class="cine-bg"></div><div class="lv-glow"></div><div class="lv-box"><div class="lv-tag">▲ SUBISTE DE NIVEL ▲</div><div class="lv-plate"><i class="lv-p1"></i><i class="lv-p2"></i><span class="t">GYMBRAIN</span><span class="b">NIVEL</span></div><div class="lv-n">' + esc(String(c.big).padStart(2, '0')) + '</div><div class="lv-name">' + esc(c.label) + '</div><div class="lv-sub">' + esc(c.sub || '') + '</div><button class="hcta" onclick="this.closest(\'.cine\').remove();playCine()">Seguir</button></div>';
@@ -3046,6 +3093,43 @@ function playCine() {
 }
 function ico(k) { return I[k] || I.star; }
 
+// ═══ META DE PRESS DE BANCA ═══
+const BENCH_MILES = [50, 60, 70, 80, 90, 100];
+// 1RM estimado (Epley) desde tu mejor serie de banca; si no hay banca, desde el inclinado con mancuernas (las dos sumadas)
+function benchE1() {
+  const best = id => { let b = null; hist(id).forEach(h => h.sets.forEach(t => { if (!(t.w > 0) || !(t.r > 0)) return; const v = e1rm(t.w, t.r); if (!b || v > b.e1) b = { e1: v, w: t.w, r: t.r, date: h.date }; })); return b; };
+  const b = best('bench'); if (b) return { ...b, src: 'bench' };
+  const d = best('incline-db'); if (d) return { ...d, e1: e1rm(d.w * 2, d.r), src: 'incline-db' };
+  return null;
+}
+const monthsTo = d => (parseDate(d) - parseDate(today())) / (30.44 * 864e5);
+const fmtMes = d => { const x = parseDate(d); return MONTHS[x.getMonth()].toUpperCase() + ' ' + x.getFullYear(); };
+function benchMsg(cur, gs) {
+  const nx = gs.find(g => cur < g.kg); const last = gs[gs.length - 1];
+  if (!nx) return 'Llegaste a ' + last.kg + '. Lo que parecía lejos ya está en tu cuaderno. Poné una meta nueva en Ajustes y seguí cargando.';
+  const falta = nx.kg - cur, m = monthsTo(nx.date);
+  const done = gs.filter(g => cur >= g.kg); const pre = done.length ? done[done.length - 1].kg + ' cumplido. Para ' + nx.kg + ' ' : 'Para ' + nx.kg + ' ';
+  if (m <= 0) return (done.length ? done[done.length - 1].kg + ' cumplido. Para ' + nx.kg : 'Para ' + nx.kg) + ' la fecha ya pasó y faltan ' + fmtW(Math.round(falta * 2) / 2) + ' kg. No es drama: movela en Ajustes y seguí sumando reps.';
+  const pace = falta / m; const pz = fmtW(Math.round(pace * 10) / 10);
+  if (pace <= 0.6) return pre + 'necesitás +' + pz + ' kg por mes. Vas sobrado: con la doble progresión eso sale solo. No te apures.';
+  if (pace <= 1.5) return pre + 'necesitás +' + pz + ' kg por mes. Ritmo de laburo: constancia, comer bien y llegar cerca del fallo.';
+  return pre + 'necesitás +' + pz + ' kg por mes. Es exigente pero se puede: no te saltees ni una sesión de pecho.';
+}
+function benchGoalCard() {
+  const gs = GOALS.bench.slice().sort((a, b) => a.kg - b.kg); const b = benchE1(); const bw = bwNow();
+  let h = '<div class="bg-card"><div class="bg-top"><div class="hc-eb">META · PRESS DE BANCA</div>';
+  if (!b) return h + '<div class="bg-empty"><b>Juntando datos</b>Todavía no hay press de banca (ni inclinado con mancuernas) anotado. Hacé tu primera sesión de pecho y arrancamos a medir.</div>' + gs.map(g => '<div class="bg-goal"><div class="row between"><b>' + g.kg + ' KG</b><span class="lab-m">' + fmtMes(g.date) + '</span></div><div class="bg-bar0"><i style="width:0%"></i></div></div>').join('') + '</div></div>';
+  const cur = Math.round(b.e1 * 2) / 2; const got = load('gb2_ach', []);
+  h += '<div class="hc-big"><div><b>' + fmtW(cur) + '</b><span>KG</span></div><div class="hc-side">1RM estimado<br><em>' + (cur / bw.w).toFixed(2).replace('.', ',') + '× tu peso</em></div></div>';
+  h += '<div class="bg-src">' + (b.src === 'bench' ? 'Estimación con Epley desde tu mejor serie: ' + fmtW(b.w) + ' kg × ' + b.r + ' · ' + relDate(b.date) + '.' : 'No hay banca anotada: lo estimo desde tu press inclinado con mancuernas (' + fmtW(b.w) + ' kg por mano × ' + b.r + '). Es una referencia aproximada; cuando hagas banca, se usa esa.') + '</div></div>';
+  h += gs.map(g => { const pct = Math.min(1, cur / g.kg); const ok = cur >= g.kg; const m = monthsTo(g.date);
+    return '<div class="bg-goal' + (ok ? ' ok' : '') + '"><div class="row between"><b>' + g.kg + ' KG</b><span class="lab-m">' + (ok ? '✓ CUMPLIDA' : fmtMes(g.date)) + '</span></div><div class="bg-bar0"><i style="width:' + Math.round(pct * 100) + '%"></i></div><div class="row between bg-meta"><span>' + Math.round(pct * 100) + '%</span><span>' + (ok ? 'Hecho.' : 'faltan ' + fmtW(Math.round((g.kg - cur) * 2) / 2) + ' kg · ' + (m > 0 ? (m < 1.5 ? 'menos de 2 meses' : Math.round(m) + ' meses') : 'fecha vencida')) + '</span></div></div>'; }).join('');
+  const nxM = BENCH_MILES.find(k => cur < k);
+  h += '<div class="bg-miles"><div class="lab-m">HITOS · CON TROFEO</div><div class="bg-ml">' + BENCH_MILES.map(k => { const on = cur >= k || got.includes('bg' + k); return '<i class="' + (on ? 'on' : k === nxM ? 'nx' : '') + '">' + k + '</i>'; }).join('') + '</div></div>';
+  h += '<div class="bg-msg"><div class="lg">' + LOGO + '</div><div>' + esc(benchMsg(cur, gs)) + '</div></div></div>';
+  return h;
+}
+
 // ═══ PÁGINA ESTADO ═══
 function renderEstado() {
   const el = $('pg-estado'); const sc = statsCalc(); const lv = levelOf(totalXp()); const bw = bwNow();
@@ -3055,6 +3139,7 @@ function renderEstado() {
   const order = 'EDCBAS'; const ri = order.indexOf(sc.rank); const nx = RANKS[ri + 1]; const gl = Math.round(sc.global);
   const weak = sc.stats.slice().sort((a, b) => a.v - b.v)[0];
   html += '<div class="es-rk"><div class="es-rk-top"><div class="es-L" style="color:' + RANK_COL[sc.rank] + ';text-shadow:0 0 40px ' + RANK_COL[sc.rank] + '59">' + sc.rank + '</div><div class="grow"><div class="lab-m">RANGO GLOBAL</div><div class="es-sc"><b>' + gl + '</b><span>/100</span></div><div class="es-tx">' + (nx ? 'Te faltan <b>' + Math.max(1, Math.ceil(nx[1] - sc.global)) + ' puntos</b> para ' + nx[0] + '. ' : 'Rango máximo. ') + esc(weak.name) + ' es tu punto flojo.</div></div></div><div class="es-lad">' + order.split('').map((l, i) => '<i class="' + (i < ri ? 'p' : i === ri ? 'c' : i === ri + 1 ? 'n' : '') + '"' + (i === ri ? ' style="background:' + RANK_COL[l] + '"' : '') + '>' + l + '</i>').join('') + '</div></div>';
+  html += benchGoalCard();
   // ventana de estado
   html += '<div class="sw">';
   html += '<div class="sw-grid"><div><div class="lab-m">Nivel</div><div class="sw-v">' + lv.n + ' <small>' + esc(lv.name) + '</small></div></div><div><div class="lab-m">XP total</div><div class="sw-v">' + lv.xp.toLocaleString('es-AR') + '</div></div><div><div class="lab-m">Racha</div><div class="sw-v">' + weekStreak() + ' <small>sem.</small></div></div><div><div class="lab-m">Peso</div><div class="sw-v">' + fmtW(bw.w) + ' <small>kg' + (bw.est ? ' est.' : '') + '</small></div></div></div>';
@@ -3065,7 +3150,7 @@ function renderEstado() {
   html += '<div class="sec"><h2>Rangos de fuerza</h2>' + (bw.est ? '<button class="more" onclick="bwSheet()">Anotar peso</button>' : '<span class="lab-m">× PESO CORPORAL</span>') + '</div><div class="card es-lifts">';
   if (!sc.lifts.length) html += '<div class="empty" style="padding:16px"><b>Sin levantamientos evaluados</b>Sentadilla, banca, peso muerto, press militar, remo con barra y dominadas tienen rangos.</div>';
   else html += sc.lifts.map(l => '<div class="lrow" onclick="go(\'ejercicio\',{id:\'' + l.id + '\'})"><div class="lletter" style="color:' + RANK_COL[l.letter] + ';border-color:' + RANK_COL[l.letter] + '">' + l.letter + '</div><div class="grow"><div class="row between"><b>' + esc(l.name) + '</b><span class="num" style="font-size:17px">' + l.e1 + ' kg</span></div><div class="small muted">' + esc(l.tier) + ' · ' + l.ratio.toFixed(2) + '× tu peso' + (l.next ? ' · faltan ' + l.next.kg + ' kg para ' + l.next.name : ' · nivel máximo') + '</div><div class="sbar" style="margin-top:5px"><i style="width:' + Math.round(l.score) + '%;background:' + RANK_COL[l.letter] + '"></i></div></div></div>').join('');
-  if (bw.est && sc.lifts.length) html += '<div class="small muted2" style="margin-top:8px">Calculado con 75 kg de peso corporal. Anotá el tuyo para que sea exacto.</div>';
+  if (bw.est && sc.lifts.length) html += '<div class="small muted2" style="margin-top:8px">Calculado con ' + fmtW(bw.w) + ' kg de peso corporal' + (bw.ref ? ' (el de referencia de Ajustes)' : '') + '. Anotá tus pesajes para que sea exacto.</div>';
   html += '</div>';
   // misiones
   const ms = weekMissions(); const mdone = ms.filter(m => m.done).length;
@@ -3141,6 +3226,17 @@ let ACTIVE = load(K.act, null);
 let SWAPS = load(K.sw, {});
 let CUSTOM = load(K.cu, []);
 let BW = load(K.bw, []);
+// ═══ METAS ═══ gb2_goals { v, bench: [{ kg, date }], bw }. Clave nueva: no toca ningún dato existente.
+const GOALS_DEF = { v: 1, bench: [{ kg: 70, date: '2027-06-30' }, { kg: 100, date: '2028-12-31' }], bw: 65 };
+function goalsOk(g) { return g && typeof g === 'object' && Array.isArray(g.bench) && g.bench.length && g.bench.every(x => x && +x.kg >= 20 && +x.kg <= 400 && /^\d{4}-\d{2}-\d{2}$/.test(x.date)); }
+function loadGoals() {
+  let g = load('gb2_goals', null);
+  if (!goalsOk(g)) { g = JSON.parse(JSON.stringify(GOALS_DEF)); save('gb2_goals', g); }
+  if (!g.v) { g.v = 1; save('gb2_goals', g); } // acá van las migraciones futuras (v1 → v2…)
+  return g;
+}
+let GOALS = loadGoals();
+const saveGoals = () => save('gb2_goals', GOALS);
 const saveS = () => save(K.s, S);
 const saveSessions = () => { save(K.ses, SESSIONS); HIST = null; };
 const saveActive = () => ACTIVE ? save(K.act, ACTIVE) : localStorage.removeItem(K.act);
@@ -3363,7 +3459,7 @@ function totals() {
   });
   const pull = bestOf('pullup'); const M = load('gb2_missions', {}); let missions = 0; Object.values(M).forEach(w => missions += Object.keys(w).length);
   const first = SESSIONS.length ? SESSIONS.reduce((a, s) => s.date < a ? s.date : a, SESSIONS[0].date) : null;
-  return { sessions: SESSIONS.length, ton, prs, ups, sets, tonnage: ton, weekStreakMax: weekStreakMax(), xp: totalXp(), cycles: c ? c.cycles : 0, bestSquat: Math.max(bw('squat'), bw('front-squat')), bestBench: bw('bench'), bestDL: bw('deadlift'), bestOHP: bw('ohp'), pullReps: pull && pull.w === 0 ? pull.r : (pull ? pull.r : 0), distinctEx: ids.size, level: levelOf(totalXp()).n, missions, bwLogs: BW.length, early, night, weekend, quick, full, comeback, daysSince: first ? daysAgo(first) : 0 };
+  return { sessions: SESSIONS.length, ton, prs, ups, sets, tonnage: ton, weekStreakMax: weekStreakMax(), xp: totalXp(), cycles: c ? c.cycles : 0, bestSquat: Math.max(bw('squat'), bw('front-squat')), bestBench: bw('bench'), benchE1: Math.round((benchE1() || {}).e1 || 0), bestDL: bw('deadlift'), bestOHP: bw('ohp'), pullReps: pull && pull.w === 0 ? pull.r : (pull ? pull.r : 0), distinctEx: ids.size, level: levelOf(totalXp()).n, missions, bwLogs: BW.length, early, night, weekend, quick, full, comeback, daysSince: first ? daysAgo(first) : 0 };
 }
 function tonEq(t) { let r = null; TON_EQ.forEach(([k, v]) => { if (t >= k) r = v; }); return r; }
 
@@ -3468,7 +3564,7 @@ function finishSession() {
   const sc = statsCalc(); S.rank = sc.rank; saveS();
   const order = 'EDCBAS'; if (order.indexOf(sc.rank) > order.indexOf(rankBefore)) queueCine({ tag: 'RANGO ASCENDIDO', big: sc.rank, label: 'Rango global ' + sc.rank, sub: 'Tus atributos subieron. Mirá la ficha en Estado.', color: RANK_COL[sc.rank], confetti: true });
   if (sess.levelUp) queueCine({ tag: 'SUBISTE DE NIVEL', big: String(lv.n), label: lv.name, sub: lv.max ? 'Nivel máximo alcanzado.' : (lv.to - lv.xp).toLocaleString('es-AR') + ' XP para el siguiente', color: '#FFB224', confetti: true });
-  sess.newAch.forEach(id => { const a = ACHIEVEMENTS.find(x => x.id === id); queueCine({ tag: 'TROFEO DESBLOQUEADO', big: a.name, label: a.desc, icon: I[a.ico] || I.star, color: 'var(--acc)', kind: 'trophy' }); });
+  sess.newAch.forEach(id => { const a = ACHIEVEMENTS.find(x => x.id === id); queueCine(a.bench ? { tag: 'HITO DE BANCA', big: String(a.bench), label: a.desc, kind: 'bench', confetti: true } : { tag: 'TROFEO DESBLOQUEADO', big: a.name, label: a.desc, icon: I[a.ico] || I.star, color: 'var(--acc)', kind: 'trophy' }); });
   fresh.forEach(m => queueCine({ tag: 'MISIÓN CUMPLIDA', big: '+' + m.xp + ' XP', label: m.name, color: '#FFB224', kind: 'mission' }));
   ACTIVE = null; saveActive(); stopRest();
   document.body.classList.remove('wo-on');
@@ -4023,6 +4119,7 @@ function renderProgreso() {
     html += '<div class="chips pgchips">' + lifts.map(id => '<button class="chip ' + (id === PROG_LIFT ? 'on' : '') + '" onclick="PROG_LIFT=\'' + id + '\';renderProgreso()">' + esc(ex(id).name) + '</button>').join('') + '</div>';
     html += '<div class="hcard pgtop"><div class="hc-eb">TOP SET · ' + esc(e.name.toUpperCase()) + '</div><div class="hc-big"><div><b>' + fmtW(last) + '</b><span>KG</span></div><div class="hc-side"><div class="pgd" style="color:' + (d > 0 ? 'var(--acc)' : 'var(--ink2)') + '">' + (d > 0 ? '▲ +' : d < 0 ? '▼ ' : '') + fmtW(d) + ' KG</div><div class="lab-m">EN ' + h.length + (h.length === 1 ? ' SESIÓN' : ' SESIONES') + '</div></div></div>' + topSetChart(PROG_LIFT) + '</div>';
   }
+  html += benchGoalCard();
   html += '<div class="pg4"><div class="card"><div class="num">' + t.sessions + '</div><div class="lab">sesiones</div></div><div class="card"><div class="num" style="color:var(--xp)">' + t.prs + '</div><div class="lab">récords personales</div></div><div class="card"><div class="num" style="color:var(--acc)">' + t.ups + '</div><div class="lab">subidas de peso</div></div><div class="card"><div class="num">' + fmtK(t.ton).replace(' ', '<span class="u"> ') + '</span></div><div class="lab">levantados · mejor racha ' + weekStreakMax() + ' sem.</div></div></div>';
   html += '<div style="height:10px"></div>' + weekRing();
   html += '<div class="card" style="margin-top:10px"><div class="row between"><h3>Días entrenados</h3><span class="small muted">últimas 16 semanas</span></div>' + heatmap() + '</div>';
@@ -4161,6 +4258,7 @@ function settingsSheet() {
   html += '<label class="lbl">Sonido al terminar el descanso</label><div class="seg"><button class="' + (S.sound ? 'on' : '') + '" onclick="S.sound=true;saveS();settingsSheet()">Sí</button><button class="' + (!S.sound ? 'on' : '') + '" onclick="S.sound=false;saveS();settingsSheet()">No</button></div>';
   const c = cycleInfo(S.program);
   if (c) html += '<label class="lbl">Ciclo del programa</label><div class="row between card" style="padding:10px 12px"><div class="small">Semana ' + c.week + ' · ' + (c.deload ? 'descarga' : 'bloque ' + c.block) + '</div><button class="btn sm" onclick="ask(\'¿Reiniciar el ciclo?\', \'Arrancás de nuevo en la semana 1, bloque 1.\', \'Reiniciar\', () => { S.starts[S.program] = today(); saveS(); go(\'hoy\'); })">Reiniciar ciclo</button></div>';
+  html += '<label class="lbl">Meta de press de banca</label><div class="card bg-set">' + GOALS.bench.map((g, i) => '<div class="bg-row"><span class="lab-m">META ' + (i + 1) + '</span><label class="bg-kg"><input class="inp" type="number" inputmode="decimal" step="2.5" value="' + g.kg + '" onchange="goalSet(' + i + ',\'kg\',this.value)" aria-label="Kilos de la meta ' + (i + 1) + '"><span>kg</span></label><input class="inp" type="date" value="' + g.date + '" onchange="goalSet(' + i + ',\'date\',this.value)" aria-label="Fecha de la meta ' + (i + 1) + '"></div>').join('') + '<div class="bg-row"><span class="lab-m">PESO</span><label class="bg-kg"><input class="inp" type="number" inputmode="decimal" step="0.5" value="' + (GOALS.bw || '') + '" onchange="goalBw(this.value)" aria-label="Peso corporal de referencia"><span>kg</span></label><span class="small muted">De referencia: se usa mientras no anotes pesajes.</span></div></div>';
   html += '<div class="stack" style="margin-top:18px"><button class="btn w" onclick="calendarLink()">' + I.cal + ' Recordatorio en Google Calendar</button><button class="btn w" onclick="exportData()">Exportar copia de seguridad</button><button class="btn w" onclick="$(\'impf\').click()">Importar copia</button><input type="file" id="impf" accept=".json" class="hid" onchange="importData(this.files[0])">' + (old ? '<button class="btn w" onclick="migrateLegacy()">Importar historial de GymBrain V18 (' + old + ' series)</button>' : '') + '<button class="btn w d" onclick="resetAll()">Borrar todos los datos</button></div>';
   html += '<p class="small muted2" style="margin-top:16px">GymBrain · ' + APP_VERSION + ' · Chadbits. Tus datos viven solo en este teléfono. Ilustración anatómica: js-rich-body-highlighter (MIT). Modelo 3D de músculos: Z-Anatomy y BodyParts3D (Database Center for Life Science), vía Fit Mit With, CC BY-SA 4.0. Motor 3D: Three.js (MIT). Fotos de ejercicios: free-exercise-db (dominio público). Rangos de fuerza: orientativos, basados en tablas de estándares para hombres.</p>';
   openSheet(html);
@@ -4171,13 +4269,20 @@ function calendarLink() {
   const f = x => x.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
   window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(t) + '&dates=' + f(d) + '/' + f(e) + '&recur=RRULE:FREQ=WEEKLY;BYDAY=MO,WE,FR&details=' + encodeURIComponent('Abrí GymBrain y tocá Empezar.'), '_blank');
 }
+function goalSet(i, k, v) {
+  const g = GOALS.bench[i]; if (!g) return;
+  if (k === 'kg') { const n = parseFloat(String(v).replace(',', '.')); if (!(n >= 20 && n <= 400)) { toast('Poné un peso entre 20 y 400 kg'); settingsSheet(); return; } g.kg = Math.round(n * 2) / 2; }
+  else { if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) { toast('Esa fecha no va'); settingsSheet(); return; } g.date = v; }
+  saveGoals(); toast('Meta actualizada'); render();
+}
+function goalBw(v) { const n = parseFloat(String(v).replace(',', '.')); if (!(n >= 30 && n <= 250)) { toast('Poné un peso entre 30 y 250 kg'); settingsSheet(); return; } GOALS.bw = Math.round(n * 10) / 10; saveGoals(); toast('Peso de referencia guardado'); render(); }
 function exportData() {
-  const data = { v: 3, exported: new Date().toISOString(), settings: S, sessions: SESSIONS, swaps: SWAPS, custom: CUSTOM, bw: BW, ach: load('gb2_ach', []), skips: SKIPS, missions: load('gb2_missions', {}) };
+  const data = { v: 3, exported: new Date().toISOString(), settings: S, sessions: SESSIONS, swaps: SWAPS, custom: CUSTOM, bw: BW, ach: load('gb2_ach', []), skips: SKIPS, missions: load('gb2_missions', {}), goals: GOALS };
   const blob = new Blob([JSON.stringify(data)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'gymbrain-backup-' + today() + '.json'; a.click(); toast('Copia descargada');
 }
 function importData(file) {
   if (!file) return; const r = new FileReader();
-  r.onload = () => { try { const d = JSON.parse(r.result); if (!d.sessions) throw 0; ask('¿Importar la copia?', 'Se reemplazan tus datos actuales por los de la copia (' + d.sessions.length + ' sesiones).', 'Importar', () => { S = { ...S, ...d.settings }; if (!S.starts) S.starts = {}; SESSIONS = d.sessions; SWAPS = d.swaps || {}; CUSTOM = d.custom || []; BW = d.bw || []; SKIPS = d.skips || []; saveS(); saveSessions(); save(K.sw, SWAPS); save(K.cu, CUSTOM); save(K.bw, BW); save('gb2_ach', d.ach || []); save('gb2_skips', SKIPS); save('gb2_missions', d.missions || {}); go('hoy', null, true); toast('Copia importada'); }); } catch (e) { toast('Ese archivo no es una copia válida'); } };
+  r.onload = () => { try { const d = JSON.parse(r.result); if (!d.sessions) throw 0; ask('¿Importar la copia?', 'Se reemplazan tus datos actuales por los de la copia (' + d.sessions.length + ' sesiones).', 'Importar', () => { S = { ...S, ...d.settings }; if (!S.starts) S.starts = {}; SESSIONS = d.sessions; SWAPS = d.swaps || {}; CUSTOM = d.custom || []; BW = d.bw || []; SKIPS = d.skips || []; saveS(); saveSessions(); save(K.sw, SWAPS); save(K.cu, CUSTOM); save(K.bw, BW); save('gb2_ach', d.ach || []); save('gb2_skips', SKIPS); save('gb2_missions', d.missions || {}); if (goalsOk(d.goals)) { GOALS = d.goals; if (!GOALS.v) GOALS.v = 1; saveGoals(); } go('hoy', null, true); toast('Copia importada'); }); } catch (e) { toast('Ese archivo no es una copia válida'); } };
   r.readAsText(file);
 }
 function resetAll() { ask('¿Borrar todos los datos?', 'Sesiones, rutinas, logros y ajustes. No se puede deshacer. Si querés, exportá una copia antes.', 'Borrar todo', () => setTimeout(() => ask('Última confirmación', 'Se borra todo GymBrain de este teléfono.', 'Sí, borrar', resetAllNow, true), 50), true); }
@@ -4211,7 +4316,7 @@ function finishOnboarding(pid) {
 }
 
 // ═══ INIT ═══
-const APP_VERSION = 'V24';
+const APP_VERSION = 'V25';
 function splash() {
   if (sessionStorage.getItem('gb2_splash')) return; sessionStorage.setItem('gb2_splash', '1');
   const d = document.createElement('div'); d.className = 'splash'; d.innerHTML = '<div class="lg">' + LOGO + '</div><div class="t">GYMBRAIN</div><div class="s">BY CHADBITS</div>'; document.body.appendChild(d); setTimeout(() => d.remove(), 1800);
