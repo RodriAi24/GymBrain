@@ -2824,6 +2824,7 @@ function m3dLoad() {
   M3D.p = (async () => {
     const [T, { GLTFLoader }, { MeshoptDecoder }, { RoomEnvironment }] = await Promise.all([import('three'), import('./vendor/three/jsm/loaders/GLTFLoader.js'), import('./vendor/three/jsm/libs/meshopt_decoder.module.js'), import('./vendor/three/jsm/environments/RoomEnvironment.js')]);
     const ren = new T.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+    ren.domElement.addEventListener('webglcontextlost', () => setTimeout(() => { if (M3D.ren === ren) m3dLost(); }, 0));
     ren.setPixelRatio(Math.min(2, window.devicePixelRatio || 1)); ren.toneMapping = T.ACESFilmicToneMapping; ren.toneMappingExposure = 1.05; ren.outputColorSpace = T.SRGBColorSpace; ren.setClearColor(0x000000, 0);
     const sc = new T.Scene(); const pm = new T.PMREMGenerator(ren); sc.environment = pm.fromScene(new RoomEnvironment(), .04).texture; sc.environmentIntensity = .35; pm.dispose();
     sc.add(new T.HemisphereLight(0xfff1e6, 0x0c0b0a, .5));
@@ -2846,9 +2847,21 @@ function m3dLoad() {
     const pivot = new T.Group(); pivot.add(model); sc.add(pivot);
     const cam = new T.PerspectiveCamera(24, 1, .05, 30); const dist = (size.y / 2) / Math.tan(12 * Math.PI / 180) * 1.1; cam.position.set(0, size.y * .04, dist); cam.lookAt(0, 0, 0);
     Object.assign(M3D, { T, ren, sc, cam, mats, meshes, pivot, ray: new T.Raycaster(), st: 2 });
-  })().catch(err => { M3D.st = -1; console.warn('Mapa 3D no disponible:', err); throw err; });
+  })().catch(err => { M3D.st = -1; M3D.p = null; M3D.fails = (M3D.fails || 0) + 1; M3D.failAt = Date.now(); console.warn('Mapa 3D no disponible:', err); throw err; });
   return M3D.p;
 }
+// iOS libera el contexto WebGL cuando la app pasa a segundo plano: se descarta el visor (queda el mapa 2D) y se arma de nuevo al volver
+function m3dLost() {
+  if (!M3D.ren) return; if (M3D.el) M3D.el.classList.remove('is3d'); if (M3D.raf) cancelAnimationFrame(M3D.raf);
+  M3D.ren.domElement.remove(); try { M3D.ren.dispose(); M3D.ren.forceContextLoss(); } catch (e) { }
+  // Tope por si el contexto se pierde en cadena: después de 5 queda el mapa 2D hasta reabrir la app
+  M3D.losses = (M3D.losses || 0) + 1; Object.assign(M3D, { ren: null, p: null, el: null, raf: 0, last: 0, st: M3D.losses > 5 ? -1 : 0 }); if (!document.hidden) m3dRefresh();
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) return;
+  if (M3D.ren && M3D.ren.getContext().isContextLost()) return m3dLost();
+  m3dRefresh();
+});
 // Se llama después de pintar el HTML de muscleMapCard: monta el 3D encima del mapa 2D
 // Lugares que pueden mostrar el 3D (ficha de ejercicio, Hoy, Progreso). Hay un solo visor y se muda a la pantalla visible.
 // cfg: { heat: {músculo: 0-1}, side: 'front'|'back', tip(clave, w) → texto al tocar, auto: giro lento al entrar }
@@ -2856,6 +2869,8 @@ const M3D_HOSTS = {};
 function m3dHost(id, cfg) { Object.keys(M3D_HOSTS).forEach(k => { if (!document.getElementById(k)) delete M3D_HOSTS[k]; }); M3D_HOSTS[id] = cfg; setTimeout(m3dRefresh, 0); }
 function m3dPick() { const ok = h => M3D_HOSTS[h.id]; return [...document.querySelectorAll('#sheet.on .m3d-host')].find(ok) || [...document.querySelectorAll('.page.on .m3d-host')].find(ok) || null; }
 function m3dRefresh() {
+  // Si la carga falló (sin señal en el gym), se reintenta al rato, hasta 3 veces
+  if (M3D.st < 0 && M3D.gl && M3D.fails < 3 && Date.now() - M3D.failAt > 5000) M3D.st = 0;
   if (!m3dOk() || !m3dPick()) return; M3D.st = Math.max(M3D.st, 1);
   m3dLoad().then(() => { const h = m3dPick(); if (h && h !== M3D.el) m3dAttach(h); }).catch(() => {});
 }
@@ -4703,7 +4718,7 @@ function finishOnboarding(pid) {
 }
 
 // ═══ INIT ═══
-const APP_VERSION = 'V28';
+const APP_VERSION = 'V28.1';
 function splash() {
   if (sessionStorage.getItem('gb2_splash')) return; sessionStorage.setItem('gb2_splash', '1');
   const d = document.createElement('div'); d.className = 'splash'; d.innerHTML = '<div class="lg">' + LOGO + '</div><div class="t">GYMBRAIN</div><div class="s">BY CHADBITS</div>'; document.body.appendChild(d); setTimeout(() => d.remove(), 1800);
