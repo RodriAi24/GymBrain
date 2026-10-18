@@ -611,6 +611,21 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
 .tsc circle.on { fill: var(--acc); }
 .tsc-x { display: grid; margin-top: 8px; font: 500 9px var(--fm); color: var(--ink3); text-align: center; letter-spacing: .02em; }
 .tsc-x .on { color: var(--acc); }
+.pseg { position: sticky; top: var(--sat); z-index: 6; margin: 0 -18px 14px; padding: 8px 18px 10px; background: var(--bg); }
+.pseg .seg button, .pseg-b button { min-height: 44px; }
+.pseg-b { margin-bottom: 14px; }
+.htot { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.htot .card { margin: 0; padding: 14px 14px 12px; border-radius: 18px; }
+.htot .w2 { grid-column: span 2; }
+.htot .num { font-size: 34px; line-height: 1; }
+.htot .num .u { font-size: 18px; color: var(--ink2); }
+.htot .lab { font-weight: 600; font-size: 12.5px; color: var(--ink2); margin-top: 4px; }
+.hmonth { font: 700 11px var(--fm); letter-spacing: .12em; text-transform: uppercase; color: var(--ink2); margin: 14px 4px 2px; }
+.hmonth:first-child { margin-top: 0; }
+.tcat-row { display: flex; width: 100%; align-items: center; justify-content: space-between; min-height: 44px; margin-top: 8px; padding: 0 14px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); font: 600 14px var(--fb); color: var(--ink2); }
+.tcat-row b { display: flex; align-items: center; gap: 2px; font-size: 13px; color: var(--acc-ink); }
+.tcat-row svg { width: 16px; height: 16px; }
+.hlast .ic, .hlast > svg { width: 18px; height: 18px; color: var(--ink3); flex: none; }
 .pg4 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
 .pg4 .card { margin: 0; padding: 14px 16px; border-radius: 18px; }
 .pg4 .num { font-size: 44px; line-height: 1; }
@@ -1001,9 +1016,9 @@ body.wo-on::after { background: var(--bg); }
 <nav class="tabbar" id="tabbar"><div>
 <button class="tab" data-p="hoy"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8v9a2 2 0 0 1-2 2h-4v-6H9v6H5a2 2 0 0 1-2-2z"/></svg><span>Hoy</span></button>
 <button class="tab" data-p="plan"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg><span>Plan</span></button>
-<button class="tab" data-p="ejercicios"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 5v14M18 5v14M3 8v8M21 8v8M6 12h12"/></svg><span>Ejercicios</span></button>
+<button class="tab" data-p="progreso"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M7 16V9M12 16V4M17 16v-6"/></svg><span>Progreso</span></button>
 <button class="tab" data-p="estado"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="11" r="2.5"/><path d="M5.5 18c.6-2.2 1.9-3.3 3.5-3.3s2.9 1.1 3.5 3.3M15 9h4M15 13h4"/></svg><span>Estado</span></button>
-<button class="tab" data-p="aprender"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zm0 0a2 2 0 0 0 2 2h13"/></svg><span>Aprender</span></button>
+<button class="tab" data-p="biblioteca"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zm0 0a2 2 0 0 0 2 2h13"/></svg><span>Biblioteca</span></button>
 </div></nav>
 <div class="restbar" id="restbar"><div><div class="rring"><svg viewBox="0 0 40 40"><circle class="a" cx="20" cy="20" r="16"/><circle class="b" id="restRing" cx="20" cy="20" r="16"/></svg><div class="t" id="restT">0:00</div></div><div class="l"><div class="lab-m">Descanso</div><div id="restL"></div><div id="restTip" class="small muted2"></div></div><button onclick="addRest(30)">+30 s</button><button onclick="stopRest()">Saltar</button></div></div>
 <div class="sheet-bg" id="sheetbg"></div>
@@ -3372,10 +3387,11 @@ function suggestion() {
 }
 function tipOff(id) { TIPS.off = TIPS.off || {}; TIPS.off[id] = today(); save('gb2_tips', TIPS); render(); toast('Listo, no te lo muestro por una semana'); }
 const ST_COL = { adelantado: 'var(--acc)', 'en camino': 'var(--xp)', atrasado: 'var(--ink2)' };
-function projCard() {
-  const bp = benchProj(), wp = bwProj(), tip = suggestion();
-  let h = '<div class="sec"><h2>Proyecciones</h2><span class="lab-m">CON TU HISTORIAL</span></div><div class="pj">';
-  const st = s => '<span class="pj-st" style="color:' + ST_COL[s] + ';border-color:' + ST_COL[s] + '">' + s.toUpperCase() + '</span>';
+const projSt = s => '<span class="pj-st" style="color:' + ST_COL[s] + ';border-color:' + ST_COL[s] + '">' + s.toUpperCase() + '</span>';
+const projWrap = rows => '<div class="pj">' + rows + '<p class="kc-legal" style="margin:10px 2px 0">Proyecciones con regresión sobre tu historial: orientan, no prometen.</p></div>';
+// Proyección de banca (va en Progreso › Fuerza)
+function projBench() {
+  const bp = benchProj(); const st = projSt; let h = '';
   const srcN = bp.src === 'incline-db' ? ' <small>(desde inclinado con mancuernas)</small>' : '';
   h += '<div class="pj-row"><div class="pj-ic">' + I.mountain + '</div><div class="grow"><div class="lab-m">PRESS DE BANCA' + srcN + '</div>';
   if (bp.state === 'none') h += '<b>Juntando datos</b><p>Con 4 semanas de banca te digo cuándo llegás.</p>';
@@ -3383,7 +3399,12 @@ function projCard() {
   else if (bp.state === 'done') h += '<b>Metas cumplidas</b><p>Poné una nueva en Ajustes.</p>';
   else if (bp.state === 'stalled') h += '<b>Ritmo plano · ' + kgw(bp.perWeek) + '</b><p>Así no hay fecha para ' + bp.goal.kg + ' kg todavía. Pasa: se destraba con descanso, comida y sueño.</p>';
   else h += '<b>A este ritmo llegás a ' + bp.goal.kg + ' kg en ' + fmtMes(bp.eta).toLowerCase() + '</b>' + st(bp.status) + '<p>Meta: ' + fmtMes(bp.goal.date).toLowerCase() + ' · ' + kgw(bp.perWeek) + ' de 1RM estimado (últimas 8 semanas).</p>';
-  h += '</div></div><div class="pj-row"><div class="pj-ic">' + I.stats + '</div><div class="grow"><div class="lab-m">PESO CORPORAL</div>';
+  return projWrap(h + '</div></div>');
+}
+// Proyección de peso (Progreso › Cuerpo)
+function projBw() {
+  const wp = bwProj(); const st = projSt;
+  let h = '<div class="pj-row"><div class="pj-ic">' + I.stats + '</div><div class="grow"><div class="lab-m">PESO CORPORAL</div>';
   if (!wp.tr && wp.state !== 'collecting') h += '<b>' + (BW.length ? 'Juntando datos' : 'Sin pesajes') + '</b><p>' + (BW.length ? 'Con 4 pesajes en 10 días sale la tendencia.' : 'Pesate un par de veces por semana desde Hoy.') + '</p>';
   else if (wp.state === 'nogoal') h += '<b>' + fmtW1(wp.tr.last) + ' kg · ' + kgw(wp.tr.perWeek) + '</b><p>' + bwWord(wp.tr)[0].toUpperCase() + bwWord(wp.tr).slice(1) + '. Si querés una fecha estimada, poné una meta de peso en Ajustes.</p>';
   else if (wp.state === 'collecting') h += '<b>Juntando datos</b><p>Meta: ' + fmtW1(wp.g.kg) + ' kg. Con 4 pesajes en 10 días calculo el ritmo.</p>';
@@ -3391,22 +3412,30 @@ function projCard() {
   else if (wp.state === 'off') h += '<b>' + fmtW1(wp.tr.last) + ' kg · ' + kgw(wp.tr.perWeek) + '</b><p>Tu meta es ' + fmtW1(wp.g.kg) + ' kg y por ahora la línea no va para ese lado. Sin drama: mirá las calorías.</p>';
   else h += '<b>Llegás a ' + fmtW1(wp.g.kg) + ' kg en ' + fmtMes(wp.eta).toLowerCase() + '</b>' + st(wp.status) + '<p>Meta: ' + fmtMes(wp.g.date).toLowerCase() + ' · ' + kgw(wp.tr.perWeek) + ' sobre el promedio.</p>';
   h += '</div></div>';
-  if (NUTRI.show) { const t = kcalTarget(), a7 = kcalAvg7();
-    h += '<div class="pj-row"><div class="pj-ic">' + I.flame + '</div><div class="grow"><div class="lab-m">CALORÍAS</div><b>' + (a7 ? fmtN(a7.avg) + ' de promedio' : 'Sin registros esta semana') + (t ? ' · objetivo ' + fmtN(t.kcal) : '') + '</b><p>' + (t ? (t.src === 'adapt' ? 'Estimación con tus datos, confianza ' + t.conf + '.' : 'Por fórmula hasta juntar 2 semanas de peso y calorías.') : 'Completá altura y edad en Ajustes para tener objetivo.') + '</p></div></div>'; }
-  if (tip) h += '<div class="pj-tip"><div class="lg">' + LOGO + '</div><div class="grow"><b>' + esc(tip.t) + '</b><p>' + esc(tip.txt) + '</p></div><button class="ordb" onclick="tipOff(\'' + tip.id + '\')" aria-label="Descartar sugerencia">' + I.x + '</button></div>';
-  return h + '<p class="kc-legal" style="margin:10px 2px 0">Proyecciones con regresión sobre tu historial: orientan, no prometen.</p></div>';
+  return projWrap(h);
+}
+// Objetivo de calorías en una fila (Progreso › Cuerpo)
+function projKcal() {
+  if (!NUTRI.show) return '';
+  const t = kcalTarget(), a7 = kcalAvg7();
+  const h = '<div class="pj-row"><div class="pj-ic">' + I.flame + '</div><div class="grow"><div class="lab-m">CALORÍAS</div><b>' + (a7 ? fmtN(a7.avg) + ' de promedio' : 'Sin registros esta semana') + (t ? ' · objetivo ' + fmtN(t.kcal) : '') + '</b><p>' + (t ? (t.src === 'adapt' ? 'Estimación con tus datos, confianza ' + t.conf + '.' : 'Por fórmula hasta juntar 2 semanas de peso y calorías.') : 'Completá altura y edad en Ajustes para tener objetivo.') + '</p></div></div>';
+  return '<div class="pj">' + h + '</div>';
+}
+// La sugerencia que cruza fuerza, peso y calorías: una sola, descartable (va en Hoy)
+function tipCard() {
+  const tip = suggestion(); if (!tip) return '';
+  return '<div class="pj-tip"><div class="lg">' + LOGO + '</div><div class="grow"><b>' + esc(tip.t) + '</b><p>' + esc(tip.txt) + '</p></div><button class="ordb" onclick="tipOff(\'' + tip.id + '\')" aria-label="Descartar sugerencia">' + I.x + '</button></div>';
 }
 
 // ═══ PÁGINA ESTADO ═══
 function renderEstado() {
   const el = $('pg-estado'); const sc = statsCalc(); const lv = levelOf(totalXp()); const bw = bwNow();
   const initials = (S.name || 'GB').trim().split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
-  let html = '<div class="topbar"><div class="es-me"><div class="es-av">' + esc(initials) + '</div><div class="grow"><div class="es-nm">' + esc(S.name || 'Atleta') + '</div><div class="lab-m" style="color:var(--ink2);letter-spacing:.08em">NIVEL ' + String(lv.n).padStart(2, '0') + ' · ' + esc(lv.name.toUpperCase()) + ' · ' + SESSIONS.length + (SESSIONS.length === 1 ? ' SESIÓN' : ' SESIONES') + '</div><button class="sw-title" onclick="titleSheet()">' + esc(currentTitle()) + ' ' + I.chev + '</button></div></div><button class="iconbtn sq" onclick="go(\'progreso\')" aria-label="Gráficos">' + I.stats + '</button></div>';
+  let html = '<div class="topbar"><div class="es-me"><div class="es-av">' + esc(initials) + '</div><div class="grow"><div class="es-nm">' + esc(S.name || 'Atleta') + '</div><div class="lab-m" style="color:var(--ink2);letter-spacing:.08em">NIVEL ' + String(lv.n).padStart(2, '0') + ' · ' + esc(lv.name.toUpperCase()) + ' · ' + SESSIONS.length + (SESSIONS.length === 1 ? ' SESIÓN' : ' SESIONES') + '</div><button class="sw-title" onclick="titleSheet()">' + esc(currentTitle()) + ' ' + I.chev + '</button></div></div><button class="iconbtn sq" onclick="settingsSheet()" aria-label="Ajustes">' + I.gear + '</button></div>';
   // rango global gigante + escalera E→S
   const order = 'EDCBAS'; const ri = order.indexOf(sc.rank); const nx = RANKS[ri + 1]; const gl = Math.round(sc.global);
   const weak = sc.stats.slice().sort((a, b) => a.v - b.v)[0];
   html += '<div class="es-rk"><div class="es-rk-top"><div class="es-L" style="color:' + RANK_COL[sc.rank] + ';text-shadow:0 0 40px ' + RANK_COL[sc.rank] + '59">' + sc.rank + '</div><div class="grow"><div class="lab-m">RANGO GLOBAL</div><div class="es-sc"><b>' + gl + '</b><span>/100</span></div><div class="es-tx">' + (nx ? 'Te faltan <b>' + Math.max(1, Math.ceil(nx[1] - sc.global)) + ' puntos</b> para ' + nx[0] + '. ' : 'Rango máximo. ') + esc(weak.name) + ' es tu punto flojo.</div></div></div><div class="es-lad">' + order.split('').map((l, i) => '<i class="' + (i < ri ? 'p' : i === ri ? 'c' : i === ri + 1 ? 'n' : '') + '"' + (i === ri ? ' style="background:' + RANK_COL[l] + '"' : '') + '>' + l + '</i>').join('') + '</div></div>';
-  html += benchGoalCard() + projCard();
   // ventana de estado
   html += '<div class="sw">';
   html += '<div class="sw-grid"><div><div class="lab-m">Nivel</div><div class="sw-v">' + lv.n + ' <small>' + esc(lv.name) + '</small></div></div><div><div class="lab-m">XP total</div><div class="sw-v">' + lv.xp.toLocaleString('es-AR') + '</div></div><div><div class="lab-m">Racha</div><div class="sw-v">' + weekStreak() + ' <small>sem.</small></div></div><div><div class="lab-m">Peso</div><div class="sw-v">' + fmtW(bw.w) + ' <small>kg' + (bw.est ? ' est.' : '') + '</small></div></div></div>';
@@ -3424,11 +3453,20 @@ function renderEstado() {
   html += '<div class="sec"><h2>Misiones</h2><span class="lab-m">' + mdone + '/3 · SE RENUEVAN EL LUNES</span></div><div class="hmis">' + ms.map(m => '<div class="hm ' + (m.done ? 'done' : '') + '" style="cursor:default"><div class="hm-t"><span>' + (m.done ? '<i class="hm-ok">' + I.check + '</i>' : '') + esc(m.name) + '</span><b>+' + m.xp + '</b></div><div class="hm-b"><i><b style="width:' + Math.round(m.pct * 100) + '%"></b></i><small>' + (m.k ? fmtK(m.v) + ' / ' + fmtK(m.t) : Math.min(m.v, m.t) + ' / ' + m.t) + '</small></div></div>').join('') + '</div><div class="small muted2" style="margin:8px 4px 0">El XP se acredita solo al completarlas.</div>';
   // trofeos
   const got = load('gb2_ach', []); const t = totals();
-  html += '<div class="sec"><h2>Trofeos</h2><span class="small muted">' + got.length + '/' + ACHIEVEMENTS.length + '</span></div>';
-  const cats = [['constancia', 'Constancia'], ['fuerza', 'Fuerza'], ['volumen', 'Volumen'], ['hitos', 'Hitos'], ['especial', 'Especiales']];
-  cats.forEach(([c, n]) => { const list = ACHIEVEMENTS.filter(a => a.cat === c); if (!list.length) return; html += '<div class="lab-m" style="margin:12px 0 6px">' + n + ' · ' + list.filter(a => got.includes(a.id)).length + '/' + list.length + '</div><div class="tgrid">' + list.map(a => { const on = got.includes(a.id); const p = a.prog ? a.prog(t) : null; return '<div class="trophy ' + (on ? 'on' : '') + '" onclick="trophySheet(\'' + a.id + '\')"><div class="tico">' + ico(a.ico) + '</div><div class="tname">' + esc(a.name) + '</div>' + (!on && p ? '<div class="tbar"><i style="width:' + Math.round(100 * Math.min(1, p[0] / p[1])) + '%"></i></div>' : '') + '</div>'; }).join('') + '</div>'; });
+  html += '<div class="sec"><h2>Trofeos</h2><span class="small muted">' + got.length + '/' + ACHIEVEMENTS.length + '</span></div>' + nextAchBox();
+  const cats = [['constancia', 'Constancia'], ['fuerza', 'Fuerza'], ['volumen', 'Volumen'], ['hitos', 'Hitos'], ['especial', 'Especiales']]; let hidden = 0;
+  cats.forEach(([c, n]) => { const list = ACHIEVEMENTS.filter(a => a.cat === c); if (!list.length) return; const nOn = list.filter(a => got.includes(a.id)).length;
+    // Categoría sin ninguno: una fila que se despliega
+    if (!nOn && !TROPHY_OPEN[c]) { html += '<button class="tcat-row" onclick="TROPHY_OPEN[\'' + c + '\']=1;renderEstado()"><span>' + n + ' · 0/' + list.length + '</span><b>Ver ' + I.chev + '</b></button>'; return; }
+    // Bloqueados colapsados: los desbloqueados y los más cercanos hasta completar la fila
+    const prog = a => { const p = a.prog ? a.prog(t) : null; return p ? Math.min(1, p[0] / p[1]) : 0; };
+    const sorted = list.filter(a => got.includes(a.id)).concat(list.filter(a => !got.includes(a.id)).sort((x, y) => prog(y) - prog(x)));
+    const shown = TROPHY_OPEN.all ? sorted : sorted.slice(0, Math.ceil((nOn + 1) / 3) * 3); hidden += sorted.length - shown.length;
+    html += '<div class="lab-m" style="margin:12px 0 6px">' + n + ' · ' + nOn + '/' + list.length + '</div><div class="tgrid">' + shown.map(a => { const on = got.includes(a.id); const p = a.prog ? a.prog(t) : null; return '<div class="trophy ' + (on ? 'on' : '') + '" onclick="trophySheet(\'' + a.id + '\')"><div class="tico">' + ico(a.ico) + '</div><div class="tname">' + esc(a.name) + '</div>' + (!on && p ? '<div class="tbar"><i style="width:' + Math.round(100 * Math.min(1, p[0] / p[1])) + '%"></i></div>' : '') + '</div>'; }).join('') + '</div>'; });
+  if (hidden) html += '<button class="btn ghost w" style="margin-top:10px" onclick="TROPHY_OPEN.all=1;renderEstado()">Ver los ' + hidden + ' bloqueados</button>';
   el.innerHTML = html;
 }
+const TROPHY_OPEN = {};
 function trophySheet(id) {
   const a = ACHIEVEMENTS.find(x => x.id === id); const on = load('gb2_ach', []).includes(id); const p = a.prog ? a.prog(totals()) : null;
   openSheet('<div style="text-align:center;padding:10px 0"><div class="tico big ' + (on ? 'on' : '') + '">' + ico(a.ico) + '</div><h2 style="margin-top:10px">' + esc(a.name) + '</h2><p class="muted" style="margin-top:6px">' + esc(a.desc) + '</p>' + (p && !on ? '<div class="sbar" style="max-width:220px;margin:14px auto 0"><i style="width:' + Math.round(100 * Math.min(1, p[0] / p[1])) + '%"></i></div><div class="small muted2" style="margin-top:6px">' + (a.id.startsWith('t') ? fmtK(p[0]) + ' de ' + fmtK(p[1]) : Math.round(p[0]) + ' de ' + p[1]) + '</div>' : on ? '<div class="pill g" style="margin-top:12px">Desbloqueado</div>' : '') + '</div>');
@@ -3966,19 +4004,21 @@ function confetti() {
 // ═══ NAVEGACIÓN ═══
 // Cada pestaña tiene su propia pila: al volver a una pestaña la encontrás donde la dejaste.
 // Tocar la pestaña activa vuelve a su raíz. Cada pantalla recuerda su scroll.
-const TABS = ['hoy', 'plan', 'ejercicios', 'estado', 'aprender'];
-const PAGE_TAB = { hoy: 'hoy', entreno: 'hoy', resumen: 'hoy', calentamiento: 'hoy', plan: 'plan', programa: 'plan', editor: 'plan', ejercicios: 'ejercicios', ejercicio: 'ejercicios', estado: 'estado', progreso: 'estado', historial: 'estado', aprender: 'aprender', articulo: 'aprender', faq: 'aprender', glosario: 'aprender', supps: 'aprender', creadores: 'aprender', metodos: 'aprender' };
-let TAB = 'hoy'; const STACKS = {}; TABS.forEach(t => STACKS[t] = [{ p: t, y: 0 }]);
+const TABS = ['hoy', 'plan', 'progreso', 'estado', 'biblioteca'];
+// Biblioteca no es una página: su raíz es Ejercicios o Aprender, según el último segmento elegido
+const tabRoot = t => t === 'biblioteca' ? (S.lib === 'aprender' ? 'aprender' : 'ejercicios') : t;
+const PAGE_TAB = { hoy: 'hoy', entreno: 'hoy', resumen: 'hoy', calentamiento: 'hoy', plan: 'plan', programa: 'plan', editor: 'plan', progreso: 'progreso', historial: 'progreso', estado: 'estado', ejercicios: 'biblioteca', ejercicio: 'biblioteca', aprender: 'biblioteca', articulo: 'biblioteca', faq: 'biblioteca', glosario: 'biblioteca', supps: 'biblioteca', creadores: 'biblioteca', metodos: 'biblioteca' };
+let TAB = 'hoy'; const STACKS = {}; TABS.forEach(t => STACKS[t] = [{ p: tabRoot(t), y: 0 }]);
 let STACK = STACKS.hoy; let CTX = {};
 function saveScroll() { const t = STACK[STACK.length - 1]; if (t) t.y = window.scrollY; }
 function restoreScroll() { const y = (STACK[STACK.length - 1] || {}).y || 0; window.scrollTo(0, y); requestAnimationFrame(() => window.scrollTo(0, y)); }
 function go(p, ctx, replace) {
   saveScroll(); closeSheet(true);
   if (TABS.includes(p) && !replace) {
-    if (p === TAB) STACKS[p] = [{ p, y: 0 }];
+    if (p === TAB) STACKS[p] = [{ p: tabRoot(p), y: 0 }];
     TAB = p; STACK = STACKS[p];
     const t = STACK[STACK.length - 1];
-    if ((t.p === 'entreno' && !ACTIVE) || t.p === 'resumen' || (t.p === 'editor' && !EDIT)) STACKS[p] = STACK = [{ p, y: 0 }];
+    if ((t.p === 'entreno' && !ACTIVE) || t.p === 'resumen' || (t.p === 'editor' && !EDIT)) STACKS[p] = STACK = [{ p: tabRoot(p), y: 0 }];
     CTX = STACK[STACK.length - 1].ctx || {}; render(); restoreScroll(); armNav(); return;
   }
   if (replace) { TAB = PAGE_TAB[p] || TAB; STACKS[TAB] = STACK = [{ p, ctx, y: 0 }]; }
@@ -3992,6 +4032,9 @@ function back() {
   return false;
 }
 function cur() { return STACK[STACK.length - 1].p; }
+// Control segmentado de Biblioteca: cambia la raíz de la pestaña y lo recuerda
+function libSeg(seg) { if (seg === tabRoot('biblioteca') && TAB === 'biblioteca' && STACK.length === 1) return; S.lib = seg; saveS(); TAB = 'biblioteca'; STACKS.biblioteca = STACK = [{ p: seg, y: 0 }]; CTX = {}; render(); window.scrollTo(0, 0); }
+const libSegBar = () => '<div class="seg pseg-b">' + [['ejercicios', 'Ejercicios'], ['aprender', 'Aprender']].map(([k, n]) => '<button class="' + (tabRoot('biblioteca') === k ? 'on' : '') + '" onclick="libSeg(\'' + k + '\')">' + n + '</button>').join('') + '</div>';
 // Gesto de atrás del sistema (iOS) y botón atrás (Android): siempre hay una entrada de historial "armada"
 let navArmed = false;
 function armNav() { if (navArmed) return; try { history.pushState({ gb: Date.now() }, ''); navArmed = true; } catch (e) {} }
@@ -4136,7 +4179,7 @@ function nextAchBox() {
   const t = totals(); const got = load('gb2_ach', []);
   const pend = ACHIEVEMENTS.filter(a => !got.includes(a.id) && a.prog).map(a => { const [v, m] = a.prog(t); return { a, v, m, pct: Math.min(1, v / m) }; }).filter(x => x.pct < 1).sort((x, y) => y.pct - x.pct)[0];
   if (!pend) return '';
-  return '<div class="card nextach" style="margin-top:10px"><div class="ach" style="display:block"><div class="ico" style="width:40px;height:40px;border-radius:12px;background:var(--card3);display:flex;align-items:center;justify-content:center;color:var(--acc-ink)">' + I[pend.a.ico] + '</div></div><div class="grow"><div class="small muted">Próximo logro</div><b>' + esc(pend.a.name) + '</b><div class="mini"><i style="width:' + Math.round(pend.pct * 100) + '%"></i></div></div><div class="num" style="font-size:16px;color:var(--ink2)">' + (pend.a.id.startsWith('t') ? fmtK(pend.v) : Math.round(pend.v)) + '/' + (pend.a.id.startsWith('t') ? fmtK(pend.m) : pend.m) + '</div></div>';
+  return '<div class="card nextach"><div class="ach" style="display:block"><div class="ico" style="width:40px;height:40px;border-radius:12px;background:var(--card3);display:flex;align-items:center;justify-content:center;color:var(--acc-ink)">' + I[pend.a.ico] + '</div></div><div class="grow"><div class="small muted">El próximo</div><b>' + esc(pend.a.name) + '</b><div class="mini"><i style="width:' + Math.round(pend.pct * 100) + '%"></i></div></div><div class="num" style="font-size:16px;color:var(--ink2)">' + (pend.a.id.startsWith('t') ? fmtK(pend.v) : Math.round(pend.v)) + '/' + (pend.a.id.startsWith('t') ? fmtK(pend.m) : pend.m) + '</div></div>';
 }
 function cycleStrip(pid) {
   const c = cycleInfo(pid); if (!c) return '';
@@ -4193,18 +4236,11 @@ function renderHoy() {
   }
   html += logCards();
   html += '<div class="sec"><h2>Semana</h2><span class="lab-m">META ' + S.goal + ' SESIONES</span></div>' + weekRing();
-  const t = totals();
-  if (t.sessions) html += '<div class="stat3" style="margin-top:8px"><div class="card"><div class="num">' + t.sessions + '</div><div class="lab">sesiones</div></div><div class="card"><div class="num" style="color:var(--acc)">' + t.ups + '</div><div class="lab">subidas</div></div><div class="card"><div class="num" style="color:var(--xp)">' + t.prs + '</div><div class="lab">récords</div></div></div>';
-  html += nextAchBox();
   const ms = weekMissions(); html += '<div class="sec"><h2>Misiones</h2><span class="lab-m">' + ms.filter(m => m.done).length + '/3 · SE RENUEVAN EL LUNES</span></div><div class="hmis">' + ms.map(m => '<div class="hm tap ' + (m.done ? 'done' : '') + '" onclick="go(\'estado\')"><div class="hm-t"><span>' + (m.done ? '<i class="hm-ok">' + I.check + '</i>' : '') + esc(m.name) + '</span><b>+' + m.xp + '</b></div><div class="hm-b"><i><b style="width:' + Math.round(m.pct * 100) + '%"></b></i><small>' + (m.k ? fmtK(m.v) + ' / ' + fmtK(m.t) : Math.min(m.v, m.t) + ' / ' + m.t) + '</small></div></div>').join('') + '</div>';
-  const recent = SESSIONS.slice().sort((a, b) => b.start - a.start).slice(0, 3);
-  if (recent.length) {
-    html += '<div class="sec"><h2>Últimas sesiones</h2><button class="more" onclick="go(\'progreso\')">Ver progreso</button></div><div class="hlist">';
-    recent.forEach(s => { const wins = []; if (s.ups.length) wins.push(s.ups.length + (s.ups.length === 1 ? ' subida' : ' subidas')); if (s.prs.length) wins.push(s.prs.length + (s.prs.length === 1 ? ' récord' : ' récords')); html += '<div class="hrow tap" onclick="sessionSheet(\'' + s.id + '\')"><div class="grow"><div class="hr-t">' + esc(s.dayName) + '</div><div class="hr-s">' + esc((relDate(s.date) + ' · ' + s.ex.length + ' ejercicios · ' + fmtK(s.ton)).toUpperCase()) + '</div></div><div class="hr-w">' + (wins.join('<br>') || '<span>+' + (s.xp || sessionXp(s)) + ' XP</span>') + '</div></div>'; });
-    html += '</div>';
-  } else {
-    html += '<div class="empty" style="padding-top:20px"><b>Todo empieza con la primera sesión</b>Tocá empezar, anotá lo que levantás y la app se encarga de decirte cuándo subir.</div>';
-  }
+  html += tipCard();
+  const last = SESSIONS.slice().sort((a, b) => b.start - a.start)[0];
+  if (last) html += '<div class="sec"><h2>Última sesión</h2><button class="more" onclick="goProg(\'historial\')">Ver historial</button></div><div class="hrow tap hlast" onclick="sessionSheet(\'' + last.id + '\')"><div class="grow"><div class="hr-t">' + esc(last.dayName) + '</div><div class="hr-s">' + esc((relDate(last.date) + ' · ' + last.ex.length + ' ejercicios · ' + fmtK(last.ton)).toUpperCase()) + '</div></div>' + I.chev + '</div>';
+  else html += '<div class="empty" style="padding-top:20px"><b>Todo empieza con la primera sesión</b>Tocá empezar, anotá lo que levantás y la app se encarga de decirte cuándo subir.</div>';
   el.innerHTML = html;
 }
 function otherDaySheet() {
@@ -4410,7 +4446,7 @@ function delCustomNow(id) { CUSTOM = CUSTOM.filter(c => c.id !== id); save(K.cu,
 let LIB = { q: '', m: '', loc: '' };
 function renderEjercicios() {
   const el = $('pg-ejercicios');
-  let html = '<div class="topbar"><div><h1>Ejercicios</h1><div class="sub">' + EX.length + ' ejercicios explicados paso a paso</div></div></div>';
+  let html = '<div class="topbar"><div><h1>Biblioteca</h1><div class="sub">' + EX.length + ' ejercicios explicados paso a paso</div></div></div>' + libSegBar();
   html += '<div class="search">' + I.search + '<input class="inp" placeholder="Buscar por nombre, músculo o equipo" value="' + esc(LIB.q) + '" oninput="LIB.q=this.value;libList()"></div>';
   html += '<div class="seg" style="margin-bottom:12px"><button class="' + (!LIB.loc ? 'on' : '') + '" onclick="LIB.loc=\'\';renderEjercicios()">Todo</button><button class="' + (LIB.loc === 'gym' ? 'on' : '') + '" onclick="LIB.loc=\'gym\';renderEjercicios()">Gym</button><button class="' + (LIB.loc === 'casa' ? 'on' : '') + '" onclick="LIB.loc=\'casa\';renderEjercicios()">Casa</button></div>';
   html += '<div id="liblist"></div>';
@@ -4471,34 +4507,62 @@ function topSetChart(id) {
   const P = vs.map((v, i) => [+(10 + i * (302 / (n - 1))).toFixed(1), +(130 - (v - mn) / (mx - mn) * 115).toFixed(1)]); const pts = P.map(q => q.join(',')).join(' ');
   return '<svg class="tsc" viewBox="0 0 322 150" preserveAspectRatio="none"><line x1="0" y1="20" x2="322" y2="20"/><line x1="0" y1="65" x2="322" y2="65"/><line x1="0" y1="110" x2="322" y2="110"/><polygon points="10,150 ' + pts + ' 312,150"/><polyline points="' + pts + '"/>' + P.map((q, i) => '<circle cx="' + q[0] + '" cy="' + q[1] + '" r="' + (i === n - 1 ? 6 : 3.5) + '" class="' + (i === n - 1 ? 'on' : '') + '"/>').join('') + '</svg><div class="tsc-x" style="grid-template-columns:repeat(' + n + ',1fr)">' + h.map((x, i) => '<span' + (i === n - 1 ? ' class="on"' : '') + '>' + (i === n - 1 ? 'ÚLTIMA' : fmtDshort(x.date).toUpperCase()) + '</span>').join('') + '</div>';
 }
+// Progreso se arma por segmento: solo se renderiza el visible
+const PSEGS = [['fuerza', 'Fuerza'], ['cuerpo', 'Cuerpo'], ['volumen', 'Volumen'], ['historial', 'Historial']];
+let PROG_SEG = PSEGS.some(x => x[0] === S.progSeg) ? S.progSeg : 'fuerza'; let PROG_ALLEX = false; let HIST_N = 20;
+function progSeg(seg) { PROG_SEG = seg; S.progSeg = seg; saveS(); PROG_ALLEX = false; HIST_N = 20; renderProgreso(); window.scrollTo(0, 0); }
+function goProg(seg) { PROG_SEG = seg; S.progSeg = seg; saveS(); go('progreso'); }
 function renderProgreso() {
-  const el = $('pg-progreso'); const t = totals();
-  let html = topbar('', '') + '<div class="lab-m" style="margin:2px 2px 0">Lo que hiciste, en números</div><h1 class="pghead">Progreso</h1><div class="hsub" style="margin-top:8px">Los números no mienten. Vos tampoco.</div>';
-  if (!SESSIONS.length) { html += weekRing() + '<div class="empty"><b>Sin sesiones todavía</b>Después de tu primera sesión, esta pantalla se llena sola.</div><div class="sec"><h2>Peso corporal</h2></div>' + bwPanel() + (NUTRI.show ? '<div class="sec"><h2>Calorías</h2></div><div class="card kcp">' + kcalPanel() + '</div>' : ''); el.innerHTML = html; return; }
+  const el = $('pg-' + (cur() === 'historial' ? 'historial' : 'progreso'));
+  let html = '<div class="topbar"><div><h1>Progreso</h1><div class="sub">Los números no mienten. Vos tampoco.</div></div></div>';
+  html += '<div class="pseg"><div class="seg">' + PSEGS.map(([k, n]) => '<button class="' + (PROG_SEG === k ? 'on' : '') + '" onclick="progSeg(\'' + k + '\')">' + n + '</button>').join('') + '</div></div>';
+  html += ({ fuerza: progFuerza, cuerpo: progCuerpo, volumen: progVolumen, historial: progHistorial })[PROG_SEG]();
+  el.innerHTML = html;
+}
+const progEmpty = () => '<div class="empty"><b>Sin sesiones todavía</b>Después de tu primera sesión, esta pantalla se llena sola.</div>';
+function progFuerza() {
+  let html = benchGoalCard() + projBench();
+  if (!SESSIONS.length) return html + progEmpty();
   const lifts = Object.keys(HIST || (buildHist(), HIST)).filter(id => ex(id) && usesW(ex(id)) && ex(id).inc >= 0).sort((a, b) => (ex(b).eq === 'barra') - (ex(a).eq === 'barra') || hist(b).length - hist(a).length).slice(0, 6);
   if (lifts.length) {
     if (!lifts.includes(PROG_LIFT)) PROG_LIFT = lifts[0];
     const e = ex(PROG_LIFT); const h = hist(PROG_LIFT).slice(-8); const first = topSet(h[0].sets, e).w, last = topSet(h[h.length - 1].sets, e).w; const d = last - first;
-    html += '<div class="chips pgchips">' + lifts.map(id => '<button class="chip ' + (id === PROG_LIFT ? 'on' : '') + '" onclick="PROG_LIFT=\'' + id + '\';renderProgreso()">' + esc(ex(id).name) + '</button>').join('') + '</div>';
+    html += '<div class="sec"><h2>Top set</h2></div><div class="chips pgchips">' + lifts.map(id => '<button class="chip ' + (id === PROG_LIFT ? 'on' : '') + '" onclick="PROG_LIFT=\'' + id + '\';renderProgreso()">' + esc(ex(id).name) + '</button>').join('') + '</div>';
     html += '<div class="hcard pgtop"><div class="hc-eb">TOP SET · ' + esc(e.name.toUpperCase()) + '</div><div class="hc-big"><div><b>' + fmtW(last) + '</b><span>KG</span></div><div class="hc-side"><div class="pgd" style="color:' + (d > 0 ? 'var(--acc)' : 'var(--ink2)') + '">' + (d > 0 ? '▲ +' : d < 0 ? '▼ ' : '') + fmtW(d) + ' KG</div><div class="lab-m">EN ' + h.length + (h.length === 1 ? ' SESIÓN' : ' SESIONES') + '</div></div></div>' + topSetChart(PROG_LIFT) + '</div>';
   }
-  html += benchGoalCard();
-  html += '<div class="pg4"><div class="card"><div class="num">' + t.sessions + '</div><div class="lab">sesiones</div></div><div class="card"><div class="num" style="color:var(--xp)">' + t.prs + '</div><div class="lab">récords personales</div></div><div class="card"><div class="num" style="color:var(--acc)">' + t.ups + '</div><div class="lab">subidas de peso</div></div><div class="card"><div class="num">' + fmtK(t.ton).replace(' ', '<span class="u"> ') + '</span></div><div class="lab">levantados · mejor racha ' + weekStreakMax() + ' sem.</div></div></div>';
-  html += '<div style="height:10px"></div>' + weekRing();
+  const ids = Object.keys(HIST || (buildHist(), HIST)).filter(id => ex(id)).sort((a, b) => hist(b).length - hist(a).length);
+  const shown = PROG_ALLEX ? ids : ids.slice(0, 8);
+  html += '<div class="sec"><h2>Por ejercicio</h2><span class="lab-m">' + ids.length + ' EJERCICIOS</span></div><div class="list">' + shown.map(id => { const e = ex(id); const b = bestOf(id); return '<div class="exrow" onclick="go(\'ejercicio\',{id:\'' + id + '\'})">' + exThumb(e) + '<div class="n"><b>' + esc(e.name) + '</b><span>' + hist(id).length + ' sesiones · mejor ' + (usesW(e) ? fmtW(b.w) + ' kg × ' + b.r : b.r + ' ' + unitOf(e)) + '</span></div><div class="best" style="color:' + (trendPct(id).startsWith('+') ? 'var(--green)' : 'var(--ink2)') + '">' + trendPct(id) + '</div></div>'; }).join('') + '</div>';
+  if (!PROG_ALLEX && ids.length > 8) html += '<button class="btn ghost w" style="margin-top:8px" onclick="PROG_ALLEX=true;renderProgreso()">Ver los ' + ids.length + ' ejercicios</button>';
+  return html;
+}
+function progCuerpo() {
+  let html = '<div class="sec"><h2>Peso corporal</h2><button class="more" onclick="bwQuick()">Pesate</button></div>' + bwPanel() + projBw();
+  if (NUTRI.show) html += '<div class="sec"><h2>Calorías</h2><button class="more" onclick="kcalSheet()">Anotar</button></div>' + projKcal() + '<div class="card kcp" style="margin-top:8px">' + kcalPanel() + '</div>';
+  return html;
+}
+function progVolumen() {
+  if (!SESSIONS.length) return progEmpty();
+  let html = '<div class="card"><h3>Tu mapa muscular</h3><div class="small muted" style="margin-bottom:8px">Cuanto más brilla, más series le diste en las últimas 4 semanas.</div>' + bodyHeat() + '</div>';
+  html += '<div class="card" style="margin-top:10px"><h3>Balance</h3><div class="small muted" style="margin-bottom:6px">Series relativas por grupo. Un hexágono parejo es un físico parejo.</div>' + radar() + '</div>';
+  html += '<div class="card" style="margin-top:10px"><h3>Kilos por semana</h3>' + weekChart('ton') + '</div>';
+  return html;
+}
+function progHistorial() {
+  if (!SESSIONS.length) return progEmpty();
+  const t = totals();
+  let html = '<div class="htot"><div class="card"><div class="num">' + t.sessions + '</div><div class="lab">sesiones</div></div><div class="card"><div class="num" style="color:var(--xp)">' + t.prs + '</div><div class="lab">récords</div></div><div class="card"><div class="num" style="color:var(--acc)">' + t.ups + '</div><div class="lab">subidas</div></div><div class="card w2"><div class="num">' + fmtK(t.ton).replace(' ', '<span class="u"> ') + '</span></div><div class="lab">levantados en total</div></div><div class="card"><div class="num">' + weekStreakMax() + '<span class="u"> sem</span></div><div class="lab">mejor racha</div></div></div>';
   html += '<div class="card" style="margin-top:10px"><div class="row between"><h3>Días entrenados</h3><span class="small muted">últimas 16 semanas</span></div>' + heatmap() + '</div>';
   html += '<div class="card" style="margin-top:10px"><h3>Sesiones por semana</h3>' + weekChart('n') + '</div>';
-  html += '<div class="card" style="margin-top:10px"><h3>Kilos por semana</h3>' + weekChart('ton') + '</div>';
-  html += '<div class="card" style="margin-top:10px"><h3>Tu mapa muscular</h3><div class="small muted" style="margin-bottom:8px">Cuanto más brilla, más series le diste en las últimas 4 semanas.</div>' + bodyHeat() + '</div>';
-  html += '<div class="card" style="margin-top:10px"><h3>Balance</h3><div class="small muted" style="margin-bottom:6px">Series relativas por grupo. Un hexágono parejo es un físico parejo.</div>' + radar() + '</div>';
-  const ids = Object.keys(HIST || (buildHist(), HIST)).sort((a, b) => hist(b).length - hist(a).length);
-  html += '<div class="sec"><h2>Por ejercicio</h2></div><div class="list">' + ids.map(id => { const e = ex(id); if (!e) return ''; const b = bestOf(id); return '<div class="exrow" onclick="go(\'ejercicio\',{id:\'' + id + '\'})">' + exThumb(e) + '<div class="n"><b>' + esc(e.name) + '</b><span>' + hist(id).length + ' sesiones · mejor ' + (usesW(e) ? fmtW(b.w) + ' kg × ' + b.r : b.r + ' ' + unitOf(e)) + '</span></div><div class="best" style="color:' + (trendPct(id).startsWith('+') ? 'var(--green)' : 'var(--ink2)') + '">' + trendPct(id) + '</div></div>'; }).join('') + '</div>';
-  html += '<div class="sec"><h2>Peso corporal</h2><button class="more" onclick="bwQuick()">Pesate</button></div>' + bwPanel();
-  if (NUTRI.show) html += '<div class="sec"><h2>Calorías</h2><button class="more" onclick="kcalSheet()">Anotar</button></div><div class="card kcp">' + kcalPanel() + '</div>';
-  const got = load('gb2_ach', []);
-  html += '<div class="sec"><h2>Logros</h2><span class="small muted">' + got.length + '/' + ACHIEVEMENTS.length + '</span></div><div class="ach">' + ACHIEVEMENTS.map(a => '<div class="a ' + (got.includes(a.id) ? 'on' : '') + '"><div class="ico">' + I[a.ico] + '</div><div><b>' + esc(a.name) + '</b><span>' + esc(a.desc) + '</span></div></div>').join('') + '</div>';
-  html += '<div class="sec"><h2>Todas las sesiones</h2></div><div class="list">' + SESSIONS.slice().sort((a, b) => b.start - a.start).slice(0, 40).map(s => '<div class="card row between tap" onclick="sessionSheet(\'' + s.id + '\')"><div><b>' + esc(s.dayName) + '</b><div class="small muted">' + fmtD(s.date) + ' · ' + s.ex.length + ' ejercicios · ' + fmtK(s.ton) + '</div></div>' + I.chev + '</div>').join('') + '</div>';
-  el.innerHTML = html;
+  const all = SESSIONS.slice().sort((a, b) => b.start - a.start); const byM = {}; all.forEach(x => { const k = x.date.slice(0, 7); byM[k] = (byM[k] || 0) + 1; });
+  let lastM = ''; html += '<div class="sec"><h2>Sesiones</h2><span class="lab-m">' + all.length + ' EN TOTAL</span></div><div class="list">';
+  all.slice(0, HIST_N).forEach(x => { const m = x.date.slice(0, 7); if (m !== lastM) { lastM = m; const dt = parseDate(m + '-01'); html += '<div class="hmonth">' + MONTHS_L[dt.getMonth()] + ' ' + dt.getFullYear() + ' · ' + byM[m] + (byM[m] === 1 ? ' sesión' : ' sesiones') + '</div>'; }
+    html += '<div class="card row between tap" onclick="sessionSheet(\'' + x.id + '\')"><div><b>' + esc(x.dayName) + '</b><div class="small muted">' + fmtD(x.date) + ' · ' + x.ex.length + ' ejercicios · ' + fmtK(x.ton) + '</div></div>' + I.chev + '</div>'; });
+  html += '</div>';
+  if (all.length > HIST_N) html += '<button class="btn ghost w" style="margin-top:8px" onclick="HIST_N+=20;const y=scrollY;renderProgreso();scrollTo(0,y)">Ver más (' + (all.length - HIST_N) + ')</button>';
+  return html;
 }
+const MONTHS_L = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 function heatmap() {
   const start = addDays(weekStart(today()), -15 * 7); const days = new Set(SESSIONS.map(s => s.date));
   let h = '<div class="heat">'; for (let i = 0; i < 112; i++) { const d = addDays(start, i); h += '<span class="' + (d > today() ? 'f' : days.has(d) ? 'y' : '') + (d === today() ? ' t' : '') + '"></span>'; }
@@ -4561,7 +4625,7 @@ function renderHistorial() { renderProgreso(); }
 // ═══ APRENDER ═══
 function renderAprender() {
   const el = $('pg-aprender'); const L = LEARN_DATA;
-  let html = '<div class="topbar"><div><h1>Aprender</h1><div class="sub">Lo que necesitás saber, sin humo.</div></div></div>';
+  let html = '<div class="topbar"><div><h1>Biblioteca</h1><div class="sub">Lo que necesitás saber, sin humo.</div></div></div>' + libSegBar();
   const cats = [['faq', 'q', 'Preguntas frecuentes', L.FAQ.length + ' respuestas cortas para arrancar'], ['articulo', 'book', 'Conceptos clave', L.LEARN.length + ' artículos: progresión, volumen, nutrición, sueño'], ['metodos', 'bolt', 'Métodos de intensidad', L.METHODS.length + ' técnicas para cuando ya tenés base'], ['calentamiento', 'warm', 'Calentamiento', 'Qué hacer antes de la primera serie'], ['supps', 'pill', 'Suplementos', L.SUPPS.length + ' con evidencia y veredicto'], ['glosario', 'az', 'Glosario', Object.keys(L.GLOSS).length + ' términos explicados simple'], ['creadores', 'yt', 'Creadores recomendados', L.CREATORS.length + ' canales de YouTube que valen la pena']];
   html += '<div class="list">' + cats.map(c => '<div class="learn-card" onclick="go(\'' + c[0] + '\'' + (c[0] === 'articulo' ? ',{list:true}' : '') + ')"><div class="ico">' + I[c[1]] + '</div><div class="grow"><b>' + c[2] + '</b><span>' + c[3] + '</span></div>' + I.chev + '</div>').join('') + '</div>';
   el.innerHTML = html;
@@ -4718,7 +4782,7 @@ function finishOnboarding(pid) {
 }
 
 // ═══ INIT ═══
-const APP_VERSION = 'V28.1';
+const APP_VERSION = 'V29.1';
 function splash() {
   if (sessionStorage.getItem('gb2_splash')) return; sessionStorage.setItem('gb2_splash', '1');
   const d = document.createElement('div'); d.className = 'splash'; d.innerHTML = '<div class="lg">' + LOGO + '</div><div class="t">GYMBRAIN</div><div class="s">BY CHADBITS</div>'; document.body.appendChild(d); setTimeout(() => d.remove(), 1800);
