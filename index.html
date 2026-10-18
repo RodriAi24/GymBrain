@@ -3375,14 +3375,22 @@ function goalMini() {
 // Editor de metas: banca (1 a 4 metas) y peso corporal, con feedback de realismo en vivo. Guarda en gb2_goals (mismo formato)
 let GED = null;
 function goalEditor() { GED = { bench: GOALS.bench.map(g => ({ ...g })), bw: GOALS.bwGoal ? { ...GOALS.bwGoal } : null }; gedRender(); }
+// Realismo de una meta: con proyección, lo que hace falta por mes contra el ritmo real de goalModel; sin datos, umbrales por nivel
 function gedFb(g) {
-  const b = benchE1(); const cur = b ? Math.round(b.e1 * 2) / 2 : null;
   if (!(g.kg >= 20 && g.kg <= 400) || !/^\d{4}-\d{2}-\d{2}$/.test(g.date || '')) return 'Completá kilos y fecha.';
+  const gm = goalModel(); const cur = gm.cur;
   if (cur == null) return 'Sin banca anotada todavía: el ritmo sale con tu primera sesión de pecho.';
   if (cur >= g.kg) return '<span class="ged-chip ok">cumplida</span> Ya la pasaste: tu 1RM estimado es ' + fmtW(cur) + ' kg.';
   const mo = monthsTo(g.date); if (mo <= 0) return 'Esa fecha ya pasó: poné una más adelante.';
-  const pace = (g.kg - cur) / mo; const c = pace <= 0.6 ? ['cómoda', 'ok'] : pace <= 1.5 ? ['exigente', 'mid'] : ['muy ambiciosa', 'hi'];
-  return '<span class="ged-chip ' + c[1] + '">' + c[0] + '</span> Necesitás +' + fmtW(Math.round(pace * 10) / 10) + ' kg de 1RM por mes desde hoy.';
+  const need = (g.kg - cur) / mo; const f1 = v => { const r = Math.round(v * 10) / 10; return (r < 0 ? '−' : r > 0 ? '+' : '') + fmtW(Math.abs(r)); };
+  const real = gm.proj && gm.proj.perWeek != null && gm.status !== 'juntando' ? gm.proj.perWeek * 30.44 / 7 : null;
+  let lvl, txt;
+  if (real != null) { lvl = real >= need ? 0 : real >= need * 0.7 ? 1 : 2; txt = 'Necesitás ' + f1(need) + '/mes · venís a ' + f1(real) + '/mes.'; }
+  else { const th = cur / bwNow().w < 0.8 ? [1.5, 3] : [0.6, 1.5]; lvl = need <= th[0] ? 0 : need <= th[1] ? 1 : 2; txt = 'Necesitás ' + f1(need) + ' kg de 1RM por mes desde hoy.'; }
+  // Nunca "muy ambiciosa" mientras Fuerza diga que vas en camino o adelantado
+  if (lvl === 2 && (gm.status === 'en camino' || gm.status === 'adelantado')) lvl = 1;
+  const c = [['cómoda', 'ok'], ['exigente', 'mid'], ['muy ambiciosa', 'hi']][lvl];
+  return '<span class="ged-chip ' + c[1] + '">' + c[0] + '</span> ' + txt;
 }
 function gedBwFb(g) {
   if (!(g.kg >= 30 && g.kg <= 250) || !/^\d{4}-\d{2}-\d{2}$/.test(g.date || '')) return 'Completá kilos y fecha.';
@@ -3444,8 +3452,10 @@ function bwMA() {
   });
 }
 // Tendencia semanal sobre el promedio (no sobre un día suelto): regresión de los últimos 21 días; pide 4 pesajes en 10+ días
-function bwTrend(days) {
-  const pts = bwMA().filter(p => p.d >= addDays(today(), -(days || 21))); if (pts.length < 4) return null;
+// Ritmo de peso: una sola función y una sola ventana (28 días) para Cuerpo, el medidor, las sugerencias, la meta de peso y el cierre de semana
+const BW_RATE_DAYS = 28;
+function bwRate(asOf) {
+  asOf = asOf || today(); const pts = bwMA().filter(p => p.d >= addDays(asOf, -BW_RATE_DAYS) && p.d <= asOf); if (pts.length < 4) return null;
   const span = dayNum(pts[pts.length - 1].d) - dayNum(pts[0].d); if (span < 10) return null;
   const r = linreg(pts.map(p => [dayNum(p.d), p.ma])); return r ? { perWeek: r.m * 7, span, n: pts.length, last: pts[pts.length - 1].ma } : null;
 }
@@ -3526,7 +3536,7 @@ function logCards() {
   const bn = bwNow();
   h += '<button class="lgc" onclick="bwQuick()"><span class="lab-m">PESO</span>' + (last ? '<b>' + fmtW1(last.w) + '<small>KG</small></b><span class="lgc-s">' + (tw ? '✓ Hoy' : 'Último: ' + relDate(last.d)) + (bn.avg ? ' · ' + fmtW1(bn.w) + ' kg prom. 7 d' : '') + '</span>' : '<b class="sm">—</b><span class="lgc-s">Todavía sin pesajes</span>') + '<span class="lgc-cta">' + (tw ? 'Corregir' : 'Pesate') + '</span></button>';
   if (NUTRI.show) { const t = kcalTarget(); const k = kDay(today()).k || 0;
-    h += '<button class="lgc" onclick="kcalSheet()"><span class="lab-m">CALORÍAS HOY</span><b>' + fmtN(k) + (t ? '<small>/ ' + fmtN(t.kcal) + '</small>' : '<small>KCAL</small>') + '</b>' + (t ? '<i class="lgc-bar"><i style="width:' + Math.min(100, Math.round(k / t.kcal * 100)) + '%"></i></i>' : '<span class="lgc-s">Sin objetivo todavía</span>') + '<span class="lgc-cta">Sumar</span></button>'; }
+    h += '<button class="lgc" onclick="kcalSheet()"><span class="lab-m">CALORÍAS HOY</span><b>' + fmtN(k) + (t ? '' : '<small>KCAL</small>') + '</b>' + (t ? '<span class="lgc-s">de ' + fmtN(t.kcal) + ' kcal</span><i class="lgc-bar"><i style="width:' + Math.min(100, Math.round(k / t.kcal * 100)) + '%"></i></i>' : '<span class="lgc-s">Sin objetivo todavía</span>') + '<span class="lgc-cta">Sumar</span></button>'; }
   return h + '</div>' + cstDots(7);
 }
 
@@ -3574,7 +3584,7 @@ function bwGoalLine() {
 function bwPanel() {
   const all = bwMA(); const b = bwNow();
   if (!all.length) return '<div class="card bwp"><div class="bg-empty"><b>Sin pesajes</b>Anotá tu peso unas veces por semana y acá aparece la línea que importa: el promedio de 7 días.</div><button class="hcta" onclick="bwQuick()">Pesate</button></div>';
-  const tr = bwTrend(); const from = BWR ? addDays(today(), -(BWR - 1)) : all[0].d; const pts = all.filter(p => p.d >= from);
+  const tr = bwRate(); const from = BWR ? addDays(today(), -(BWR - 1)) : all[0].d; const pts = all.filter(p => p.d >= from);
   let h = '<div class="card bwp"><div class="lab-m">PESO · ' + bwTag(b).toUpperCase() + '</div><div class="bwp-big"><b>' + fmtW1(b.w) + '</b><span>KG</span></div><p class="bwp-hl">' + esc(bwHeadline(tr)) + '</p>' + paceMeter(tr) + bwGoalLine();
   h += '<div class="chips bwp-r">' + [[30, '30 días'], [90, '90 días'], [0, 'Todo']].map(([n, l]) => '<button class="chip ' + (BWR === n ? 'on' : '') + '" onclick="BWR=' + n + ';renderProgreso()">' + l + '</button>').join('') + '</div>';
   if (pts.length) {
@@ -3659,7 +3669,7 @@ function benchProj() {
   return { state: 'ok', src, perWeek, goal, best, now, eta, r, from: pts[0].d, status: diff > 30 ? 'adelantado' : diff >= -30 ? 'en camino' : 'atrasado' };
 }
 function bwProj() {
-  const g = GOALS.bwGoal; const tr = bwTrend(); if (!g) return { state: 'nogoal', tr }; if (!tr) return { state: 'collecting', g };
+  const g = GOALS.bwGoal; const tr = bwRate(); if (!g) return { state: 'nogoal', tr }; if (!tr) return { state: 'collecting', g };
   const dist = g.kg - tr.last; if (Math.abs(dist) < .3) return { state: 'there', g, tr };
   if (Math.abs(tr.perWeek) < .05 || (dist > 0) !== (tr.perWeek > 0)) return { state: 'off', g, tr };
   const eta = addDays(today(), Math.ceil(dist / tr.perWeek * 7)); const diff = dayNum(g.date) - dayNum(eta);
@@ -3667,7 +3677,7 @@ function bwProj() {
 }
 // Una sola sugerencia a la vez, cruzando fuerza, peso y calorías. Descartable por 7 días.
 function suggestion() {
-  const bp = benchProj(), tr = bwTrend(28), t = NUTRI.show ? (kcalTarget()) : null, k7 = NUTRI.show ? kcalAvg7() : null;
+  const bp = benchProj(), tr = bwRate(), t = NUTRI.show ? (kcalTarget()) : null, k7 = NUTRI.show ? kcalAvg7() : null;
   const stalled = bp.state === 'stalled'; const stable = tr && Math.abs(tr.perWeek) < .1; const tips = [];
   if (tr && NUTRI.mode === 'gain' && tr.perWeek > .25) tips.push({ id: 'fast', t: 'Vas rápido', txt: 'El promedio sube ' + kgw(tr.perWeek) + '; el plan de ganar de a poco es 0,06-0,12 (0,25-0,5 kg por mes). Bajá el objetivo unas 150 kcal: seguís ganando, con menos grasa de pasajera.' });
   if (tr && NUTRI.mode === 'gain' && tr.perWeek < -.1 && t) tips.push({ id: 'down', t: 'Para el otro lado', txt: 'El plan es ganar y el promedio baja ' + kgw(Math.abs(tr.perWeek)).replace(/^[+−]/, '') + '. Sumá unas 200 kcal por día y mirá la línea en dos semanas.' });
@@ -4515,7 +4525,7 @@ function renderHoy() {
     html += head('Elegí tu', 'programa') + '<div class="hsub">Un programa te dice qué hacer cada día y te va subiendo el peso.</div>' + levelBar();
     html += '<button class="hcta" id="hoycta" onclick="go(\'plan\')">Ver programas</button>';
   }
-  html += logCards() + goalMini() + weekCard() + tipCard() + checkinCard();
+  const ck = checkinCard(); html += logCards() + goalMini() + weekCard() + (ck ? '' : tipCard()) + ck;
   const last = SESSIONS.slice().sort((a, b) => b.start - a.start)[0];
   if (last) html += '<div class="sec"><h2>Última sesión</h2><button class="more" onclick="goProg(\'historial\')">Ver historial</button></div><div class="hrow tap hlast" onclick="sessionSheet(\'' + last.id + '\')"><div class="grow"><div class="hr-t">' + esc(last.dayName) + '</div><div class="hr-s">' + esc((relDate(last.date) + ' · ' + last.ex.length + ' ejercicios · ' + fmtK(last.ton)).toUpperCase()) + '</div></div>' + I.chev + '</div>';
   else html += '<div class="empty" style="padding-top:20px"><b>Todo empieza con la primera sesión</b>Tocá empezar, anotá lo que levantás y la app se encarga de decirte cuándo subir.</div>';
@@ -4535,15 +4545,16 @@ function weekCard() {
 function checkinCard() {
   const ws = weekStart(today()); if (CHK.done[ws] || CHK.skip[ws]) return ''; const pw = addDays(ws, -7);
   if (!SESSIONS.some(s => s.date < ws) && !BW.some(b => b.d < ws)) return '';
+  // Solo de lunes a miércoles; después se descarta solo, sin XP
+  if (dayNum(today()) - dayNum(ws) > 2) { CHK.skip[ws] = today(); saveChk(); return ''; }
   const d = weekData(pw); const { s: ser } = benchSeries(); const upto = x => { const v = ser.filter(q => q.d < x).map(q => q.e1); return v.length ? Math.max(...v) : null; }; const b1 = upto(ws), b0 = upto(pw);
-  const ma = bwMA(); const at = x => { let v = null; ma.forEach(q => { if (q.d < x) v = q.ma; }); return v; }; const w1 = at(ws), w0 = at(pw);
   const kd = Object.keys(KCAL.days).filter(x => x >= pw && x < ws && KCAL.days[x].k > 0); const kav = kd.length ? kd.reduce((a, x) => a + KCAL.days[x].k, 0) / kd.length : null; const t = NUTRI.show ? kcalTarget() : null;
   const sg = v => (v > 0 ? '+' : v < 0 ? '−' : '') + fmtW(Math.abs(Math.round(v * 10) / 10));
-  const z = NUTRI.show ? PACE[NUTRI.mode] : null; const dw = w1 != null && w0 != null ? w1 - w0 : null;
-  const hl = d.sessions < Math.ceil(S.goal / 2) ? 'Semana corta. Pasa. Esta arranca de cero.' : d.sessions >= S.goal ? 'Semana cumplida. Así se construye.' : 'Semana hecha. Esta, una sesión más y llegás a la meta.';
+  const z = NUTRI.show ? PACE[NUTRI.mode] : null; const wr = bwRate(addDays(ws, -1)); const miss = S.goal - d.sessions;
+  const hl = miss <= 0 ? 'Semana cumplida. Así se construye.' : d.sessions < Math.ceil(S.goal / 2) ? 'Semana corta. Pasa. Esta arranca de cero.' : miss === 1 ? 'Te faltó una para la meta. Estuviste cerca.' : 'Te faltaron ' + miss + ' para la meta. Igual sumaste.';
   const tip = suggestion(); const rows = [['Sesiones', d.sessions + ' de ' + S.goal], ['Series', String(d.sets)], ['Subidas · récords', d.ups + ' · ' + d.prs]];
-  if (b1 != null) rows.push(['Banca (1RM est.)', b0 != null ? sg(b1 - b0) + ' kg' : fmtW(Math.round(b1 * 2) / 2) + ' kg']);
-  if (dw != null) rows.push(['Peso (prom. 7 d)', sg(dw) + ' kg' + (z ? (dw >= z[0] - .02 && dw <= z[1] + .02 ? ' · en el ritmo del plan' : ' · plan ' + (z[0] > 0 ? '+' : '') + String(z[0]).replace('.', ',').replace('-', '−') + ' a ' + (z[1] > 0 ? '+' : '') + String(z[1]).replace('.', ',').replace('-', '−')) : '')]);
+  if (b1 != null) rows.push(['Banca (1RM est.)', b0 != null ? (Math.abs(b1 - b0) < 0.25 ? 'sin cambios' : sg(b1 - b0) + ' kg') : fmtW(Math.round(b1 * 2) / 2) + ' kg']);
+  if (wr) { const v = wr.perWeek; const pz = x => (x > 0 ? '+' : x < 0 ? '−' : '') + String(Math.abs(x)).replace('.', ','); rows.push(['Peso (ritmo)', kgw(v) + (z ? (v >= z[0] - .02 && v <= z[1] + .02 ? ' · en el plan' : ' · plan ' + pz(z[0]) + ' a ' + pz(z[1])) : '')]); }
   if (NUTRI.show) rows.push(['Calorías', kav ? fmtN(kav) + (t ? ' / ' + fmtN(t.kcal) : '') + ' · ' + kd.length + (kd.length === 1 ? ' día' : ' días') : 'sin registros']);
   return '<div class="sec"><h2>Cierre de semana</h2><button class="ordb" onclick="skipWeek()" aria-label="Descartar cierre de semana">' + I.x + '</button></div><div class="card ckc"><div class="lab-m">' + fmtDshort(pw).toUpperCase() + ' → ' + fmtDshort(addDays(ws, -1)).toUpperCase() + '</div><p class="ck-hl">' + hl + '</p>'
     + '<div class="ck-g">' + rows.map(r => '<div><span>' + r[0] + '</span><b>' + r[1] + '</b></div>').join('') + '</div>'
@@ -5136,7 +5147,7 @@ function finishOnboarding(pid) {
 }
 
 // ═══ INIT ═══
-const APP_VERSION = 'V29';
+const APP_VERSION = 'V29.1';
 function splash() {
   if (sessionStorage.getItem('gb2_splash')) return; sessionStorage.setItem('gb2_splash', '1');
   const d = document.createElement('div'); d.className = 'splash'; d.innerHTML = '<div class="lg">' + LOGO + '</div><div class="t">GYMBRAIN</div><div class="s">BY CHADBITS</div>'; document.body.appendChild(d); setTimeout(() => d.remove(), 1800);
