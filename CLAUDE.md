@@ -6,7 +6,7 @@ App de gimnasio personal de Rodrigo. PWA publicada en GitHub Pages desde este re
 - Todo vive en `index.html`: CSS, JS vanilla y los datos (ejercicios, programas, logros). No hay framework ni build.
 - Excepción: el mapa muscular 3D. `models/musculos.glb` (CC BY-SA 4.0, ver `models/ATTRIBUTION.txt`) y Three.js en `vendor/three/` (MIT) se cargan solo al abrir un ejercicio. La conexión ejercicio → músculo 3D está en `TGT3D`/`GROUP3D` dentro de `index.html`. Si falla WebGL queda el mapa 2D. Si agregás archivos, sumalos a `EXTRA` en `sw.js` para que anden offline.
 - `index.html` pesa unos 750 KB porque trae embebidas en base64 las imágenes de anatomía (`BODY_B64`). **No leas ni reescribas esos bloques base64.** Buscá con grep la sección que necesitás y editá solo esa parte.
-- Los datos se guardan en `localStorage` con claves `gb2_*` (settings, sessions, active, swaps, custom, bw, ach, missions, skips, migrated, y desde V25: goals, order, kcal, nutri, tips). `gb2_schema` guarda la versión de migración de cada dato nuevo. **Nunca cambies esas claves ni el formato de los datos sin migración:** se perdería el historial de entrenamientos. Toda clave nueva va con versión, validación al cargar y en exportar/importar.
+- Los datos se guardan en `localStorage` con claves `gb2_*` (settings, sessions, active, swaps, custom, bw, ach, missions, skips, migrated, y desde V25: goals, order, kcal, nutri, tips; desde V29: checkin, el cierre de semana). `gb2_schema` guarda la versión de migración de cada dato nuevo. **Nunca cambies esas claves ni el formato de los datos sin migración:** se perdería el historial de entrenamientos. Toda clave nueva va con versión, validación al cargar y en exportar/importar.
 - Peso y calorías: se premia registrar, nunca un número. Textos sin juzgar el peso ni culpa por las calorías; siempre aclarar que son estimaciones.
 - `sw.js` es el service worker. **Cada vez que cambies `index.html`, subí la versión de `CACHE` en `sw.js`** (ej. `gymbrain-v21-1` → `gymbrain-v21-2`). Si no, el iPhone sigue mostrando la versión vieja.
 - `manifest.json` **no lleva `start_url`**: con ella iOS da 404 al abrir desde la pantalla de inicio. Los íconos de iOS son los PNG (`icon-180/192/512.png`).
@@ -25,6 +25,8 @@ App de gimnasio personal de Rodrigo. PWA publicada en GitHub Pages desde este re
 - El motor de progresión (`suggest()`, doble progresión, ciclo de 9 semanas con deload) está pensado con evidencia. No lo cambies sin explicar por qué.
 - Es mobile-first. Respetá las safe areas del iPhone (la isla dinámica no puede tapar headers) y usá botones de al menos 44 px.
 - La navegación hacia atrás (stacks por pestaña + `popstate`) ya funciona. Probala después de tocar pantallas.
+- Pestañas (V29): Hoy · Plan · Progreso (segmentos Fuerza, Cuerpo, Volumen, Historial) · Estado · Biblioteca (Ejercicios | Aprender). Ajustes es una página, no un sheet. El plan del rediseño está en `REDISENO-UX.md`.
+- Metas de banca: `goalModel()` es la única fuente de verdad (ruta por tramos, estado y mensaje). Peso: `bwNow()` es el único número (promedio de 7 días con su etiqueta).
 
 ## Cómo trabajar
 1. Antes de commitear, probá con Playwright en viewport de iPhone 13 (390×844). Sacá screenshots de las pantallas que tocaste y fijate que no haya errores en la consola.
