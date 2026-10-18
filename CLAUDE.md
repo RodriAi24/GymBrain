@@ -26,6 +26,7 @@ App de gimnasio personal de Rodrigo. PWA publicada en GitHub Pages desde este re
 - Es mobile-first. Respetá las safe areas del iPhone (la isla dinámica no puede tapar headers) y usá botones de al menos 44 px.
 - La navegación hacia atrás (stacks por pestaña + `popstate`) ya funciona. Probala después de tocar pantallas.
 - Pestañas (V29): Hoy · Plan · Progreso (segmentos Fuerza, Cuerpo, Volumen, Historial) · Estado · Biblioteca (Ejercicios | Aprender). Ajustes es una página, no un sheet. El plan del rediseño está en `REDISENO-UX.md`.
+- Progreso (V30) es una "bitácora": cada segmento son capítulos numerados (`chap()`), con titular que es una conclusión, gráficos SVG propios (`.pv-svg`) y celdas de datos. El código vive en el bloque `PROGRESO · BITÁCORA` de `index.html`; sus clases CSS llevan prefijo propio (`pv-`, `fz-`, `hs-`…) para no chocar con las viejas.
 - Metas de banca: `goalModel()` es la única fuente de verdad (ruta por tramos, estado y mensaje). Peso: `bwNow()` es el único número (promedio de 7 días con su etiqueta).
 
 ## Cómo trabajar
