@@ -834,6 +834,44 @@ body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-i
 .bg-msg { display: flex; gap: 10px; align-items: center; padding: 12px 18px 16px; border-top: 1px solid var(--line2); font-size: 13.5px; line-height: 1.45; color: var(--ink2); }
 .bg-msg .lg { width: 26px; height: 26px; flex: none; } .bg-msg .lg svg { width: 100%; height: 100%; }
 .bg-set { padding: 6px 12px; }
+.bg-edit { display: flex; align-items: center; gap: 5px; min-height: 44px; margin: -12px -8px -12px 0; padding: 0 8px; font: 600 13px var(--fb); color: var(--acc-ink); }
+.bg-edit svg { width: 15px; height: 15px; }
+.bg-chip { display: inline-flex; align-items: center; gap: 5px; min-height: 32px; margin-top: 8px; padding: 0 10px; border-radius: 999px; border: 1px solid var(--line); font: 600 12px var(--fb); color: var(--ink2); }
+.bg-chip svg { width: 14px; height: 14px; }
+.bg-head { padding: 12px 18px 4px; border-top: 1px solid var(--line2); }
+.bg-head p { margin-top: 8px; font: 600 16px/1.4 var(--fb); color: var(--ink); text-wrap: pretty; }
+.bg-chart { padding: 6px 12px 12px; }
+.bg-chart .btn.sm { margin: 6px auto 0; display: flex; }
+.rtc { display: block; width: 100%; height: auto; overflow: visible; }
+.rtc text { font: 500 12px var(--fm); fill: var(--ink3); }
+.rtc .grid { stroke: var(--line2); }
+.rtc .today { stroke: var(--line); stroke-dasharray: 2 4; }
+.rtc .route { fill: none; stroke: var(--xp); stroke-width: 2; stroke-dasharray: 6 6; opacity: .9; }
+.rtc .mile { fill: var(--xp); opacity: .8; }
+.rtc .trend { stroke: var(--acc); stroke-width: 3; stroke-linecap: round; }
+.rtc .proj { stroke: var(--acc); stroke-width: 2; stroke-dasharray: 3 6; stroke-linecap: round; opacity: .55; }
+.rtc .pt { fill: var(--acc); }
+.rtc .hit { fill: transparent; cursor: pointer; }
+.rtc .goal { fill: var(--xp); stroke: var(--card); stroke-width: 3; }
+.rtc .gl { font: 400 15px var(--fd); fill: var(--xp); }
+.rtc .eta { fill: var(--acc-ink); font-weight: 700; }
+.rt-leg { display: flex; justify-content: center; gap: 14px; margin-top: 6px; font: 500 11px var(--fm); color: var(--ink2); }
+.rt-leg i { display: inline-block; width: 14px; height: 0; margin-right: 5px; vertical-align: middle; border-top: 2px dashed var(--xp); }
+.rt-leg .l-t { border-top: 3px solid var(--acc); }
+.rt-leg .l-p { border-top: 2px dotted var(--acc); }
+.rt-tip { margin-top: 8px; min-height: 40px; padding: 10px 12px; border-radius: 12px; background: var(--card2); font-size: 13px; color: var(--ink2); }
+.rt-tip b { color: var(--ink); }
+.gmini { margin-top: 10px; padding: 14px 16px 12px; border-radius: 20px; background: var(--card); border: 1px solid var(--line); }
+.gm-st { font: 700 11px var(--fm); letter-spacing: .08em; text-transform: uppercase; }
+.gm-big { font: 400 28px/1.1 var(--fd); text-transform: uppercase; margin-top: 6px; }
+.ged-l { margin: 18px 2px 6px; }
+.ged-row { display: grid; grid-template-columns: 110px minmax(0,1fr) 44px; gap: 8px; align-items: center; padding: 8px 0; border-top: 1px solid var(--line2); }
+.ged-row .inp { padding: 9px 8px; font-size: 16px; min-height: 44px; }
+.ged-row input[type=date] { min-width: 0; width: 100%; }
+.ged-fb { grid-column: 1 / -1; font-size: 13px; line-height: 1.45; color: var(--ink2); }
+.ged-chip { display: inline-block; margin-right: 4px; padding: 2px 8px; border-radius: 999px; font: 700 11px var(--fm); letter-spacing: .06em; text-transform: uppercase; border: 1px solid; }
+.ged-chip.ok { color: var(--acc-ink); } .ged-chip.mid { color: var(--xp); } .ged-chip.hi { color: var(--ink2); }
+.ged-acts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 20px; }
 .bg-row { display: grid; grid-template-columns: 54px 96px minmax(0,1fr); gap: 8px; align-items: center; padding: 6px 0; }
 .bg-kg { position: relative; display: block; }
 .bg-kg .inp { padding-right: 30px; }
@@ -3136,33 +3174,136 @@ function benchE1() {
 }
 const monthsTo = d => (parseDate(d) - parseDate(today())) / (30.44 * 864e5);
 const fmtMes = d => { const x = parseDate(d); return MONTHS[x.getMonth()].toUpperCase() + ' ' + x.getFullYear(); };
-function benchMsg(cur, gs) {
-  const nx = gs.find(g => cur < g.kg); const last = gs[gs.length - 1];
-  if (!nx) return 'Llegaste a ' + last.kg + '. Lo que parecía lejos ya está en tu cuaderno. Poné una meta nueva en Ajustes y seguí cargando.';
-  const falta = nx.kg - cur, m = monthsTo(nx.date);
-  const done = gs.filter(g => cur >= g.kg); const pre = done.length ? done[done.length - 1].kg + ' cumplido. Para ' + nx.kg + ' ' : 'Para ' + nx.kg + ' ';
-  if (m <= 0) return (done.length ? done[done.length - 1].kg + ' cumplido. Para ' + nx.kg : 'Para ' + nx.kg) + ' la fecha ya pasó y faltan ' + fmtW(Math.round(falta * 2) / 2) + ' kg. No es drama: movela en Ajustes y seguí sumando reps.';
-  const pace = falta / m; const pz = fmtW(Math.round(pace * 10) / 10);
-  if (pace <= 0.6) return pre + 'necesitás +' + pz + ' kg por mes. Vas sobrado: con la doble progresión eso sale solo. No te apures.';
-  if (pace <= 1.5) return pre + 'necesitás +' + pz + ' kg por mes. Ritmo de laburo: constancia, comer bien y llegar cerca del fallo.';
-  return pre + 'necesitás +' + pz + ' kg por mes. Es exigente pero se puede: no te saltees ni una sesión de pecho.';
+// ═══ MOTOR DE METAS ═══
+// goalModel() es la única fuente de verdad de la meta de banca: tarjeta de Fuerza, mini de Hoy, gráfico y mensajes leen de acá.
+// Ruta ideal por tramos (inicio → meta 1 en su fecha → meta 2…); los hitos se planifican sobre esa ruta.
+let GM_MEMO = null; let GM_FULL = false;
+const GSTAT_COL = { juntando: 'var(--ink2)', adelantado: 'var(--acc)', 'en camino': 'var(--xp)', atrasado: 'var(--ink2)', estancado: 'var(--ink2)', cumplida: 'var(--acc)' };
+const mesL = d => { const x = parseDate(d); return MONTHS_L[x.getMonth()].toLowerCase() + (x.getFullYear() !== parseDate(today()).getFullYear() ? ' ' + x.getFullYear() : ''); };
+const mesCorto = d => { const x = parseDate(d); return MONTHS[x.getMonth()] + ' ' + String(x.getFullYear()).slice(2); };
+function goalModel() { if (!GM_MEMO || GM_MEMO.day !== today()) GM_MEMO = { day: today(), m: goalModelCalc() }; return GM_MEMO.m; }
+function goalModelCalc() {
+  const T = today(); const gs = GOALS.bench.slice().sort((a, b) => a.kg - b.kg); const last = gs[gs.length - 1];
+  const { s: series, src } = benchSeries();
+  if (!series.length) return { src, series, cur: null, status: 'juntando', plan: {}, goals: gs.map(g => ({ ...g, pct: 0, done: false })), msg: 'Todavía no hay press de banca (ni inclinado con mancuernas) anotado. Hacé tu primera sesión de pecho y arrancamos a medir.' };
+  const cur = Math.round(Math.max(...series.map(x => x.e1)) * 2) / 2; const dn = dayNum;
+  // Punto de partida: el primer 1RM estimado del historial (se calcula, no se guarda)
+  let start = { kg: Math.round(series[0].e1 * 2) / 2, d: series[0].d };
+  const g1 = gs.find(g => g.kg > start.kg); if (g1 && g1.date <= start.d) start = { kg: cur, d: T };
+  const nodes = [start]; gs.forEach(g => { const p = nodes[nodes.length - 1]; if (g.kg > p.kg) nodes.push({ kg: g.kg, d: g.date > p.d ? g.date : addDays(p.d, 1) }); });
+  const route = d => { const x = dn(d); if (x <= dn(nodes[0].d)) return nodes[0].kg; for (let i = 1; i < nodes.length; i++) { const a = nodes[i - 1], b = nodes[i]; if (x <= dn(b.d)) return a.kg + (b.kg - a.kg) * (x - dn(a.d)) / (dn(b.d) - dn(a.d)); } return nodes[nodes.length - 1].kg; };
+  const plan = {}; BENCH_MILES.forEach(k => { for (let i = 1; i < nodes.length; i++) { const a = nodes[i - 1], b = nodes[i]; if (k > a.kg && k <= b.kg) { plan[k] = addDays(a.d, Math.round((k - a.kg) / (b.kg - a.kg) * (dn(b.d) - dn(a.d)))); break; } } });
+  const bp = benchProj(); const trend = bp.now != null ? bp.now : null; const active = gs.find(g => cur < g.kg) || null;
+  const val = trend != null ? trend : cur; const diff = val - route(T);
+  const status = !active ? 'cumplida' : bp.state === 'collecting' || bp.state === 'none' ? 'juntando' : bp.perWeek < 0.15 ? 'estancado' : diff >= 2.5 ? 'adelantado' : diff > -2.5 ? 'en camino' : 'atrasado';
+  const eta = active && bp.r && bp.r.m > 0 ? addDays(T, Math.min(3650, Math.max(0, Math.ceil((active.kg - Math.max(val, cur)) / bp.r.m)))) : null;
+  const nk = BENCH_MILES.find(k => k > cur) || (active ? active.kg : null);
+  const pk = BENCH_MILES.filter(k => k <= cur && k > start.kg).pop(); const prev = pk != null ? pk : Math.min(start.kg, cur);
+  const next = nk ? { kg: nk, date: plan[nk] || (active && active.kg === nk ? active.date : null), prev, faltan: Math.round((nk - cur) * 2) / 2, pct: nk > prev ? Math.max(0, Math.min(1, (cur - prev) / (nk - prev))) : 0 } : null;
+  const goals = gs.map(g => { const done = cur >= g.kg; const span = g.kg - start.kg; const mo = monthsTo(g.date);
+    return { ...g, from: start, done, pct: done ? 1 : span > 0 ? Math.max(0, Math.min(1, (cur - start.kg) / span)) : 0, faltan: Math.max(0, Math.round((g.kg - cur) * 2) / 2), needPerMonth: done ? 0 : mo > 0 ? (g.kg - cur) / mo : null }; });
+  // Un solo mensaje, derivado del estado, con un solo encuadre
+  const k1 = x => fmtW(Math.round(Math.abs(x) * 2) / 2); const tip = suggestion(); let msg;
+  if (status === 'cumplida') msg = 'Llegaste a ' + last.kg + '. Lo que parecía lejos ya está en tu cuaderno. Poné una meta nueva y seguí cargando.';
+  else if (status === 'juntando') msg = 'Juntando datos · ' + (bp.weeks || 0) + ' de 4 semanas. Seguí anotando la banca: con un mes de datos te digo si vas en la ruta.';
+  else if (status === 'estancado') msg = tip && (tip.id === 'rest' || tip.id === 'eat') ? tip.txt : 'La banca no se mueve hace semanas. Revisá lo invisible: 2-3 min de descanso en los pesados, series a 1-2 reps del fallo y dormir 7 horas o más.';
+  else if (status === 'adelantado') msg = 'Vas ' + k1(diff) + ' kg por encima de la ruta.' + (eta ? ' A este ritmo llegás a ' + active.kg + ' en ' + mesL(eta) + '.' : '');
+  else if (status === 'en camino') { const hk = next && plan[next.kg] ? next.kg : active.kg; msg = 'Vas en la ruta. Para ' + mesL(plan[hk] || active.date) + ' toca ' + hk + ' kg.'; }
+  else msg = 'Estás ' + k1(diff) + ' kg debajo de la ruta. Se recupera: ' + (tip ? tip.txt.charAt(0).toLowerCase() + tip.txt.slice(1) : 'no te saltees el día de pecho y llegá a 1-2 reps del fallo en la banca.');
+  return { src, series, cur, trend, start, nodes, goals, route, plan, next, active, proj: { state: bp.state, perWeek: bp.perWeek, eta, r: bp.r, from: bp.from }, weeks: bp.weeks, status, diff, msg };
 }
+const gStat = gm => '<span class="pj-st" style="color:' + GSTAT_COL[gm.status] + ';border-color:' + GSTAT_COL[gm.status] + '">' + gm.status.toUpperCase() + '</span>';
+// Gráfico de ruta: ruta ideal (punteada, ámbar) · 1RM real y tendencia (naranja) · proyección (punteada tenue) · meta
+function routeChart(gm) {
+  const T = today(); const W = 340, H = 196, pl = 34, pr = 16, pt = 18, pb = 24; const last = gm.goals[gm.goals.length - 1];
+  const tgt = GM_FULL || !gm.active ? last : gm.active; const x0 = dayNum(gm.start.d), x1 = Math.max(dayNum(tgt.date), dayNum(T) + 21);
+  const lo = Math.floor((Math.min(gm.start.kg, ...gm.series.map(p => p.e1)) - 4) / 5) * 5, hi = Math.ceil((tgt.kg + 4) / 5) * 5;
+  const X = d => pl + (dayNum(d) - x0) / (x1 - x0) * (W - pl - pr), Xn = n => pl + (n - x0) / (x1 - x0) * (W - pl - pr), Y = v => pt + (1 - (v - lo) / (hi - lo)) * (H - pt - pb);
+  const f = n => Math.round(n * 10) / 10;
+  let s = '<svg class="rtc" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Ruta hacia ' + tgt.kg + ' kg">';
+  [lo, (lo + hi) / 2, hi].forEach(v => { s += '<line class="grid" x1="' + pl + '" x2="' + (W - pr) + '" y1="' + f(Y(v)) + '" y2="' + f(Y(v)) + '"/><text x="0" y="' + f(Y(v) + 4) + '">' + fmtW(Math.round(v)) + '</text>'; });
+  s += '<line class="today" x1="' + f(X(T)) + '" x2="' + f(X(T)) + '" y1="' + pt + '" y2="' + (H - pb) + '"/>';
+  // 1 · ruta ideal hasta el borde del eje, con los hitos como marcas
+  const rp = gm.nodes.filter(n => dayNum(n.d) <= x1).map(n => [X(n.d), Y(n.kg)]); const xe = addDays(gm.start.d, x1 - x0); rp.push([X(xe), Y(gm.route(xe))]);
+  s += '<polyline class="route" points="' + rp.map(p => f(p[0]) + ',' + f(p[1])).join(' ') + '"/>';
+  Object.keys(gm.plan).forEach(k => { const d = gm.plan[k]; if (dayNum(d) <= x1 && +k !== tgt.kg) s += '<rect class="mile" x="' + f(X(d) - 3) + '" y="' + f(Y(+k) - 3) + '" width="6" height="6" transform="rotate(45 ' + f(X(d)) + ' ' + f(Y(+k)) + ')"/>'; });
+  // 2 · tendencia (regresión de las últimas 8 semanas) y 3 · proyección hasta cruzar la meta
+  if (gm.proj.r && gm.proj.from) { const r = gm.proj.r; const a = dayNum(gm.proj.from), b = dayNum(T); s += '<line class="trend" x1="' + f(Xn(a)) + '" y1="' + f(Y(r.m * a + r.b)) + '" x2="' + f(Xn(b)) + '" y2="' + f(Y(r.m * b + r.b)) + '"/>';
+    if (gm.proj.eta && gm.active && r.m > 0) { const e = Math.min(dayNum(gm.proj.eta), x1); s += '<line class="proj" x1="' + f(Xn(b)) + '" y1="' + f(Y(r.m * b + r.b)) + '" x2="' + f(Xn(e)) + '" y2="' + f(Y(Math.min(hi, r.m * e + r.b))) + '"/>';
+      if (gm.active === tgt && dayNum(gm.proj.eta) <= x1) s += '<text class="eta" x="' + f(Math.min(W - pr - 2, Xn(e))) + '" y="' + f(Y(tgt.kg) - 12) + '" text-anchor="end">' + mesCorto(gm.proj.eta) + '</text>'; } }
+  gm.series.forEach((p, i) => { if (dayNum(p.d) < x0) return; s += '<circle class="pt" cx="' + f(X(p.d)) + '" cy="' + f(Y(p.e1)) + '" r="3.5"/><circle class="hit" cx="' + f(X(p.d)) + '" cy="' + f(Y(p.e1)) + '" r="11" onclick="rtTip(' + i + ')"/>'; });
+  // 4 · la meta
+  s += '<circle class="goal" cx="' + f(X(tgt.date)) + '" cy="' + f(Y(tgt.kg)) + '" r="7"/><text class="gl" x="' + f(X(tgt.date) - 11) + '" y="' + f(Y(tgt.kg) + 4) + '" text-anchor="end">' + tgt.kg + '</text>';
+  s += '<text x="' + pl + '" y="' + (H - 4) + '">' + mesCorto(gm.start.d) + '</text>' + (X(T) - pl > 64 && W - pr - X(T) > 64 ? '<text x="' + f(X(T)) + '" y="' + (H - 4) + '" text-anchor="middle">hoy</text>' : '') + '<text x="' + (W - pr) + '" y="' + (H - 4) + '" text-anchor="end">' + mesCorto(tgt.date) + '</text>';
+  return s + '</svg>';
+}
+function rtTip(i) { const gm = goalModel(); const p = gm.series[i]; const t = $('rttip'); if (!p || !t) return; t.innerHTML = '<b>' + fmtD(p.d) + '</b> · ' + fmtW(p.w) + ' kg × ' + p.r + (gm.src === 'incline-db' ? ' por mano' : '') + ' · 1RM ' + fmtW(Math.round(p.e1 * 2) / 2) + ' kg'; vib(6); }
 function benchGoalCard() {
-  const gs = GOALS.bench.slice().sort((a, b) => a.kg - b.kg); const b = benchE1(); const bw = bwNow();
-  let h = '<div class="bg-card"><div class="bg-top"><div class="hc-eb">META · PRESS DE BANCA</div>';
-  if (!b) return h + '<div class="bg-empty"><b>Juntando datos</b>Todavía no hay press de banca (ni inclinado con mancuernas) anotado. Hacé tu primera sesión de pecho y arrancamos a medir.</div>' + gs.map(g => '<div class="bg-goal"><div class="row between"><b>' + g.kg + ' KG</b><span class="lab-m">' + fmtMes(g.date) + '</span></div><div class="bg-bar0"><i style="width:0%"></i></div></div>').join('') + '</div></div>';
-  const cur = Math.round(b.e1 * 2) / 2; const got = load('gb2_ach', []);
-  h += '<div class="hc-big"><div><b>' + fmtW(cur) + '</b><span>KG</span></div><div class="hc-side">1RM estimado<br><em>' + (cur / bw.w).toFixed(2).replace('.', ',') + '× tu peso</em></div></div>';
-  h += '<div class="bg-src">' + (b.src === 'bench' ? 'Estimación con Epley desde tu mejor serie: ' + fmtW(b.w) + ' kg × ' + b.r + ' · ' + relDate(b.date) + '.' : 'No hay banca anotada: lo estimo desde tu press inclinado con mancuernas (' + fmtW(b.w) + ' kg por mano × ' + b.r + '). Es una referencia aproximada; cuando hagas banca, se usa esa.') + '</div></div>';
-  h += gs.map(g => { const pct = Math.min(1, cur / g.kg); const ok = cur >= g.kg; const m = monthsTo(g.date);
-    return '<div class="bg-goal' + (ok ? ' ok' : '') + '"><div class="row between"><b>' + g.kg + ' KG</b><span class="lab-m">' + (ok ? '✓ CUMPLIDA' : fmtMes(g.date)) + '</span></div><div class="bg-bar0"><i style="width:' + Math.round(pct * 100) + '%"></i></div><div class="row between bg-meta"><span>' + Math.round(pct * 100) + '%</span><span>' + (ok ? 'Hecho.' : 'faltan ' + fmtW(Math.round((g.kg - cur) * 2) / 2) + ' kg · ' + (m > 0 ? (m < 1.5 ? 'menos de 2 meses' : Math.round(m) + ' meses') : 'fecha vencida')) + '</span></div></div>'; }).join('');
-  const nxM = BENCH_MILES.find(k => cur < k);
-  const plan = milePlan(cur);
-  h += '<div class="bg-miles"><div class="lab-m">HITOS · CON TROFEO · PLAN HACIA ' + gs[gs.length - 1].kg + ' KG</div><div class="bg-ml">' + BENCH_MILES.map(k => { const on = cur >= k || got.includes('bg' + k); return '<i class="' + (on ? 'on' : k === nxM ? 'nx' : '') + '">' + k + '</i>'; }).join('') + '</div><div class="bg-pl">' + BENCH_MILES.map(k => '<span>' + (cur >= k ? '✓' : plan[k] ? MONTHS[parseDate(plan[k]).getMonth()] + ' ' + String(parseDate(plan[k]).getFullYear()).slice(2) : '') + '</span>').join('') + '</div></div>';
-  h += '<div class="bg-msg"><div class="lg">' + LOGO + '</div><div>' + esc(benchMsg(cur, gs)) + '</div></div></div>';
-  return h;
+  const gm = goalModel(); const gs = gm.goals; const last = gs[gs.length - 1]; const got = load('gb2_ach', []);
+  let h = '<div class="bg-card"><div class="bg-top"><div class="row between"><div class="hc-eb">META · PRESS DE BANCA</div><button class="bg-edit" onclick="goalEditor()">' + I.edit + ' Editar</button></div>';
+  if (gm.cur == null) return h + '<div class="bg-empty"><b>Juntando datos</b>' + esc(gm.msg) + '</div></div>' + gs.map(g => '<div class="bg-goal"><div class="row between"><b>' + g.kg + ' KG</b><span class="lab-m">' + fmtMes(g.date) + '</span></div><div class="bg-bar0"><i style="width:0%"></i></div></div>').join('') + '</div>';
+  h += '<div class="hc-big"><div><b>' + fmtW(gm.cur) + '</b><span>KG</span></div><div class="hc-side">1RM estimado<br><em>' + (gm.cur / bwNow().w).toFixed(2).replace('.', ',') + '× tu peso</em></div></div>';
+  if (gm.src === 'incline-db') h += '<button class="bg-chip" onclick="calcSheet()">' + I.info + ' estimado desde inclinado</button>';
+  h += '</div><div class="bg-head">' + gStat(gm) + '<p>' + esc(gm.msg) + '</p></div>';
+  h += '<div class="bg-chart">' + routeChart(gm) + '<div class="rt-leg"><span><i class="l-r"></i>ruta</span><span><i class="l-t"></i>tu 1RM</span><span><i class="l-p"></i>proyección</span></div><div class="rt-tip" id="rttip">Tocá un punto para ver la serie.</div>' + (gm.active && gm.active !== last ? '<button class="btn ghost sm" onclick="GM_FULL=!GM_FULL;renderProgreso()">' + (GM_FULL ? 'Ver hasta ' + gm.active.kg + ' kg' : 'Ver hasta ' + last.kg + ' kg') + '</button>' : '') + '</div>';
+  h += gs.map(g => '<div class="bg-goal' + (g.done ? ' ok' : '') + '"><div class="row between"><b>' + g.kg + ' KG</b><span class="lab-m">' + (g.done ? '✓ CUMPLIDA' : fmtMes(g.date)) + '</span></div><div class="bg-bar0"><i style="width:' + Math.round(g.pct * 100) + '%"></i></div><div class="row between bg-meta"><span>de ' + fmtW(g.from.kg) + ' a ' + g.kg + ' kg · ' + Math.round(g.pct * 100) + '%</span><span>' + (g.done ? 'Hecho.' : 'faltan ' + fmtW(g.faltan) + ' kg') + '</span></div></div>').join('');
+  const nxM = gm.next ? gm.next.kg : null;
+  h += '<div class="bg-miles"><div class="lab-m">HITOS · CON TROFEO · RUTA HACIA ' + last.kg + ' KG</div><div class="bg-ml">' + BENCH_MILES.map(k => { const on = gm.cur >= k || got.includes('bg' + k); return '<i class="' + (on ? 'on' : k === nxM ? 'nx' : '') + '">' + k + '</i>'; }).join('') + '</div><div class="bg-pl">' + BENCH_MILES.map(k => '<span>' + (gm.cur >= k ? '✓' : gm.plan[k] ? mesCorto(gm.plan[k]) : '') + '</span>').join('') + '</div></div>';
+  return h + '</div>';
 }
-
+// Tarjeta mini de Hoy: el hito cercano motiva más que la meta lejana
+function goalMini() {
+  const gm = goalModel(); if (gm.cur == null) return '';
+  if (!gm.next) return '<div class="gmini tap" onclick="goalEditor()"><div class="lab-m">METAS DE BANCA · CUMPLIDAS</div><div class="gm-big">' + fmtW(gm.cur) + ' kg de 1RM</div><div class="small muted">Poné una meta nueva y seguí cargando.</div></div>';
+  const n = gm.next;
+  return '<div class="gmini tap" onclick="goProg(\'fuerza\')"><div class="row between"><span class="lab-m">PRÓXIMO HITO · BANCA ' + n.kg + ' KG</span><span class="gm-st" style="color:' + GSTAT_COL[gm.status] + '">' + gm.status + (n.date && gm.status !== 'juntando' ? ' · ' + (n.date < today() ? 'tocaba en ' : '') + mesL(n.date) : '') + '</span></div><div class="gm-big">faltan ' + fmtW(n.faltan) + ' kg</div><div class="bg-bar0"><i style="width:' + Math.round(n.pct * 100) + '%"></i></div><div class="row between bg-meta"><span>' + fmtW(n.prev) + ' → ' + n.kg + ' kg</span><span>' + fmtW(gm.cur) + ' kg hoy</span></div></div>';
+}
+// Editor de metas: banca (1 a 4 metas) y peso corporal, con feedback de realismo en vivo. Guarda en gb2_goals (mismo formato)
+let GED = null;
+function goalEditor() { GED = { bench: GOALS.bench.map(g => ({ ...g })), bw: GOALS.bwGoal ? { ...GOALS.bwGoal } : null }; gedRender(); }
+function gedFb(g) {
+  const b = benchE1(); const cur = b ? Math.round(b.e1 * 2) / 2 : null;
+  if (!(g.kg >= 20 && g.kg <= 400) || !/^\d{4}-\d{2}-\d{2}$/.test(g.date || '')) return 'Completá kilos y fecha.';
+  if (cur == null) return 'Sin banca anotada todavía: el ritmo sale con tu primera sesión de pecho.';
+  if (cur >= g.kg) return '<span class="ged-chip ok">cumplida</span> Ya la pasaste: tu 1RM estimado es ' + fmtW(cur) + ' kg.';
+  const mo = monthsTo(g.date); if (mo <= 0) return 'Esa fecha ya pasó: poné una más adelante.';
+  const pace = (g.kg - cur) / mo; const c = pace <= 0.6 ? ['cómoda', 'ok'] : pace <= 1.5 ? ['exigente', 'mid'] : ['muy ambiciosa', 'hi'];
+  return '<span class="ged-chip ' + c[1] + '">' + c[0] + '</span> Necesitás +' + fmtW(Math.round(pace * 10) / 10) + ' kg de 1RM por mes desde hoy.';
+}
+function gedBwFb(g) {
+  if (!(g.kg >= 30 && g.kg <= 250) || !/^\d{4}-\d{2}-\d{2}$/.test(g.date || '')) return 'Completá kilos y fecha.';
+  const mo = monthsTo(g.date); if (mo <= 0) return 'Esa fecha ya pasó: poné una más adelante.';
+  const pm = (g.kg - bwNow().w) / mo; const a = Math.abs(pm); const n = fmtW(Math.round(a * 10) / 10);
+  if (a < 0.1) return 'Es mantener: comés lo que gastás.';
+  if (pm > 0) return 'Son ' + n + ' kg por mes: ' + (a <= 0.5 ? 'dentro del ritmo de ganar de a poco.' : a <= 1 ? 'un poco rápido para ganar con poca grasa.' : 'muy rápido: buena parte sería grasa.');
+  return 'Son ' + n + ' kg por mes para abajo: ' + (a <= 2 ? 'un ritmo razonable, sin perder fuerza.' : 'muy agresivo: cuesta sostenerlo sin perder fuerza.');
+}
+function gedRender() {
+  let h = '<h2>Tus metas</h2><p class="small muted">La banca se mide con tu 1RM estimado. El plan y los hitos se recalculan solos.</p><div class="lab-m ged-l">PRESS DE BANCA</div>';
+  h += GED.bench.map((g, i) => '<div class="ged-row"><label class="bg-kg"><input class="inp" type="number" inputmode="decimal" step="2.5" value="' + (g.kg || '') + '" oninput="gedSet(' + i + ',\'kg\',this.value)" aria-label="Kilos de la meta ' + (i + 1) + '"><span>kg</span></label><input class="inp" type="date" value="' + (g.date || '') + '" onchange="gedSet(' + i + ',\'date\',this.value)" aria-label="Fecha de la meta ' + (i + 1) + '">' + (GED.bench.length > 1 ? '<button class="ordb" onclick="GED.bench.splice(' + i + ',1);gedRender()" aria-label="Quitar meta">' + I.x + '</button>' : '<span></span>') + '<div class="ged-fb" id="gedfb' + i + '">' + gedFb(g) + '</div></div>').join('');
+  if (GED.bench.length < 4) h += '<button class="btn ghost sm" onclick="const l=GED.bench[GED.bench.length-1];GED.bench.push({kg:l.kg+10,date:addDays(l.date,180)});gedRender()">' + I.plus + ' Agregar meta</button>';
+  h += '<div class="lab-m ged-l">PESO CORPORAL</div>';
+  if (GED.bw) h += '<div class="ged-row"><label class="bg-kg"><input class="inp" type="number" inputmode="decimal" step="0.5" value="' + GED.bw.kg + '" oninput="gedSet(-1,\'kg\',this.value)" aria-label="Meta de peso"><span>kg</span></label><input class="inp" type="date" value="' + GED.bw.date + '" onchange="gedSet(-1,\'date\',this.value)" aria-label="Fecha de la meta de peso"><button class="ordb" onclick="GED.bw=null;gedRender()" aria-label="Quitar meta de peso">' + I.x + '</button><div class="ged-fb" id="gedfbw">' + gedBwFb(GED.bw) + '</div></div>';
+  else h += '<button class="btn ghost sm" onclick="GED.bw={kg:Math.round(bwNow().w+2),date:addDays(today(),180)};gedRender()">' + I.plus + ' Poner meta de peso</button>';
+  h += '<div class="ged-acts"><button class="btn" onclick="closeSheet()">Cancelar</button><button class="btn p" onclick="gedSave()">Guardar</button></div>';
+  openSheet(h);
+}
+function gedSet(i, k, v) {
+  const g = i < 0 ? GED.bw : GED.bench[i]; if (!g) return;
+  g[k] = k === 'kg' ? parseFloat(String(v).replace(',', '.')) : v;
+  const el = $(i < 0 ? 'gedfbw' : 'gedfb' + i); if (el) el.innerHTML = i < 0 ? gedBwFb(g) : gedFb(g);
+}
+function gedSave() {
+  const bench = GED.bench.map(g => ({ kg: Math.round(g.kg * 2) / 2, date: g.date }));
+  if (bench.some(g => !(g.kg >= 20 && g.kg <= 400))) return toast('Cada meta de banca va entre 20 y 400 kg');
+  if (bench.some(g => !/^\d{4}-\d{2}-\d{2}$/.test(g.date || ''))) return toast('Falta la fecha de alguna meta');
+  if (GED.bw && !(GED.bw.kg >= 30 && GED.bw.kg <= 250)) return toast('La meta de peso va entre 30 y 250 kg');
+  if (GED.bw && !/^\d{4}-\d{2}-\d{2}$/.test(GED.bw.date || '')) return toast('Falta la fecha de la meta de peso');
+  const g = { ...GOALS, bench: bench.sort((a, b) => a.kg - b.kg) };
+  if (GED.bw) g.bwGoal = { kg: Math.round(GED.bw.kg * 10) / 10, date: GED.bw.date }; else delete g.bwGoal;
+  if (!goalsOk(g)) return toast('Revisá las metas');
+  GOALS = g; saveGoals(); GED = null; closeSheet(); render(); toast('Metas guardadas');
+}
 // ═══ PESO, CALORÍAS Y PROYECCIONES ═══
 // Todo es registro y estimación: se premia anotar, nunca un número de peso o de calorías.
 const fmtW1 = w => (Math.round(w * 10) / 10).toFixed(1).replace('.', ',');
@@ -3353,7 +3494,7 @@ function kcalProtFix() { const v = parseInt($('kpin').value); const prev = kDay(
 // ── Proyecciones
 // e1RM por sesión (Epley): banca; si no hay, inclinado con mancuernas (las dos sumadas)
 function benchSeries() {
-  const per = (id, f) => hist(id).map(h => { let b = 0; h.sets.forEach(t => { if (t.w > 0 && t.r > 0) b = Math.max(b, e1rm(t.w * f, t.r)); }); return { d: h.date, e1: b }; }).filter(x => x.e1 > 0);
+  const per = (id, f) => hist(id).map(h => { let b = null; h.sets.forEach(t => { if (t.w > 0 && t.r > 0) { const v = e1rm(t.w * f, t.r); if (!b || v > b.e1) b = { d: h.date, e1: v, w: t.w, r: t.r }; } }); return b; }).filter(Boolean);
   const s = per('bench', 1); if (s.length) return { s, src: 'bench' };
   return { s: per('incline-db', 2), src: 'incline-db' };
 }
@@ -3364,15 +3505,10 @@ function benchProj() {
   const best = Math.max(...s.map(x => x.e1)); const goal = GOALS.bench.slice().sort((a, b) => a.kg - b.kg).find(g => best < g.kg);
   if (pts.length < 3 || span < 28) return { state: 'collecting', src, weeks: Math.floor(span / 7), goal, best };
   const r = linreg(pts.map(x => [dayNum(x.d), x.e1])); const perWeek = r.m * 7; const now = r.m * dayNum(today()) + r.b;
-  if (!goal) return { state: 'done', src, perWeek, best };
-  if (perWeek < 0.15) return { state: 'stalled', src, perWeek, goal, best, now };
+  if (!goal) return { state: 'done', src, perWeek, best, now, r, from: pts[0].d };
+  if (perWeek < 0.15) return { state: 'stalled', src, perWeek, goal, best, now, r, from: pts[0].d };
   const eta = addDays(today(), Math.max(0, Math.ceil((goal.kg - Math.max(now, best)) / r.m))); const diff = dayNum(goal.date) - dayNum(eta);
-  return { state: 'ok', src, perWeek, goal, best, now, eta, status: diff > 30 ? 'adelantado' : diff >= -30 ? 'en camino' : 'atrasado' };
-}
-// Fecha planificada de cada hito, repartida en línea recta entre hoy y la meta final
-function milePlan(cur) {
-  const fin = GOALS.bench.slice().sort((a, b) => a.kg - b.kg).pop(); const span = dayNum(fin.date) - dayNum(today()); const out = {};
-  BENCH_MILES.forEach(m => { if (m > cur && m <= fin.kg && fin.kg > cur && span > 0) out[m] = addDays(today(), Math.round((m - cur) / (fin.kg - cur) * span)); }); return out;
+  return { state: 'ok', src, perWeek, goal, best, now, eta, r, from: pts[0].d, status: diff > 30 ? 'adelantado' : diff >= -30 ? 'en camino' : 'atrasado' };
 }
 function bwProj() {
   const g = GOALS.bwGoal; const tr = bwTrend(); if (!g) return { state: 'nogoal', tr }; if (!tr) return { state: 'collecting', g };
@@ -3405,18 +3541,6 @@ function calcSheet() {
     '<h3>Peso corporal</h3><p>Mirá el promedio de 7 días, no el pesaje suelto: el agua y la comida mueven la balanza hasta 1-2 kg de un día a otro.</p>' +
     '<h3>Calorías</h3><p>Primero, con la fórmula de Mifflin-St Jeor (sexo, altura, edad y peso) por tu nivel de actividad. Con 2 semanas de pesajes y calorías anotadas, pasa a tu mantenimiento real: lo que comés en promedio menos lo que cambia tu peso (unas 7.700 kcal por kilo).</p>' +
     '<p class="calc-note">Son estimaciones para orientarte. No reemplazan el consejo de un médico o de un nutricionista.</p></div>');
-}
-// Proyección de banca (va en Progreso › Fuerza)
-function projBench() {
-  const bp = benchProj(); const st = projSt; let h = '';
-  const srcN = bp.src === 'incline-db' ? ' <small>(desde inclinado con mancuernas)</small>' : '';
-  h += '<div class="pj-row"><div class="pj-ic">' + I.mountain + '</div><div class="grow"><div class="lab-m">PRESS DE BANCA' + srcN + '</div>';
-  if (bp.state === 'none') h += '<b>Juntando datos</b><p>Con 4 semanas de banca te digo cuándo llegás.</p>';
-  else if (bp.state === 'collecting') h += '<b>Juntando datos · ' + bp.weeks + ' de 4 semanas</b><p>Seguí anotando la banca: con un mes de datos sale la proyección.</p>';
-  else if (bp.state === 'done') h += '<b>Metas cumplidas</b><p>Poné una nueva en Ajustes.</p>';
-  else if (bp.state === 'stalled') h += '<b>Ritmo plano · ' + kgw(bp.perWeek) + '</b><p>Así no hay fecha para ' + bp.goal.kg + ' kg todavía. Pasa: se destraba con descanso, comida y sueño.</p>';
-  else h += '<b>A este ritmo llegás a ' + bp.goal.kg + ' kg en ' + fmtMes(bp.eta).toLowerCase() + '</b>' + st(bp.status) + '<p>Meta: ' + fmtMes(bp.goal.date).toLowerCase() + ' · ' + kgw(bp.perWeek) + ' de 1RM estimado (últimas 8 semanas).</p>';
-  return projWrap(h + '</div></div>');
 }
 // Proyección de peso (Progreso › Cuerpo)
 function projBw() {
@@ -3590,9 +3714,9 @@ function migrateLogs() {
   save('gb2_schema', sc);
 }
 const orderCount = () => Object.values(ORDER.o).reduce((a, p) => a + Object.keys(p).length, 0);
-const saveGoals = () => save('gb2_goals', GOALS);
+const saveGoals = () => { save('gb2_goals', GOALS); GM_MEMO = null; };
 const saveS = () => save(K.s, S);
-const saveSessions = () => { save(K.ses, SESSIONS); HIST = null; };
+const saveSessions = () => { save(K.ses, SESSIONS); HIST = null; GM_MEMO = null; };
 const saveActive = () => ACTIVE ? save(K.act, ACTIVE) : localStorage.removeItem(K.act);
 
 // ═══ HELPERS ═══
@@ -4071,7 +4195,7 @@ function ask(title, text, okLabel, onOk, danger, cancelLabel) {
   document.body.appendChild(bg); armNav(); vib(10);
 }
 function render() {
-  const p = cur();
+  GM_MEMO = null; const p = cur();
   document.querySelectorAll('.page').forEach(el => el.classList.toggle('on', el.id === 'pg-' + p));
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.dataset.p === TAB));
   document.body.classList.toggle('wo-on', p === 'entreno');
@@ -4252,7 +4376,7 @@ function renderHoy() {
     html += head('Elegí tu', 'programa') + '<div class="hsub">Un programa te dice qué hacer cada día y te va subiendo el peso.</div>' + levelBar();
     html += '<button class="hcta" onclick="go(\'plan\')">Ver programas</button>';
   }
-  html += logCards();
+  html += logCards() + goalMini();
   html += '<div class="sec"><h2>Semana</h2><span class="lab-m">META ' + S.goal + ' SESIONES</span></div>' + weekRing();
   const ms = weekMissions(); html += '<div class="sec"><h2>Misiones</h2><span class="lab-m">' + ms.filter(m => m.done).length + '/3 · SE RENUEVAN EL LUNES</span></div><div class="hmis">' + ms.map(m => '<div class="hm tap ' + (m.done ? 'done' : '') + '" onclick="go(\'estado\')"><div class="hm-t"><span>' + (m.done ? '<i class="hm-ok">' + I.check + '</i>' : '') + esc(m.name) + '</span><b>+' + m.xp + '</b></div><div class="hm-b"><i><b style="width:' + Math.round(m.pct * 100) + '%"></b></i><small>' + (m.k ? fmtK(m.v) + ' / ' + fmtK(m.t) : Math.min(m.v, m.t) + ' / ' + m.t) + '</small></div></div>').join('') + '</div>';
   html += tipCard();
@@ -4523,7 +4647,7 @@ function topSetChart(id) {
   if (vs.length < 2) return '<div class="small muted2" style="margin-top:10px">Con dos sesiones o más aparece el gráfico.</div>';
   const mn = Math.min(...vs) - 5, mx = Math.max(...vs) + 2.5; const n = vs.length;
   const P = vs.map((v, i) => [+(10 + i * (302 / (n - 1))).toFixed(1), +(130 - (v - mn) / (mx - mn) * 115).toFixed(1)]); const pts = P.map(q => q.join(',')).join(' ');
-  return '<svg class="tsc" viewBox="0 0 322 150" preserveAspectRatio="none"><line x1="0" y1="20" x2="322" y2="20"/><line x1="0" y1="65" x2="322" y2="65"/><line x1="0" y1="110" x2="322" y2="110"/><polygon points="10,150 ' + pts + ' 312,150"/><polyline points="' + pts + '"/>' + P.map((q, i) => '<circle cx="' + q[0] + '" cy="' + q[1] + '" r="' + (i === n - 1 ? 6 : 3.5) + '" class="' + (i === n - 1 ? 'on' : '') + '"/>').join('') + '</svg><div class="tsc-x" style="grid-template-columns:repeat(' + n + ',1fr)">' + h.map((x, i) => '<span' + (i === n - 1 ? ' class="on"' : '') + '>' + (i === n - 1 ? 'ÚLTIMA' : fmtDshort(x.date).toUpperCase()) + '</span>').join('') + '</div>';
+  return '<svg class="tsc" viewBox="0 0 322 150" preserveAspectRatio="none"><line x1="0" y1="20" x2="322" y2="20"/><line x1="0" y1="65" x2="322" y2="65"/><line x1="0" y1="110" x2="322" y2="110"/><polygon points="10,150 ' + pts + ' 312,150"/><polyline points="' + pts + '"/>' + P.map((q, i) => '<circle cx="' + q[0] + '" cy="' + q[1] + '" r="' + (i === n - 1 ? 6 : 3.5) + '" class="' + (i === n - 1 ? 'on' : '') + '"/>').join('') + '</svg><div class="tsc-x" style="grid-template-columns:repeat(' + n + ',1fr)">' + h.map((x, i) => '<span' + (i === n - 1 ? ' class="on"' : '') + '>' + (i === n - 1 ? 'ÚLTIMA' : n > 5 && (n - 1 - i) % 2 ? '' : fmtDshort(x.date).toUpperCase()) + '</span>').join('') + '</div>';
 }
 // Progreso se arma por segmento: solo se renderiza el visible
 const PSEGS = [['fuerza', 'Fuerza'], ['cuerpo', 'Cuerpo'], ['volumen', 'Volumen'], ['historial', 'Historial']];
@@ -4539,7 +4663,7 @@ function renderProgreso() {
 }
 const progEmpty = () => '<div class="empty"><b>Sin sesiones todavía</b>Después de tu primera sesión, esta pantalla se llena sola.</div>';
 function progFuerza() {
-  let html = benchGoalCard() + projBench();
+  let html = benchGoalCard();
   if (!SESSIONS.length) return html + progEmpty() + calcLink();
   const lifts = Object.keys(HIST || (buildHist(), HIST)).filter(id => ex(id) && usesW(ex(id)) && ex(id).inc >= 0).sort((a, b) => (ex(b).eq === 'barra') - (ex(a).eq === 'barra') || hist(b).length - hist(a).length).slice(0, 6);
   if (lifts.length) {
@@ -4550,7 +4674,7 @@ function progFuerza() {
   }
   const ids = Object.keys(HIST || (buildHist(), HIST)).filter(id => ex(id)).sort((a, b) => hist(b).length - hist(a).length);
   const shown = PROG_ALLEX ? ids : ids.slice(0, 8);
-  html += '<div class="sec"><h2>Por ejercicio</h2><span class="lab-m">' + ids.length + ' EJERCICIOS</span></div><div class="list">' + shown.map(id => { const e = ex(id); const b = bestOf(id); return '<div class="exrow" onclick="go(\'ejercicio\',{id:\'' + id + '\'})">' + exThumb(e) + '<div class="n"><b>' + esc(e.name) + '</b><span>' + hist(id).length + ' sesiones · mejor ' + (usesW(e) ? fmtW(b.w) + ' kg × ' + b.r : b.r + ' ' + unitOf(e)) + '</span></div><div class="best" style="color:' + (trendPct(id).startsWith('+') ? 'var(--green)' : 'var(--ink2)') + '">' + trendPct(id) + '</div></div>'; }).join('') + '</div>';
+  html += '<div class="sec"><h2>Por ejercicio</h2><span class="lab-m">' + ids.length + (ids.length === 1 ? ' EJERCICIO' : ' EJERCICIOS') + '</span></div><div class="list">' + shown.map(id => { const e = ex(id); const b = bestOf(id); return '<div class="exrow" onclick="go(\'ejercicio\',{id:\'' + id + '\'})">' + exThumb(e) + '<div class="n"><b>' + esc(e.name) + '</b><span>' + hist(id).length + ' sesiones · mejor ' + (usesW(e) ? fmtW(b.w) + ' kg × ' + b.r : b.r + ' ' + unitOf(e)) + '</span></div><div class="best" style="color:' + (trendPct(id).startsWith('+') ? 'var(--green)' : 'var(--ink2)') + '">' + trendPct(id) + '</div></div>'; }).join('') + '</div>';
   if (!PROG_ALLEX && ids.length > 8) html += '<button class="btn ghost w" style="margin-top:8px" onclick="PROG_ALLEX=true;renderProgreso()">Ver los ' + ids.length + ' ejercicios</button>';
   return html + calcLink();
 }
@@ -4696,10 +4820,9 @@ function settingsSheet(focus) {
     html += '<div class="ns-2" style="margin-top:10px"><label>Ajuste diario<span class="bg-kg"><input class="inp" type="number" inputmode="numeric" value="' + adjOf() + '" onchange="nutriSet(\'adj\',this.value)"><span>kcal</span></span></label><label>Proteína<span class="bg-kg"><input class="inp" type="number" inputmode="decimal" step="0.1" value="' + NUTRI.prot + '" onchange="nutriSet(\'prot\',this.value)"><span>g/kg</span></span></label></div>';
     html += '<p class="small muted2" style="margin-top:6px">' + (NUTRI.mode === 'gain' ? 'Por defecto +275 kcal: apunta a unos 0,25-0,5 kg por mes, ganancia lenta y con poca grasa.' : NUTRI.mode === 'cut' ? 'Por defecto −400 kcal: más o menos 0,4 kg por semana, sin perder fuerza.' : 'Mantener: comés lo que gastás.') + ' Proteína: ' + pt.lo + '-' + pt.hi + ' g por día (1,6-2,0 g/kg).</p>';
   }
-  const bg = GOALS.bwGoal;
-  html += '<div class="bg-row" style="margin-top:6px"><span class="lab-m">META PESO</span><label class="bg-kg"><input class="inp" type="number" inputmode="decimal" step="0.5" value="' + (bg ? bg.kg : '') + '" placeholder="—" onchange="bwGoalSet(\'kg\',this.value)" aria-label="Meta de peso"><span>kg</span></label><input class="inp" type="date" value="' + (bg ? bg.date : '') + '" onchange="bwGoalSet(\'date\',this.value)" aria-label="Fecha de la meta de peso"></div>' + (bg ? '<button class="btn ghost sm" onclick="bwGoalSet(\'off\')">Quitar meta de peso</button>' : '');
   html += calcLink() + '</div>';
-  html += '<label class="lbl">Meta de press de banca</label><div class="card bg-set">' + GOALS.bench.map((g, i) => '<div class="bg-row"><span class="lab-m">META ' + (i + 1) + '</span><label class="bg-kg"><input class="inp" type="number" inputmode="decimal" step="2.5" value="' + g.kg + '" onchange="goalSet(' + i + ',\'kg\',this.value)" aria-label="Kilos de la meta ' + (i + 1) + '"><span>kg</span></label><input class="inp" type="date" value="' + g.date + '" onchange="goalSet(' + i + ',\'date\',this.value)" aria-label="Fecha de la meta ' + (i + 1) + '"></div>').join('') + '<div class="bg-row"><span class="lab-m">PESO</span><label class="bg-kg"><input class="inp" type="number" inputmode="decimal" step="0.5" value="' + (GOALS.bw || '') + '" onchange="goalBw(this.value)" aria-label="Peso corporal de referencia"><span>kg</span></label><span class="small muted">De referencia: se usa mientras no anotes pesajes.</span></div></div>';
+  html += '<label class="lbl">Metas</label><button class="btn w" onclick="goalEditor()">' + I.mountain + ' Press de banca y peso corporal</button>';
+  html += '<label class="lbl">Peso inicial</label><div class="card bg-set"><div class="bg-row"><span class="lab-m">PESO</span><label class="bg-kg"><input class="inp" type="number" inputmode="decimal" step="0.5" value="' + (GOALS.bw || '') + '" onchange="goalBw(this.value)" aria-label="Peso inicial"><span>kg</span></label><span class="small muted">Se usa hasta tu primer pesaje.</span></div></div>';
   html += '<div class="stack" style="margin-top:18px"><button class="btn w" onclick="calendarLink()">' + I.cal + ' Recordatorio en Google Calendar</button><button class="btn w" onclick="exportData()">Exportar copia de seguridad</button><button class="btn w" onclick="$(\'impf\').click()">Importar copia</button><input type="file" id="impf" accept=".json" class="hid" onchange="importData(this.files[0])">' + (old ? '<button class="btn w" onclick="migrateLegacy()">Importar historial de GymBrain V18 (' + old + ' series)</button>' : '') + '<button class="btn w d" onclick="resetAll()">Borrar todos los datos</button></div>';
   html += '<p class="small muted2" style="margin-top:16px">GymBrain · ' + APP_VERSION + ' · Chadbits. Tus datos viven solo en este teléfono. Ilustración anatómica: js-rich-body-highlighter (MIT). Modelo 3D de músculos: Z-Anatomy y BodyParts3D (Database Center for Life Science), vía Fit Mit With, CC BY-SA 4.0. Motor 3D: Three.js (MIT). Fotos de ejercicios: free-exercise-db (dominio público). Rangos de fuerza: orientativos, basados en tablas de estándares para hombres.</p>';
   openSheet(html);
@@ -4724,19 +4847,6 @@ function nutriSet(k, v) {
   else if (k === 'adj') { if (!(n >= -1000 && n <= 1000)) return bad('Ajuste entre −1000 y +1000 kcal'); NUTRI.adj[NUTRI.mode] = Math.round(n); }
   else if (k === 'prot') { if (!(n >= 1.2 && n <= 2.6)) return bad('Proteína entre 1,2 y 2,6 g por kg'); NUTRI.prot = Math.round(n * 10) / 10; }
   saveNutri(); kcalSync(true); nutriKeep(); render();
-}
-function bwGoalSet(k, v) {
-  if (k === 'off') { delete GOALS.bwGoal; saveGoals(); nutriKeep(); render(); return; }
-  const g = GOALS.bwGoal || { kg: Math.round(bwNow().w), date: addDays(today(), 180) };
-  if (k === 'kg') { const n = parseFloat(String(v).replace(',', '.')); if (!(n >= 30 && n <= 250)) { toast('Poné un peso entre 30 y 250 kg'); nutriKeep(); return; } g.kg = Math.round(n * 10) / 10; }
-  else { if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) { toast('Esa fecha no va'); nutriKeep(); return; } g.date = v; }
-  GOALS.bwGoal = g; saveGoals(); toast('Meta de peso guardada'); nutriKeep(); render();
-}
-function goalSet(i, k, v) {
-  const g = GOALS.bench[i]; if (!g) return;
-  if (k === 'kg') { const n = parseFloat(String(v).replace(',', '.')); if (!(n >= 20 && n <= 400)) { toast('Poné un peso entre 20 y 400 kg'); settingsSheet(); return; } g.kg = Math.round(n * 2) / 2; }
-  else { if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) { toast('Esa fecha no va'); settingsSheet(); return; } g.date = v; }
-  saveGoals(); toast('Meta actualizada'); render();
 }
 function goalBw(v) { const n = parseFloat(String(v).replace(',', '.')); if (!(n >= 30 && n <= 250)) { toast('Poné un peso entre 30 y 250 kg'); settingsSheet(); return; } GOALS.bw = Math.round(n * 10) / 10; saveGoals(); toast('Peso de referencia guardado'); render(); }
 function exportData() {
@@ -4800,7 +4910,7 @@ function finishOnboarding(pid) {
 }
 
 // ═══ INIT ═══
-const APP_VERSION = 'V29.2';
+const APP_VERSION = 'V29.3';
 function splash() {
   if (sessionStorage.getItem('gb2_splash')) return; sessionStorage.setItem('gb2_splash', '1');
   const d = document.createElement('div'); d.className = 'splash'; d.innerHTML = '<div class="lg">' + LOGO + '</div><div class="t">GYMBRAIN</div><div class="s">BY CHADBITS</div>'; document.body.appendChild(d); setTimeout(() => d.remove(), 1800);
