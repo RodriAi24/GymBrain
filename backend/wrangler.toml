@@ -1,0 +1,12 @@
+name = "gymbrain-sync"
+main = "worker.js"
+compatibility_date = "2025-09-01"
+workers_dev = true
+
+# El id se completa al crear el KV (wrangler kv namespace create GB)
+[[kv_namespaces]]
+binding = "GB"
+id = "d0c2fc726e5843b182ec19f08125adbc"
+
+[vars]
+ALLOWED_ORIGINS = "https://rodriai24.github.io"

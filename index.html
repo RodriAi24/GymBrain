@@ -1368,6 +1368,13 @@ body.wo-on::after { background: var(--bg); }
 .sl-v { text-align: right; } .sl-v b { font: 400 28px/1 var(--fd); } .sl-v b small { font-size: 16px; } .sl-v span { font: 500 11.5px var(--fm); color: var(--ink2); }
 .sl .hmonth { margin: 16px 0 6px; }
 html[data-theme="light"] .hs-card { color: #F4EEE6; }
+/* Respaldo en la nube */
+.sync-key { margin: 14px 0 10px; padding: 14px; border-radius: 14px; background: var(--card2); border: 1px solid var(--line2); font: 500 15px/1.45 var(--fm); color: var(--ink); word-break: break-all; user-select: all; -webkit-user-select: all; }
+.sync-acts { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; } .sync-acts .btn { flex: 1; min-height: 44px; }
+.sync-acts.col { flex-direction: column; }
+.sync-in { width: 100%; min-height: 48px; margin-top: 12px; font: 500 15px var(--fm); }
+.sync-warn { border-top: 1px solid var(--line); color: var(--ink); } .sync-warn b { color: var(--xp); font-weight: 700; }
+.sync-list { margin-top: 12px; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; } .sync-list .ag-r + .ag-r { border-top: 1px solid var(--line); }
 </style>
 </head>
 <body>
@@ -3931,6 +3938,7 @@ const I = {
   cycle:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-15.5 6.2M3 12a9 9 0 0 1 15.5-6.2"/><path d="M21 4v5h-5M3 20v-5h5"/></svg>',
   mountain:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20l6-11 4 6 2-3 6 8z"/></svg>',
   flame:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14 0-5.5 3-7 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.5-2.26 1.4-3.13"/></svg>',
+  copy:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>',
   share:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7M16 6l-4-4-4 4M12 2v13"/></svg>',
   dumbbell:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 5v14M18 5v14M3 8v8M21 8v8M6 12h12"/></svg>',
   book:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zm0 0a2 2 0 0 0 2 2h13"/></svg>',
@@ -3997,6 +4005,7 @@ function migrateLogs() {
   if ((sc.nutri || 0) < 1) { save('gb2_nutri', NUTRI); sc.nutri = 1; }
   if ((sc.tips || 0) < 1) { save('gb2_tips', TIPS); sc.tips = 1; }
   if ((sc.checkin || 0) < 1) { saveChk(); sc.checkin = 1; }
+  if ((sc.sync || 0) < 1) { saveSync(); sc.sync = 1; }
   save('gb2_schema', sc);
 }
 const orderCount = () => Object.values(ORDER.o).reduce((a, p) => a + Object.keys(p).length, 0);
@@ -4369,7 +4378,7 @@ function finishSession() {
   const ws = weekStart(today()); sess.goalHit = sessionsInWeek(ws).length + 1 === S.goal;
   const lvBefore = levelOf(totalXp()).n;
   sess.xp = sessionXp(sess);
-  SESSIONS.push(sess); saveSessions();
+  SESSIONS.push(sess); saveSessions(); setTimeout(() => syncPush({ now: true }), 1500);
   const rankBefore = S.rank || 'E';
   const fresh = awardMissions(); sess.newMissions = fresh.map(m => m.id);
   const lv = levelOf(totalXp()); sess.levelUp = lv.n > lvBefore ? lv : null;
@@ -5461,9 +5470,10 @@ function renderAjustes() {
     NUTRI.show ? R('Proteína', N(NUTRI.prot, '1,8', "nutriSet('prot',this.value)", 'g/kg', .1, 'Proteína'), pt.lo + '-' + pt.hi + ' g por día (1,6-2,0 g/kg)') : '',
     NUTRI.show ? R('Actividad', '<select class="inp" onchange="nutriSet(\'act\',this.value)" aria-label="Actividad">' + ACT.map(([f, n, d]) => '<option value="' + f + '"' + (NUTRI.act === f ? ' selected' : '') + '>' + n + ' · ' + d + '</option>').join('') + '</select>', '', true) : ''], 'set-nutri');
   html += G('Apariencia', [R('Tema', SG([['dark', 'Oscura'], ['light', 'Clara']], S.theme, v => "setTheme('" + v + "');settingsSheet()"))]);
+  const sr = syncRows(R, B); if (sr) html += G('Respaldo en la nube', sr, 'set-sync');
   html += G('Datos', [B(I.cal + ' Recordatorio en Calendar', '', 'calendarLink()'), B('Exportar copia de seguridad', 'Un archivo con todo tu historial', 'exportData()'), B('Importar copia', '', "$('impf').click()") + '<input type="file" id="impf" accept=".json" class="hid" onchange="importData(this.files[0])">',
     old ? B('Importar historial de GymBrain V18', old + ' series', 'migrateLegacy()') : '', B('Borrar todos los datos', 'No se puede deshacer', 'resetAll()', 'danger')]);
-  html += G('Acerca de', ['<div class="ag-p">GymBrain · ' + APP_VERSION + ' · Chadbits. Tus datos viven solo en este teléfono. Ilustración anatómica: js-rich-body-highlighter (MIT). Modelo 3D de músculos: Z-Anatomy y BodyParts3D (Database Center for Life Science), vía Fit Mit With, CC BY-SA 4.0. Motor 3D: Three.js (MIT). Fotos de ejercicios: free-exercise-db (dominio público). Rangos de fuerza: orientativos, basados en tablas de estándares para hombres.</div>' + calcLink()]);
+  html += G('Acerca de', ['<div class="ag-p">GymBrain · ' + APP_VERSION + ' · Chadbits. ' + (syncOn() ? 'Tus datos viven en este teléfono y en tu respaldo cifrado.' : 'Tus datos viven solo en este teléfono.') + ' Ilustración anatómica: js-rich-body-highlighter (MIT). Modelo 3D de músculos: Z-Anatomy y BodyParts3D (Database Center for Life Science), vía Fit Mit With, CC BY-SA 4.0. Motor 3D: Three.js (MIT). Fotos de ejercicios: free-exercise-db (dominio público). Rangos de fuerza: orientativos, basados en tablas de estándares para hombres.</div>' + calcLink()]);
   el.innerHTML = html;
 }
 function setTheme(t) { S.theme = t; saveS(); rankTheme(t); document.documentElement.setAttribute('data-theme', t); const m = document.querySelector('meta[name=theme-color]'); if (m) m.content = t === 'dark' ? '#0C0B0A' : '#EEF2F6'; }
@@ -5487,8 +5497,10 @@ function nutriSet(k, v) {
   saveNutri(); kcalSync(true); nutriKeep(); render();
 }
 function goalBw(v) { const n = parseFloat(String(v).replace(',', '.')); if (!(n >= 30 && n <= 250)) { toast('Poné un peso entre 30 y 250 kg'); settingsSheet(); return; } GOALS.bw = Math.round(n * 10) / 10; saveGoals(); toast('Peso inicial guardado'); render(); }
+// La copia completa: la misma para el archivo y para el respaldo en la nube (de gb2_sync va solo la dirección, nunca la clave)
+const backupData = () => ({ v: 3, settings: S, sessions: SESSIONS, swaps: SWAPS, custom: CUSTOM, bw: BW, ach: load('gb2_ach', []), skips: SKIPS, missions: load('gb2_missions', {}), goals: GOALS, order: ORDER, kcal: KCAL, nutri: NUTRI, tips: TIPS, checkin: CHK, sync: { v: 1, url: SYNC.url } });
 function exportData() {
-  const data = { v: 3, exported: new Date().toISOString(), settings: S, sessions: SESSIONS, swaps: SWAPS, custom: CUSTOM, bw: BW, ach: load('gb2_ach', []), skips: SKIPS, missions: load('gb2_missions', {}), goals: GOALS, order: ORDER, kcal: KCAL, nutri: NUTRI, tips: TIPS, checkin: CHK };
+  const data = { ...backupData(), exported: new Date().toISOString() };
   const blob = new Blob([JSON.stringify(data)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'gymbrain-backup-' + today() + '.json'; a.click(); toast('Copia descargada');
 }
 // Una copia válida trae sesiones con fecha y ejercicios; el resto, si viene, con el tipo correcto
@@ -5502,22 +5514,162 @@ function importData(file) {
   r.onload = () => {
     let d; try { d = JSON.parse(r.result); } catch (e) { d = null; }
     if (!importOk(d)) { toast('Ese archivo no es una copia válida'); return; }
-    ask('¿Importar la copia?', 'Se reemplazan tus datos actuales por los de la copia (' + d.sessions.length + ' sesiones).', 'Importar', () => {
-      S = { ...S, ...d.settings }; if (!S.starts) S.starts = {}; SESSIONS = d.sessions; SWAPS = d.swaps || {}; CUSTOM = d.custom || []; BW = bwClean(d.bw); SKIPS = d.skips || [];
-      // Copia anterior al Full Body nuevo: sus cambios de ejercicio están en las posiciones viejas (la sesión en curso ya está al día)
-      if (!(d.settings && d.settings.fbv >= 2)) { const act = ACTIVE; ACTIVE = null; S.fbv = 1; migrateFbV2(); ACTIVE = act; }
-      saveS(); saveSessions(); save(K.sw, SWAPS); save(K.cu, CUSTOM); save(K.bw, BW); save('gb2_ach', d.ach || []); save('gb2_skips', SKIPS); save('gb2_missions', d.missions || {});
-      if (goalsOk(d.goals)) { GOALS = d.goals; if (!GOALS.v) GOALS.v = 1; saveGoals(); }
-      if (orderOk(d.order)) { ORDER = d.order; if (!ORDER.v) ORDER.v = 1; saveOrder(); }
-      if (kcalOk(d.kcal)) { KCAL = d.kcal; if (!KCAL.v) KCAL.v = 1; save('gb2_kcal', KCAL); }
-      if (nutriOk(d.nutri)) { save('gb2_nutri', d.nutri); NUTRI = loadNutri(); }
-      if (tipsOk(d.tips)) { TIPS = d.tips; save('gb2_tips', TIPS); }
-      if (checkinOk(d.checkin)) { CHK = { v: 1, skip: {}, ...d.checkin }; saveChk(); }
-      kcalSync(true); go('hoy', null, true); toast('Copia importada');
-    });
+    ask('¿Importar la copia?', 'Se reemplazan tus datos actuales por los de la copia (' + d.sessions.length + ' sesiones).', 'Importar', () => applyImport(d));
   };
   r.readAsText(file);
 }
+function applyImport(d, msg) {
+  S = { ...S, ...d.settings }; if (!S.starts) S.starts = {}; SESSIONS = d.sessions; SWAPS = d.swaps || {}; CUSTOM = d.custom || []; BW = bwClean(d.bw); SKIPS = d.skips || [];
+  // Copia anterior al Full Body nuevo: sus cambios de ejercicio están en las posiciones viejas (la sesión en curso ya está al día)
+  if (!(d.settings && d.settings.fbv >= 2)) { const act = ACTIVE; ACTIVE = null; S.fbv = 1; migrateFbV2(); ACTIVE = act; }
+  saveS(); saveSessions(); save(K.sw, SWAPS); save(K.cu, CUSTOM); save(K.bw, BW); save('gb2_ach', d.ach || []); save('gb2_skips', SKIPS); save('gb2_missions', d.missions || {});
+  if (goalsOk(d.goals)) { GOALS = d.goals; if (!GOALS.v) GOALS.v = 1; saveGoals(); }
+  if (orderOk(d.order)) { ORDER = d.order; if (!ORDER.v) ORDER.v = 1; saveOrder(); }
+  if (kcalOk(d.kcal)) { KCAL = d.kcal; if (!KCAL.v) KCAL.v = 1; save('gb2_kcal', KCAL); }
+  if (nutriOk(d.nutri)) { save('gb2_nutri', d.nutri); NUTRI = loadNutri(); }
+  if (tipsOk(d.tips)) { TIPS = d.tips; save('gb2_tips', TIPS); }
+  if (checkinOk(d.checkin)) { CHK = { v: 1, skip: {}, ...d.checkin }; saveChk(); }
+  if (syncOk(d.sync) && d.sync.url && !SYNC.key) { SYNC.url = d.sync.url; saveSync(); }
+  kcalSync(true); go('hoy', null, true); toast(msg || 'Copia importada');
+}
+// ═══ RESPALDO EN LA NUBE (V31) ═══
+// El servidor es backend/worker.js (Cloudflare Worker + KV). Lo que sube es backupData() cifrado con AES-GCM:
+// la clave ("gb1-…", 256 bits al azar) vive solo en este teléfono y en el llavero de Rodrigo. Del lado del servidor
+// llega un token derivado de la clave que sirve para identificarse pero no para descifrar.
+// gb2_sync { v:1, url, key, last (ISO del último respaldo), n (sesiones), h (hash de lo subido), err }
+const SYNC_URL = '';
+const SYNC_KEY_RE = /^gb1-[A-Za-z0-9_-]{43}$/;
+const syncOk = s => plainObj(s) && s.v === 1 && (s.key == null || SYNC_KEY_RE.test(s.key)) && (s.url == null || /^https:\/\/\S+$/.test(s.url)) && (s.last == null || !isNaN(Date.parse(s.last)));
+const SYNC_DEF = () => ({ v: 1, url: SYNC_URL || null, key: null, last: null, n: 0, h: null, err: null });
+let SYNC = load('gb2_sync', null); if (!syncOk(SYNC)) SYNC = SYNC_DEF();
+const saveSync = () => save('gb2_sync', SYNC);
+const syncOn = () => !!(SYNC.key && SYNC.url);
+let SYNC_BUSY = false, SYNC_T = 0, SYNC_PEND = null;
+
+const u8txt = s => new TextEncoder().encode(s);
+function b64e(u8) { let s = ''; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); }
+const b64d = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+const b64url = u8 => b64e(u8).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+const sha = async s => new Uint8Array(await crypto.subtle.digest('SHA-256', u8txt(s)));
+const syncNewKey = () => 'gb1-' + b64url(crypto.getRandomValues(new Uint8Array(32)));
+const syncToken = async key => b64url(await sha('gymbrain-auth|' + key));
+async function syncAes(key, salt) {
+  const raw = await crypto.subtle.importKey('raw', u8txt(key), 'HKDF', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({ name: 'HKDF', hash: 'SHA-256', salt, info: u8txt('gymbrain-enc') }, raw, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+}
+async function syncSeal(key, data) {
+  const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+  const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await syncAes(key, salt), u8txt(JSON.stringify(data)));
+  return { v: 1, ts: new Date().toISOString(), n: data.sessions.length, iv: b64e(iv), salt: b64e(salt), ct: b64e(new Uint8Array(ct)) };
+}
+async function syncOpen(key, b) {
+  const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64d(b.iv) }, await syncAes(key, b64d(b.salt)), b64d(b.ct));
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+async function syncReq(path, opt, key) {
+  const r = await fetch(SYNC.url + path, { ...opt, cache: 'no-store', headers: { Authorization: 'Bearer ' + await syncToken(key || SYNC.key), 'Content-Type': 'application/json' } });
+  let j = null; try { j = await r.json(); } catch (e) { }
+  return { status: r.status, j };
+}
+const syncErr = st => st === 409 ? 'fewer' : st === 401 || st === 403 ? 'auth' : 'srv';
+
+// Sube la copia si cambió. Solo: al abrir, al salir de la app (cada 10 min como mucho) y al terminar una sesión (now).
+// manual: botón "Respaldar"; force: pisa aunque la nube tenga más sesiones.
+async function syncPush(o = {}) {
+  if (!syncOn() || SYNC_BUSY) return null;
+  if (!o.manual && !o.now && Date.now() - SYNC_T < 10 * 60e3) return null;
+  SYNC_BUSY = true; SYNC_T = Date.now(); let res = null;
+  try {
+    const data = backupData(); const h = b64url(await sha(JSON.stringify(data)));
+    if (h === SYNC.h && !o.force && !o.manual && !SYNC.err) return 'same';
+    const blob = await syncSeal(SYNC.key, data);
+    const r = await syncReq('/v1/backup' + (o.force ? '?force=1' : ''), { method: 'PUT', body: JSON.stringify(blob) });
+    if (r.status === 200) { Object.assign(SYNC, { last: blob.ts, n: blob.n, h, err: null }); res = 'ok'; }
+    else { SYNC.err = { k: syncErr(r.status), n: r.j && r.j.n, at: new Date().toISOString() }; res = SYNC.err.k; }
+  } catch (e) { SYNC.err = { k: 'net', at: new Date().toISOString() }; res = 'net'; }
+  finally { SYNC_BUSY = false; }
+  saveSync(); if (cur() === 'ajustes') settingsSheet();
+  return res;
+}
+async function syncNow(force) {
+  const r = await syncPush({ manual: true, force });
+  toast(r === 'ok' ? 'Respaldo subido' : r === 'net' ? 'Sin conexión. Probá en un rato' : r === 'fewer' ? 'La nube tiene más sesiones. No pisé nada' : r === 'auth' ? 'El servidor no reconoce tu clave' : r ? 'El servidor no respondió bien. Probá en un rato' : 'Ya se está subiendo');
+}
+const syncAgo = ts => { const m = (Date.now() - Date.parse(ts)) / 6e4; return m < 1 ? 'recién' : m < 60 ? 'hace ' + Math.round(m) + ' min' : m < 1440 ? 'hace ' + Math.round(m / 60) + ' h' : relDate(isoDate(new Date(ts))); };
+const syncWhen = ts => { const d = new Date(ts); return fmtDshort(isoDate(d)) + ' · ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); };
+function syncStatus() {
+  const e = SYNC.err; const last = SYNC.last ? 'Último: ' + syncAgo(SYNC.last) + ' · ' + SYNC.n + (SYNC.n === 1 ? ' sesión' : ' sesiones') : 'Todavía no subiste nada';
+  if (!e) return last;
+  return (e.k === 'net' ? 'Sin conexión: reintento solo. ' : e.k === 'auth' ? 'El servidor no reconoce tu clave. ' : e.k === 'srv' ? 'El servidor falló: reintento solo. ' : '') + last;
+}
+
+// Ajustes: el bloque entero. Si todavía no hay servidor publicado, no aparece.
+function syncRows(R, B) {
+  if (!SYNC.url) return null;
+  if (!syncOn()) return [B('Activar respaldo en la nube', 'Copia cifrada y automática. Si perdés el celu, la recuperás con tu clave.', 'syncSetup()')];
+  const e = SYNC.err; const rows = [R('Respaldo', '<button class="btn sm" onclick="syncNow()">Respaldar</button>', esc(syncStatus()))];
+  if (e && e.k === 'fewer') rows.push('<div class="ag-p sync-warn">La copia de la nube tiene <b>' + (e.n || 'más') + ' sesiones</b> y este celu <b>' + SESSIONS.length + '</b>. No pisé nada. Si borraste sesiones a propósito, respaldá igual; si no, traé la copia.<div class="sync-acts"><button class="btn sm" onclick="syncRestoreSheet()">Traer la copia</button><button class="btn sm p" onclick="syncNow(true)">Respaldar igual</button></div></div>');
+  rows.push(B('Restaurar desde la nube', 'La última copia o una de días anteriores', 'syncRestoreSheet()'), B('Ver mi clave', 'Para conectar otro teléfono', 'syncShowKey()'), B('Desconectar este teléfono', 'La copia de la nube queda guardada', 'syncOff()'));
+  return rows;
+}
+function syncSetup() {
+  openSheet('<h2>Respaldo en la nube</h2><p class="small muted">Tus datos se cifran en el celu antes de subir. Para leerlos hace falta tu clave: sin ella no pueden ni Cloudflare, ni nadie, ni vos. Guardala bien.</p>'
+    + '<div class="sync-acts col"><button class="btn p" onclick="syncNewSheet()">Crear clave nueva</button><button class="btn" onclick="syncHaveSheet()">Ya tengo una clave</button></div>');
+}
+const syncKeyBox = k => '<div class="sync-key" id="synckey">' + esc(k) + '</div><button class="btn sm" onclick="syncCopy(\'' + k + '\')">' + I.copy + ' Copiar clave</button>';
+function syncCopy(k) { (navigator.clipboard ? navigator.clipboard.writeText(k) : Promise.reject()).then(() => toast('Clave copiada'), () => { const r = document.createRange(); r.selectNodeContents($('synckey')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast('Seleccionala y copiala'); }); }
+function syncNewSheet() {
+  SYNC_PEND = syncNewKey();
+  openSheet('<h2>Tu clave</h2><p class="small muted">Copiala y guardala en Contraseñas de iCloud o en Notas. Es la única forma de recuperar el respaldo en otro teléfono.</p>' + syncKeyBox(SYNC_PEND)
+    + '<div class="sync-acts"><button class="btn" onclick="closeSheet()">Cancelar</button><button class="btn p" onclick="syncConnect(SYNC_PEND,true)">Ya la guardé</button></div>');
+}
+function syncHaveSheet() {
+  openSheet('<h2>Tu clave</h2><p class="small muted">Pegá la clave que guardaste cuando activaste el respaldo. Empieza con gb1-.</p><input class="inp sync-in" id="syncin" placeholder="gb1-…" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Clave de respaldo">'
+    + '<div class="sync-acts"><button class="btn" onclick="closeSheet()">Cancelar</button><button class="btn p" onclick="syncConnect($(\'syncin\').value.trim(),false)">Conectar</button></div>');
+}
+async function syncConnect(key, fresh) {
+  if (!SYNC_KEY_RE.test(key || '')) { toast('Esa no es una clave de GymBrain'); return; }
+  const url = SYNC.url || SYNC_URL; let r;
+  try { const t = await syncToken(key); r = await fetch(url + '/v1/claim', { method: 'POST', cache: 'no-store', headers: { Authorization: 'Bearer ' + t } }); } catch (e) { toast('Sin conexión. Probá en un rato'); return; }
+  if (r.status === 403) { toast(fresh ? 'El servidor ya tiene otra clave. Usá «Ya tengo una clave»' : 'Esa clave no es la de tu respaldo', 3500); return; }
+  if (r.status !== 200) { toast('El servidor no respondió bien. Probá en un rato'); return; }
+  Object.assign(SYNC, { url, key, last: null, n: 0, h: null, err: null }); SYNC_PEND = null; saveSync(); closeSheet();
+  if (!fresh) {
+    let b = null; try { const g = await syncReq('/v1/backup', { method: 'GET' }); b = g.status === 200 ? g.j : null; } catch (e) { }
+    if (b) return syncOffer(b, 'Tu copia está en la nube');
+  }
+  const res = await syncPush({ manual: true }); settingsSheet();
+  toast(res === 'ok' ? 'Listo: primer respaldo subido' : 'Conectado. El respaldo sube cuando haya señal', 3000);
+}
+// Trae una copia: descifra, valida igual que importar y pide confirmación
+async function syncOffer(b, title) {
+  let d = null; try { d = await syncOpen(SYNC.key, b); } catch (e) { }
+  if (!importOk(d)) { toast('No pude abrir esa copia. ¿Es la misma clave?', 3000); settingsSheet(); return; }
+  ask(title || '¿Traer esta copia?', 'Copia del ' + syncWhen(b.ts) + ' con ' + d.sessions.length + ' sesiones. Reemplaza lo que hay en este teléfono (' + SESSIONS.length + ' sesiones).', 'Traer', () => {
+    closeSheet(); applyImport(d, 'Copia de la nube restaurada'); Object.assign(SYNC, { last: b.ts, n: d.sessions.length, h: null, err: null }); saveSync();
+  }, false, 'Ahora no');
+}
+async function syncRestoreSheet() {
+  openSheet('<h2>Restaurar</h2><p class="small muted">Buscando tus copias…</p>');
+  let r; try { r = await syncReq('/v1/snaps', { method: 'GET' }); } catch (e) { r = null; }
+  if (!r || r.status !== 200) { openSheet('<h2>Restaurar</h2><p class="small muted">' + (r ? 'El servidor no respondió bien.' : 'Sin conexión.') + ' Probá en un rato.</p>'); return; }
+  const list = r.j.snaps.filter(x => x.ts); if (!list.length) { openSheet('<h2>Restaurar</h2><p class="small muted">Todavía no hay copias en la nube.</p>'); return; }
+  const seen = new Set(); const rows = list.filter(x => !seen.has(x.ts) && seen.add(x.ts)).slice(0, 40);
+  openSheet('<h2>Restaurar</h2><p class="small muted">Una copia por día de los últimos 30 días y una por mes desde que empezaste. Tocá la que quieras traer.</p><div class="sync-list">'
+    + rows.map((x, i) => '<button class="ag-r ag-b" onclick="syncPick(\'' + x.key + '\')"><div class="ag-l">' + (i === 0 ? 'La última · ' : '') + syncWhen(x.ts) + '<small>' + x.n + ' sesiones' + (x.key.startsWith('month:') ? ' · copia del mes' : '') + '</small></div>' + I.chev + '</button>').join('') + '</div>');
+}
+async function syncPick(k) {
+  let r; try { r = await syncReq('/v1/backup?snap=' + encodeURIComponent(k), { method: 'GET' }); } catch (e) { r = null; }
+  if (!r || r.status !== 200) { toast('No pude bajar esa copia'); return; }
+  syncOffer(r.j);
+}
+function syncShowKey() { openSheet('<h2>Tu clave</h2><p class="small muted">Con esta clave conectás otro teléfono y recuperás todo. No la compartas.</p>' + syncKeyBox(SYNC.key)); }
+function syncOff() {
+  ask('¿Desconectar este teléfono?', 'Deja de respaldar. La copia de la nube queda guardada y la recuperás con tu clave: asegurate de tenerla anotada.', 'Desconectar', () => {
+    SYNC = { ...SYNC_DEF(), url: SYNC.url }; saveSync(); settingsSheet(); toast('Respaldo desconectado');
+  }, true);
+}
+document.addEventListener('visibilitychange', () => { if (document.hidden) syncPush(); });
 function resetAll() { ask('¿Borrar todos los datos?', 'Sesiones, rutinas, logros y ajustes. No se puede deshacer. Si querés, exportá una copia antes.', 'Borrar todo', () => setTimeout(() => ask('Última confirmación', 'Se borra todo GymBrain de este teléfono.', 'Sí, borrar', resetAllNow, true), 50), true); }
 function resetAllNow() { Object.keys(localStorage).filter(k => k.startsWith('gb2_')).forEach(k => localStorage.removeItem(k)); location.reload(); }
 function legacyKeys() { return Object.keys(localStorage).filter(k => k.startsWith('gb_') && ex(k.slice(3))); }
@@ -5564,6 +5716,7 @@ function init() {
   if (ACTIVE) { ACTIVE.ex.forEach(x => { if (x.presc && !x.sug) x.sug = suggest(x.id, x.presc); }); go('entreno', null, true); if (ACTIVE.restEnd && ACTIVE.restEnd > Date.now()) { restTimer = setInterval(tickRest, 500); } }
   else go('hoy');
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(() => {});
+  setTimeout(() => syncPush({ now: true }), 2500);
 }
 document.addEventListener('DOMContentLoaded', init);
 
