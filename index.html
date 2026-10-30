@@ -5537,7 +5537,7 @@ function applyImport(d, msg) {
 // la clave ("gb1-…", 256 bits al azar) vive solo en este teléfono y en el llavero de Rodrigo. Del lado del servidor
 // llega un token derivado de la clave que sirve para identificarse pero no para descifrar.
 // gb2_sync { v:1, url, key, last (ISO del último respaldo), n (sesiones), h (hash de lo subido), err }
-const SYNC_URL = '';
+const SYNC_URL = 'https://gymbrain-sync.rodricingolani1.workers.dev';
 const SYNC_KEY_RE = /^gb1-[A-Za-z0-9_-]{43}$/;
 const syncOk = s => plainObj(s) && s.v === 1 && (s.key == null || SYNC_KEY_RE.test(s.key)) && (s.url == null || /^https:\/\/\S+$/.test(s.url)) && (s.last == null || !isNaN(Date.parse(s.last)));
 const SYNC_DEF = () => ({ v: 1, url: SYNC_URL || null, key: null, last: null, n: 0, h: null, err: null });
@@ -5701,7 +5701,7 @@ function finishOnboarding(pid) {
 }
 
 // ═══ INIT ═══
-const APP_VERSION = 'V30';
+const APP_VERSION = 'V31';
 function splash() {
   if (sessionStorage.getItem('gb2_splash')) return; sessionStorage.setItem('gb2_splash', '1');
   const d = document.createElement('div'); d.className = 'splash'; d.innerHTML = '<div class="lg">' + LOGO + '</div><div class="t">GYMBRAIN</div><div class="s">BY CHADBITS</div>'; document.body.appendChild(d); setTimeout(() => d.remove(), 1800);
