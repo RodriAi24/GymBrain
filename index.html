@@ -1369,6 +1369,7 @@ body.wo-on::after { background: var(--bg); }
 .sl .hmonth { margin: 16px 0 6px; }
 html[data-theme="light"] .hs-card { color: #F4EEE6; }
 /* Respaldo en la nube */
+.ob-rec { margin-top: 10px; min-height: 48px; gap: 8px; } .ob-rec .ic { width: 18px; height: 18px; }
 .sync-key { margin: 14px 0 10px; padding: 14px; border-radius: 14px; background: var(--card2); border: 1px solid var(--line2); font: 500 15px/1.45 var(--fm); color: var(--ink); word-break: break-all; user-select: all; -webkit-user-select: all; }
 .sync-acts { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; } .sync-acts .btn { flex: 1; min-height: 44px; }
 .sync-acts.col { flex-direction: column; }
@@ -5530,6 +5531,7 @@ function applyImport(d, msg) {
   if (tipsOk(d.tips)) { TIPS = d.tips; save('gb2_tips', TIPS); }
   if (checkinOk(d.checkin)) { CHK = { v: 1, skip: {}, ...d.checkin }; saveChk(); }
   if (syncOk(d.sync) && d.sync.url && !SYNC.key) { SYNC.url = d.sync.url; saveSync(); }
+  if (S.onboarded) { $('ob').classList.add('hid'); $('app').classList.remove('hid'); $('tabbar').classList.remove('hid'); }
   kcalSync(true); go('hoy', null, true); toast(msg || 'Copia importada');
 }
 // ═══ RESPALDO EN LA NUBE (V31) ═══
@@ -5606,10 +5608,10 @@ function syncStatus() {
 // Ajustes: el bloque entero. Si todavía no hay servidor publicado, no aparece.
 function syncRows(R, B) {
   if (!SYNC.url) return null;
-  if (!syncOn()) return [B('Activar respaldo en la nube', 'Copia cifrada y automática. Si perdés el celu, la recuperás con tu clave.', 'syncSetup()')];
+  if (!syncOn()) return [B('Activar respaldo en la nube', 'Copia cifrada y automática. Si perdés el celu, la recuperás con tu clave.', 'syncSetup()'), B(I.cycle + ' Recuperar mis datos de la nube', '¿Ya tenías respaldo? Pegá tu clave y traé todo', 'syncHaveSheet()')];
   const e = SYNC.err; const rows = [R('Respaldo', '<button class="btn sm" onclick="syncNow()">Respaldar</button>', esc(syncStatus()))];
   if (e && e.k === 'fewer') rows.push('<div class="ag-p sync-warn">La copia de la nube tiene <b>' + (e.n || 'más') + ' sesiones</b> y este celu <b>' + SESSIONS.length + '</b>. No pisé nada. Si borraste sesiones a propósito, respaldá igual; si no, traé la copia.<div class="sync-acts"><button class="btn sm" onclick="syncRestoreSheet()">Traer la copia</button><button class="btn sm p" onclick="syncNow(true)">Respaldar igual</button></div></div>');
-  rows.push(B('Restaurar desde la nube', 'La última copia o una de días anteriores', 'syncRestoreSheet()'), B('Ver mi clave', 'Para conectar otro teléfono', 'syncShowKey()'), B('Desconectar este teléfono', 'La copia de la nube queda guardada', 'syncOff()'));
+  rows.push(B(I.cycle + ' Recuperar desde la nube', 'La última copia o una de días anteriores', 'syncRestoreSheet()'), B('Ver mi clave', 'Para conectar otro teléfono', 'syncShowKey()'), B('Desconectar este teléfono', 'La copia de la nube queda guardada', 'syncOff()'));
   return rows;
 }
 function syncSetup() {
@@ -5624,8 +5626,8 @@ function syncNewSheet() {
     + '<div class="sync-acts"><button class="btn" onclick="closeSheet()">Cancelar</button><button class="btn p" onclick="syncConnect(SYNC_PEND,true)">Ya la guardé</button></div>');
 }
 function syncHaveSheet() {
-  openSheet('<h2>Tu clave</h2><p class="small muted">Pegá la clave que guardaste cuando activaste el respaldo. Empieza con gb1-.</p><input class="inp sync-in" id="syncin" placeholder="gb1-…" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Clave de respaldo">'
-    + '<div class="sync-acts"><button class="btn" onclick="closeSheet()">Cancelar</button><button class="btn p" onclick="syncConnect($(\'syncin\').value.trim(),false)">Conectar</button></div>');
+  openSheet('<h2>Recuperar tus datos</h2><p class="small muted">Pegá la clave que guardaste cuando activaste el respaldo (empieza con gb1-). Te muestro la copia antes de traer nada.</p><input class="inp sync-in" id="syncin" placeholder="gb1-…" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Clave de respaldo">'
+    + '<div class="sync-acts"><button class="btn" onclick="closeSheet()">Cancelar</button><button class="btn p" onclick="syncConnect($(\'syncin\').value.trim(),false)">Buscar mi copia</button></div>');
 }
 async function syncConnect(key, fresh) {
   if (!SYNC_KEY_RE.test(key || '')) { toast('Esa no es una clave de GymBrain'); return; }
@@ -5637,6 +5639,7 @@ async function syncConnect(key, fresh) {
   if (!fresh) {
     let b = null; try { const g = await syncReq('/v1/backup', { method: 'GET' }); b = g.status === 200 ? g.j : null; } catch (e) { }
     if (b) return syncOffer(b, 'Tu copia está en la nube');
+    if (!S.onboarded) { toast('Conectado, pero todavía no hay copias en la nube', 3000); return; }
   }
   const res = await syncPush({ manual: true }); settingsSheet();
   toast(res === 'ok' ? 'Listo: primer respaldo subido' : 'Conectado. El respaldo sube cuando haya señal', 3000);
@@ -5688,7 +5691,7 @@ function renderOnboarding() {
   const el = $('ob'); const dots = '<div class="obdots">' + [0, 1, 2, 3].map(i => '<i class="' + (i <= OB.step ? 'on' : '') + '"></i>').join('') + '</div>';
   const logo = '<div class="brand" style="margin-bottom:22px">' + LOGO_MARK(44) + '<div class="t" style="font-size:22px">GYMBRAIN<small>BY CHADBITS</small></div></div>';
   let html = '';
-  if (OB.step === 0) html = logo + dots + '<h1>Te dice qué levantar hoy. Y cuánto.</h1><p class="lead">Un programa con evidencia que se adapta a los días que vas, ejercicios explicados paso a paso y un motor que te avisa cuándo subir el peso. Sin humo, sin cuenta, sin pagar.</p><label class="lbl">¿Cómo te llamás? (opcional)</label><input class="inp" placeholder="Tu nombre" value="' + esc(OB.name) + '" oninput="OB.name=this.value"><button class="btn p w big" style="margin-top:20px" onclick="OB.step=1;renderOnboarding()">Empezar</button>';
+  if (OB.step === 0) html = logo + dots + '<h1>Te dice qué levantar hoy. Y cuánto.</h1><p class="lead">Un programa con evidencia que se adapta a los días que vas, ejercicios explicados paso a paso y un motor que te avisa cuándo subir el peso. Sin humo, sin cuenta, sin pagar.</p><label class="lbl">¿Cómo te llamás? (opcional)</label><input class="inp" placeholder="Tu nombre" value="' + esc(OB.name) + '" oninput="OB.name=this.value"><button class="btn p w big" style="margin-top:20px" onclick="OB.step=1;renderOnboarding()">Empezar</button>' + (SYNC.url ? '<button class="btn ghost w ob-rec" onclick="syncHaveSheet()">' + I.cycle + ' Ya tenía GymBrain: recuperar mis datos</button>' : '');
   else if (OB.step === 1) html = logo + dots + '<h1>¿Cuántos días por semana vas a entrenar?</h1><p class="lead">Sé honesto: mejor cumplir 3 que planear 5 y hacer 2.</p>' + [[3, '3 días', 'Lo mínimo para progresar bien. Full Body Fundamentals.'], [4, '4 días', 'El punto dulce. Full Body Fundamentals o Upper/Lower.'], [5, '5 o 6 días', 'Solo si ya tenés el hábito. Push/Pull/Legs.']].map(o => '<button class="opt ' + (OB.goal === o[0] ? 'on' : '') + '" onclick="OB.goal=' + o[0] + ';renderOnboarding()"><b>' + o[1] + '</b><span>' + o[2] + '</span></button>').join('') + '<button class="btn p w big" style="margin-top:20px" onclick="OB.step=2;renderOnboarding()">Siguiente</button>';
   else if (OB.step === 2) html = logo + dots + '<h1>¿Cuánta experiencia tenés?</h1>' + [['nuevo', 'Empiezo de cero', 'Nunca entrené con pesas o muy poco.'], ['volviendo', 'Estoy volviendo', 'Entrené antes, dejé, y arranco de nuevo.'], ['exp', 'Entreno hace un tiempo', 'Ya conozco los ejercicios básicos.']].map(o => '<button class="opt ' + (OB.exp === o[0] ? 'on' : '') + '" onclick="OB.exp=\'' + o[0] + '\';renderOnboarding()"><b>' + o[1] + '</b><span>' + o[2] + '</span></button>').join('') + '<button class="btn p w big" style="margin-top:20px" onclick="OB.step=3;renderOnboarding()">Siguiente</button>';
   else { const pid = OB.goal >= 5 ? 'ppl' : (OB.goal === 4 && OB.exp === 'exp') ? 'ul' : 'fb'; const p = prog(pid); html = logo + dots + '<h1>¿Barra libre o máquinas y mancuernas?</h1><p class="lead">Las máquinas y mancuernas son más fáciles de aprender y rinden igual al principio. Podés cambiar cualquier ejercicio después.</p>' + [[false, 'Máquinas y mancuernas', 'Prensa, press con mancuernas, remo en máquina.'], [true, 'Barra libre', 'Sentadilla, banca, peso muerto rumano con barra.']].map(o => '<button class="opt ' + (OB.barbell === o[0] ? 'on' : '') + '" onclick="OB.barbell=' + o[0] + ';renderOnboarding()"><b>' + o[1] + '</b><span>' + o[2] + '</span></button>').join('') + '<div class="card" style="margin-top:18px;border-color:var(--acc)"><div class="small" style="color:var(--acc-ink);font-weight:600">Tu programa</div><h3 style="font-size:24px">' + esc(p.name) + '</h3><div class="small muted">' + esc(p.freq) + ' · ' + esc(p.dur) + '</div></div><button class="btn p w big" style="margin-top:14px" onclick="finishOnboarding(\'' + pid + '\')">Listo, vamos</button>'; }
@@ -5701,7 +5704,7 @@ function finishOnboarding(pid) {
 }
 
 // ═══ INIT ═══
-const APP_VERSION = 'V31';
+const APP_VERSION = 'V31.1';
 function splash() {
   if (sessionStorage.getItem('gb2_splash')) return; sessionStorage.setItem('gb2_splash', '1');
   const d = document.createElement('div'); d.className = 'splash'; d.innerHTML = '<div class="lg">' + LOGO + '</div><div class="t">GYMBRAIN</div><div class="s">BY CHADBITS</div>'; document.body.appendChild(d); setTimeout(() => d.remove(), 1800);
